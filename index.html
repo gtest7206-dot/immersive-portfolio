@@ -1,256 +1,367 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="lenis">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
   <title>Immersive Garden — Innovative digital experiences studio</title>
   <meta name="description" content="Transcend anything seen or felt before by crafting unparalleled experiences for ambitious brands.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <style>
-    @font-face { font-family:'PSTimes'; font-style:normal; font-weight:400; src:url(data:font/woff2;base64,) format('woff2'); }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { height:100%; overflow:hidden; }
-    body {
-      font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-      background:#e8e8e8; color:#030303;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    @font-face{font-family:'PSTimes';font-style:normal;font-weight:400;src:local('Times New Roman'),local('Georgia')}
+    @font-face{font-family:'HelveticaNeueRegular';font-style:normal;font-weight:400;src:local('Helvetica Neue'),local('Helvetica'),local('Arial')}
+    @font-face{font-family:'HelveticaNeueLight';font-style:normal;font-weight:400;src:local('Helvetica Neue Light'),local('Helvetica-Light'),local('Arial')}
+    *,:after,:before{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow:hidden}
+    html{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;user-select:none}
+    body{
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      background:#e8e8e8;color:#030303;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
       text-rendering:optimizeLegibility;
-      -ms-overflow-style:none; scrollbar-width:none;
+      -ms-overflow-style:none;scrollbar-width:none
     }
-    ::-webkit-scrollbar { display:none; }
-    body.bg--black { background:#030303; }
+    ::-webkit-scrollbar{display:none}
+    *{-ms-overflow-style:none;scrollbar-width:none}
+    img{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;display:block}
 
-    /* WebGL */
-    .webgl-app { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:1; }
-    .webgl-app canvas { position:absolute; top:0; left:0; width:100%; height:100%; }
+    /* WebGL canvas */
+    #webgl-app{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    #webgl-app canvas{position:absolute;top:0;left:0;width:100%;height:100%}
 
-    /* Sound toggle — exactly like IG style */
-    .soundWrapper {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      z-index: 100;
+    /* Lenis smooth scroll */
+    html.lenis{height:auto}
+    .lenis.lenis-smooth{scroll-behavior:auto}
+    .lenis.lenis-stopped{overflow:hidden;padding-right:var(--scrollbar-width,0)}
+    #scroll-container{position:relative;z-index:1;height:100vh;overflow-y:auto;overflow-x:hidden}
+    #scroll-container::-webkit-scrollbar{display:none}
+
+    /* Grid */
+    .gridWrapper{display:grid;grid-template-columns:repeat(12,1fr);column-gap:16px}
+    .gridWrapper.padding{padding:0 48px}
+    @media(max-width:768px){.gridWrapper.padding{padding:0 24px}}
+
+    /* ======= NAV ======= */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:50;pointer-events:none;
+      display:flex;justify-content:space-between;align-items:center
     }
-    .sound {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(3,3,3,0.08);
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: rgba(3,3,3,0.35);
-      transition: all 0.3s ease;
-      user-select: none;
+    nav>*{pointer-events:auto}
+    .navButton{
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      font-size:14px;line-height:1.1;color:#030303;text-decoration:none;cursor:pointer;
+      padding:40px;display:inline-flex;align-items:center
     }
-    .sound:hover { border-color: rgba(3,3,3,0.2); color: #030303; }
-    .sound--muted { opacity: 0.7; }
-    .sound--muted:hover { opacity: 1; }
+    .navButton:hover{opacity:0.6}
 
-    /* Lenis scroll */
-    .scroll-container { position:relative; z-index:1; height:100vh; overflow-y:auto; overflow-x:hidden; }
-    html.lenis { height:auto; }
-    .lenis.lenis-smooth { scroll-behavior:auto; }
-    .lenis.lenis-stopped { overflow:hidden; }
-
-    /* Nav */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:50;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:40px 48px; pointer-events:none;
+    /* ======= INTRO LOADER ======= */
+    #intro-loader{
+      position:fixed;top:0;left:0;width:100%;height:100vh;z-index:200;
+      background:#030303;color:#e8e8e8;
+      display:flex;align-items:center;justify-content:center;
+      opacity:1;transition:opacity 1.5s ease;pointer-events:none
     }
-    nav > * { pointer-events:auto; }
-    nav .logo { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#030303; font-weight:500; }
-    nav .menu { display:flex; gap:32px; list-style:none; }
-    nav .menu li { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(3,3,3,0.4); cursor:pointer; transition:color 0.3s; }
-    nav .menu li:hover { color:#030303; }
-
-    section { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:6rem 48px; position:relative; }
-
-    /* Hero */
-    #hero {
-      min-height:100vh;
-      justify-content:flex-end;
-      padding-bottom:12.5vw;
-      pointer-events:none;
-      user-select:none;
+    #intro-loader.hidden{opacity:0}
+    #intro-loader .intro-text{
+      font-family:PSTimes,'Times New Roman',Georgia,serif;
+      font-size:clamp(2rem,3.8vw,3.8vw);line-height:1.1;
+      text-align:left;letter-spacing:-0.01em
     }
-    #hero h1 {
-      font-family:'PSTimes','Times New Roman',Georgia,serif;
-      font-size:clamp(1.8rem,3.05vw,3.5rem);
-      font-weight:400;
-      line-height:1.1;
-      letter-spacing:-0.01em;
-      color:#030303;
-      max-width:10em;
+    #intro-loader .intro-text > div{padding-top:0.15em;opacity:0;animation:fadeUp 0.8s ease forwards}
+    #intro-loader .intro-text > div:nth-child(1){animation-delay:0.4s}
+    #intro-loader .intro-text > div:nth-child(2){animation-delay:0.7s}
+    #intro-loader .intro-text > div:nth-child(3){animation-delay:1.0s}
+    #intro-loader .intro-text > div:nth-child(4){animation-delay:1.3s}
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+
+    /* ======= HERO ======= */
+    #hero{
+      height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+      padding-bottom:239.4px;pointer-events:none;user-select:none;padding:0 48px 12.5vw
     }
-    #hero .scroll-indication {
-      font-size:12px;
-      color:rgba(3,3,3,0.3);
-      margin-top:40px;
-      letter-spacing:0.02em;
+    @media(max-width:432px){#hero{padding-bottom:54px;padding-left:24px;padding-right:24px}}
+    #hero h1{
+      font-family:PSTimes,'Times New Roman',Georgia,serif;
+      font-size:58.52px;font-weight:400;line-height:1.1;
+      color:#030303;text-align:left;letter-spacing:-0.01em;
+      max-width:6em
+    }
+    @media(max-width:1113px){#hero h1{font-size:34px}}
+    .scroll-indication{
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:400;line-height:1.1;
+      color:#030303;text-align:right;
+      margin-top:40px;align-self:flex-end;opacity:0.25
     }
 
-    .section-label { font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(3,3,3,0.25); margin-bottom:16px; }
-    .section-title { font-family:'PSTimes','Times New Roman',Georgia,serif; font-size:clamp(2rem,4.5vw,4.5rem); font-weight:400; line-height:1.05; color:#030303; }
-
-    /* Projects */
-    #projects { padding:6rem 48px; }
-    .projects-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
-    .project-card {
-      position:relative; cursor:pointer; overflow:hidden;
-      background:#d8d8d8; aspect-ratio:16/10;
-      transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    /* ======= SOUND TOGGLE (exact IG style) ======= */
+    .soundWrapper{
+      position:fixed;bottom:0;right:0;padding:40px;z-index:100001;pointer-events:none
     }
-    .project-card:hover { transform:scale(0.97); }
-    .project-card .card-bg { width:100%; height:100%; object-fit:cover; transition:transform 0.8s cubic-bezier(0.22,1,0.36,1); }
-    .project-card:hover .card-bg { transform:scale(1.05); }
-    .project-card .card-overlay { position:absolute; bottom:0; left:0; right:0; padding:24px; pointer-events:none; }
-    .project-card .card-title { font-family:'PSTimes','Times New Roman',Georgia,serif; font-size:1.2rem; color:#030303; margin-bottom:4px; }
-    .project-card .card-category { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(3,3,3,0.35); }
-
-    /* Marquee */
-    #marquee { min-height:20vh; justify-content:center; padding:2rem 48px; overflow:hidden; }
-    .marquee-track { display:flex; gap:32px; white-space:nowrap; animation:marqueeScroll 40s linear infinite; }
-    .marquee-track span {
-      font-family:'PSTimes','Times New Roman',Georgia,serif;
-      font-size:clamp(4rem,10vw,10rem);
-      font-style:italic;
-      color:rgba(3,3,3,0.04);
-      letter-spacing:-0.03em;
+    .soundWrapper>*{pointer-events:auto}
+    @media(max-width:768px){.soundWrapper{padding:32px}}
+    .sound{
+      --sound-color:#030303;
+      cursor:pointer;position:relative;
+      display:flex;align-items:center;justify-content:center;
+      user-select:none;-webkit-user-select:none
     }
-    @keyframes marqueeScroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+    .sound .icon{position:absolute;right:-13px;height:30px;width:30px;transform-origin:center;will-change:transform}
+    .sound .icon .circles{height:30px;width:30px;position:absolute}
+    .sound .icon .circles__animated{stroke:var(--sound-color);stroke-dasharray:226.2;stroke-dashoffset:0;transform-origin:center center;transition:stroke .5s ease;will-change:transform,opacity,stroke-dashoffset}
+    .sound .icon .dot{align-items:center;display:flex;height:30px;justify-content:center;position:absolute;transform:scale(1.15);width:30px;will-change:transform,opacity}
+    .sound .icon .dot__child{background:var(--sound-color);border-radius:100%;height:3px;transition:background .5s ease;width:3px;will-change:transform,opacity}
+    .sound .text{color:var(--sound-color);font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1;margin-right:30px;will-change:opacity}
+    .sound .text .wrapper{position:relative}
+    .sound .text__off{opacity:1;position:absolute;right:-6px;will-change:transform,opacity}
+    .sound .text__on{opacity:0;position:relative;will-change:transform,opacity}
+    .sound--muted .text__off{opacity:0}
+    .sound--muted .text__on{opacity:1}
+    .sound--dark-bg{--sound-color:#e8e8e8}
 
-    /* Dark */
-    .dark-section { background:#030303; color:#e8e8e8; }
-    .dark-section .section-label { color:rgba(232,232,232,0.3); }
-
-    /* About */
-    #about { min-height:80vh; flex-direction:row; align-items:center; gap:80px; padding:6rem 48px; }
-    #about .about-left { flex:1; }
-    #about .about-right { flex:1; display:flex; flex-direction:column; gap:24px; }
-    .service-item { border-top:1px solid rgba(232,232,232,0.06); padding-top:20px; }
-    .service-item h3 { font-size:14px; font-weight:500; color:#e8e8e8; margin-bottom:6px; }
-    .service-item p { font-size:13px; font-weight:300; color:rgba(232,232,232,0.4); line-height:1.6; }
-
-    /* Contact */
-    #contact { min-height:100vh; justify-content:flex-end; padding:6rem 48px 40px; }
-    #contact .contact-email {
-      font-family:'PSTimes','Times New Roman',Georgia,serif;
-      font-size:clamp(1.5rem,3.5vw,3.5rem);
-      color:#e8e8e8; text-align:center; cursor:pointer;
-      transition:opacity 0.3s;
+    /* ======= PROJECTS BUTTON (fixed bottom-left) ======= */
+    .projectsBttnWrapper{
+      position:fixed;bottom:0;left:0;padding:40px;z-index:1000;opacity:1;
+      transition:opacity 1.5s linear,visibility 0s linear;visibility:visible;
+      pointer-events:none
     }
-    #contact .contact-email:hover { opacity:0.6; }
-    #contact .contact-address { font-size:12px; color:rgba(232,232,232,0.4); text-align:center; margin-top:48px; }
-    .footer-bottom {
-      display:flex; justify-content:space-between; align-items:flex-end;
-      font-size:11px; color:rgba(232,232,232,0.25); letter-spacing:0.05em; margin-top:80px;
+    .projectsBttnWrapper>*{pointer-events:auto}
+    @media(max-width:768px){.projectsBttnWrapper{padding:32px}}
+    .projectsBttn{
+      align-items:center;color:#030303;cursor:pointer;display:flex;
+      padding:40px;margin:-40px;white-space:nowrap;width:-moz-fit-content;width:fit-content;
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1;
+      transition:color .5s ease;user-select:none;-webkit-user-select:none
     }
-    .footer-bottom .networks { display:flex; gap:32px; }
-    .footer-bottom a { color:rgba(232,232,232,0.25); text-decoration:none; transition:color 0.3s; }
-    .footer-bottom a:hover { color:rgba(232,232,232,0.6); }
+    .projectsBttn:hover{opacity:0.6}
+    .projectsBttn .wrapper{align-items:center;display:flex;justify-content:center;position:relative;transition:opacity .5s ease}
+    .projectsBttn .wrapper__text{font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1}
+    .projectsBttn .wrapper__count{font-size:14px;color:rgba(3,3,3,0.3);margin-left:4px}
+    .projectsBttn--white .wrapper__count{color:rgba(232,232,232,0.3)}
+    .projectsBttn .wrapper__icon{height:1em;margin-left:-5px;margin-top:1px;position:relative;top:calc(-22.5px - -.5em);width:25px}
+    .projectsBttn .wrapper__icon>div{height:45px;width:45px}
+    .projectsBttn .wrapper__icon .icon--black{left:0;opacity:1;position:absolute;top:0;z-index:2}
+    .projectsBttn .wrapper__icon .icon--white{opacity:0}
+    .projectsBttn--white{color:#e8e8e8}
+    .projectsBttn--white .wrapper__icon .icon--black{opacity:0}
+    .projectsBttn--white .wrapper__icon .icon--white{opacity:1}
 
-    .footer__projectsCta {
-      font-family:'PSTimes','Times New Roman',Georgia,serif;
-      font-size:clamp(1.2rem,3vw,3rem);
-      color:#e8e8e8; cursor:pointer; display:inline-block; position:relative;
+    /* ======= PROJECTS SECTION ======= */
+    #projects{min-height:60vh;padding:6rem 48px}
+    .section-label{
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:400;line-height:1.1;
+      color:rgba(3,3,3,0.25);margin-bottom:24px
     }
-    .footer__projectsCta::after {
-      content:"(51)";
-      font-family:'PSTimes',serif;
-      font-size:clamp(0.6rem,1.1vw,1.1rem);
-      position:absolute; left:105%; top:8%;
-      color:rgba(232,232,232,0.4);
+    .project-item{
+      border-top:1px solid rgba(3,3,3,0.04);
+      display:flex;justify-content:space-between;align-items:center;
+      cursor:pointer;transition:opacity 0.3s;
+      font-family:HelveticaNeueRegular,sans-serif;
+      font-size:14px;font-weight:400;line-height:1.1;
+      padding:24px 0
     }
-    .footer__projectsCta:hover { opacity:0.6; }
+    .project-item:hover{opacity:0.5}
+    .project-item .project-cat{color:rgba(3,3,3,0.3);font-size:14px}
 
-    @media (max-width:768px) {
-      nav { padding:24px; }
-      nav .menu { display:none; }
-      section { padding:3rem 24px; }
-      #hero { padding-bottom:60px; }
-      .projects-grid { grid-template-columns:1fr; gap:12px; }
-      #about { flex-direction:column; gap:40px; }
-      .soundWrapper { bottom:24px; right:24px; }
-      .footer-bottom { flex-direction:column; gap:16px; align-items:center; }
+    /* ======= MARQUEE ======= */
+    .marquee-section{min-height:15vh;display:flex;align-items:center;overflow:hidden;padding:2rem 48px}
+    .marquee-track{display:flex;gap:32px;white-space:nowrap;animation:marqueeScroll 50s linear infinite}
+    .marquee-track span{
+      font-family:PSTimes,'Times New Roman',Georgia,serif;
+      font-size:clamp(4rem,8vw,8rem);font-style:italic;
+      color:rgba(3,3,3,0.04);letter-spacing:-0.03em
+    }
+    @keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* ======= ABOUT SECTION ======= */
+    .about-section{
+      min-height:80vh;padding:6rem 48px;
+      background:#030303;color:#e8e8e8;
+      display:flex;flex-direction:row;align-items:center;gap:80px
+    }
+    .about-section .section-label{color:rgba(232,232,232,0.3)}
+    .about-section .about-heading{
+      font-family:PSTimes,'Times New Roman',Georgia,serif;
+      font-size:clamp(2rem,4.5vw,4.5rem);font-weight:400;line-height:1.05;color:#e8e8e8
+    }
+    .about-section .about-detail{
+      border-top:1px solid rgba(232,232,232,0.06);padding-top:20px
+    }
+    .about-section .about-detail .about-title{
+      font-size:14px;font-weight:500;color:#e8e8e8;margin-bottom:6px
+    }
+    .about-section .about-detail .about-desc{
+      font-size:14px;font-weight:300;color:rgba(232,232,232,0.4);line-height:1.6
+    }
+
+    /* ======= UNDERLINED BUTTON ======= */
+    .underlinedButton{padding-bottom:16px;position:relative;cursor:pointer;display:inline-block}
+    .underlinedButton__line{
+      position:absolute;bottom:0;left:0;width:100%;height:1px;
+      background-color:#030303;transform:scaleX(1);
+      transform-origin:right center;transition:all 0s
+    }
+    .footer-section .underlinedButton__line{background-color:#e8e8e8}
+
+    /* ======= FOOTER ======= */
+    .footer-section{
+      position:relative;min-height:100dvh;
+      background:#030303;color:#e8e8e8;pointer-events:none
+    }
+    .footer-section>*{pointer-events:auto}
+    .footer__email{
+      font-family:PSTimes,'Times New Roman',Georgia,serif;
+      font-size:58.52px;font-weight:400;line-height:1.2;
+      position:absolute;left:50%;top:46.75%;
+      transform:translate(-50%,-50%);text-align:center;
+      white-space:nowrap
+    }
+    @media(max-width:785px){.footer__email{font-size:24px}}
+    .footer__email a{color:#e8e8e8;text-decoration:none;cursor:pointer;transition:opacity .5s ease}
+    .footer__email a:hover{opacity:0.6}
+    .footer__address{
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:400;line-height:1.1;
+      color:#e8e8e8;opacity:0.5;text-align:center;
+      position:absolute;left:50%;bottom:106.4px;
+      transform:translateX(-50%);pointer-events:auto;cursor:pointer
+    }
+    @media(max-width:432px){.footer__address{bottom:24px}}
+    .footer__newsletterOpen{
+      position:absolute;bottom:40px;left:40px
+    }
+    @media(max-width:768px){.footer__newsletterOpen{bottom:24px;left:32px}}
+    .footer__networks{
+      position:absolute;bottom:40px;right:40px;
+      display:flex;gap:53.2px;
+      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:400;line-height:1.1
+    }
+    @media(max-width:432px){.footer__networks{gap:12px;right:32px;bottom:24px}}
+    .footer__networks a{color:#e8e8e8;text-decoration:none;transition:opacity 0.3s}
+    .footer__networks a:hover{opacity:0.6}
+
+    @media(max-width:768px){
+      nav{padding:0 24px}
+      #hero{padding-left:24px;padding-right:24px}
+      #projects{padding-left:24px;padding-right:24px}
+      .marquee-section{padding-left:24px;padding-right:24px}
+      .about-section{padding-left:24px;padding-right:24px;flex-direction:column;gap:40px}
+      .footer__networks{gap:24px;margin-bottom:24px;margin-right:32px}
+      .projectsBttnWrapper{padding:32px}
+      .projectsBttn{padding:32px;margin:-32px}
+      .soundWrapper{padding:32px}
     }
   </style>
 </head>
 <body>
 
-  <div class="webgl-app"><canvas id="three-canvas"></canvas></div>
+  <!-- NV: exactly matching IG structure - keep minimal for accuracy -->
 
-  <!-- Sound toggle — like IG's -->
-  <div class="soundWrapper">
-    <div class="sound" id="sound-toggle">
-      <span id="sound-icon">♪</span>
+  <div id="webgl-app"><canvas id="three-canvas"></canvas></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="navButton" href="#" style="letter-spacing:0.15em;text-transform:uppercase;font-size:11px">Immersive Garden</a>
+    <a class="navButton" href="#about">About</a>
+  </nav>
+
+  <!-- INTRO LOADER -->
+  <div id="intro-loader" class="">
+    <div class="intro-text">
+      <div>Innovative</div>
+      <div>digital</div>
+      <div>experiences</div>
+      <div>studio</div>
     </div>
   </div>
 
-  <nav>
-    <div class="logo">Immersive Garden</div>
-    <ul class="menu">
-      <li>Projects</li>
-      <li>About</li>
-      <li>Contact</li>
-    </ul>
-  </nav>
+  <!-- SOUND TOGGLE (mimics IG exactly) -->
+  <div class="soundWrapper">
+    <div class="sound--muted sound" id="sound-toggle">
+      <div class="text">
+        <div class="wrapper">
+          <div class="text__off"> Off </div>
+          <div class="text__on"> On </div>
+        </div>
+      </div>
+      <svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="circles__animated" cx="15" cy="15" r="13" stroke="#030303" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="81.68" stroke-dashoffset="0" transform="rotate(-90 15 15)" id="sound-ring"/>
+        <g class="dot">
+          <circle class="dot__child" cx="15" cy="15" r="1.5"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
-  <div class="scroll-container" id="scroll-container">
+  <!-- SCROLL CONTAINER -->
+  <div id="scroll-container">
 
+    <!-- HERO -->
     <section id="hero">
-      <h1>Transcend anything seen<br> or felt before by crafting<br> unparalleled experiences<br> for ambitious brands.</h1>
+      <h1 data-webgl-title>Transcend anything seen<br>or felt before by crafting<br>unparalleled experiences<br>for ambitious brands.</h1>
       <div class="scroll-indication">Scroll down</div>
     </section>
 
+    <!-- SELECTED WORK -->
     <section id="projects">
       <div class="section-label">Selected work</div>
-      <div class="projects-grid">
-        <div class="project-card"><div class="card-bg" style="background:#d4d4d4;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">✦</span></div><div class="card-overlay"><div class="card-title">Louis Vuitton</div><div class="card-category">Brand experience</div></div></div>
-        <div class="project-card"><div class="card-bg" style="background:#d0d0d0;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">◆</span></div><div class="card-overlay"><div class="card-title">Cartier</div><div class="card-category">Interactive installation</div></div></div>
-        <div class="project-card" style="grid-column:span 2;aspect-ratio:21/9;"><div class="card-bg" style="background:#c8c8c8;display:flex;align-items:center;justify-content:center;"><span style="font-size:3.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">▲</span></div><div class="card-overlay"><div class="card-title">Longines Spirit Zulu Time</div><div class="card-category">Product launch</div></div></div>
-        <div class="project-card"><div class="card-bg" style="background:#d2d2d2;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">●</span></div><div class="card-overlay"><div class="card-title">David Whyte</div><div class="card-category">Spatial experience</div></div></div>
-        <div class="project-card"><div class="card-bg" style="background:#cdcdcd;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">▣</span></div><div class="card-overlay"><div class="card-title">Chartogne-Taillet</div><div class="card-category">WebGL experience</div></div></div>
-      </div>
-      <div style="margin-top:48px;"><span class="footer__projectsCta">See all projects</span></div>
+      <div class="project-item"><span class="project-name">Louis Vuitton VIA Nicolas Ghesquière</span><span class="project-cat">Film, Design, Tech, NFT</span></div>
+      <div class="project-item"><span class="project-name">Girard-Perregaux Casquette 2.0</span><span class="project-cat">Design, Tech, Experience</span></div>
+      <div class="project-item"><span class="project-name">Cartier Love Is All</span><span class="project-cat">Design, E-shop, Experience</span></div>
+      <div class="project-item"><span class="project-name">Dioriviera</span><span class="project-cat">Design, Tech</span></div>
+      <div class="project-item"><span class="project-name">Longines Spirit Zulu Time</span><span class="project-cat">Design, Tech</span></div>
+      <div class="project-item"><span class="project-name">Masar Cityscape Global Exhibition</span><span class="project-cat">Installation</span></div>
     </section>
 
-    <section id="marquee">
+    <!-- MARQUEE -->
+    <section class="marquee-section">
       <div class="marquee-track">
-        <span>Digital &mdash; 3D &mdash; Interactive &mdash; Design &mdash; Experience &mdash;</span>
-        <span>Digital &mdash; 3D &mdash; Interactive &mdash; Design &mdash; Experience &mdash;</span>
+        <span>Digital — 3D — Interactive — Design — Experience —</span>
+        <span>Digital — 3D — Interactive — Design — Experience —</span>
       </div>
     </section>
 
-    <section id="about" class="dark-section">
-      <div class="about-left">
+    <!-- ABOUT -->
+    <section id="about" class="about-section">
+      <div style="flex:1">
         <div class="section-label">The studio</div>
-        <div class="section-title">Crafted with<br>intention</div>
-        <p class="section-desc" style="color:rgba(232,232,232,0.4);font-size:14px;font-weight:300;max-width:380px;line-height:1.8;">We are a small team of designers, engineers, and artists dedicated to creating digital experiences that resonate.</p>
+        <div class="about-heading">Crafted with<br>intention.</div>
       </div>
-      <div class="about-right">
-        <div class="service-item"><h3>3D Web Development</h3><p>Custom WebGL experiences optimized for performance across all devices.</p></div>
-        <div class="service-item"><h3>Interactive Design</h3><p>Scroll-driven narratives and spatial interfaces that feel natural.</p></div>
-        <div class="service-item"><h3>Creative Technology</h3><p>From concept to implementation — merging art direction with technical innovation.</p></div>
-      </div>
-    </section>
-
-    <section id="contact" class="dark-section">
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;">
-        <div class="contact-email">hello@immersive-garden.com</div>
-        <div class="contact-address">123 Creative Lane, Design District, NY 10001</div>
-      </div>
-      <div class="footer-bottom">
-        <div class="networks"><a href="#">Instagram</a><a href="#">Twitter</a><a href="#">LinkedIn</a></div>
-        <span>&copy; 2025 Immersive Garden</span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:24px;">
+        <div class="about-detail"><div class="about-title">3D Web Development</div><div class="about-desc">Custom WebGL experiences optimized for performance across all devices.</div></div>
+        <div class="about-detail"><div class="about-title">Interactive Design</div><div class="about-desc">Scroll-driven narratives and spatial interfaces that feel natural.</div></div>
+        <div class="about-detail"><div class="about-title">Creative Technology</div><div class="about-desc">From concept to implementation — merging art direction with technical innovation.</div></div>
       </div>
     </section>
 
+    <!-- FOOTER -->
+    <section class="footer-section" id="contact">
+      <div class="footer__email"><a href="mailto:inquiries@immersive-g.com">inquiries@immersive-g.com</a></div>
+      <div class="footer__address">123 Creative Lane, Design District, NY 10001</div>
+      <div class="footer__newsletterOpen">
+        <div class="underlinedButton"><span style="font-family:HelveticaNeueRegular,sans-serif;font-size:14px;font-weight:400;color:#e8e8e8;">Newsletter</span><div class="underlinedButton__line"></div></div>
+      </div>
+      <div class="footer__networks">
+        <a href="#" target="_blank">X</a>
+        <a href="#" target="_blank">Instagram</a>
+        <a href="#" target="_blank">Linkedin</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- PROJECTS BUTTON -->
+  <div class="projectsBttnWrapper">
+    <div class="projectsBttn">
+      <div class="wrapper">
+        <span class="wrapper__text">See all projects</span>
+        <span class="wrapper__count">(51)</span>
+        <span class="wrapper__icon">
+          <svg class="icon--black" width="45" height="45" viewBox="0 0 45 45" fill="none"><path d="M15 12L27 22.5L15 33" stroke="#030303" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="icon--white" width="45" height="45" viewBox="0 0 45 45" fill="none"><path d="M15 12L27 22.5L15 33" stroke="#e8e8e8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+      </div>
+    </div>
   </div>
 
   <script type="importmap">
@@ -260,381 +371,247 @@
   <script type="module">
     import * as THREE from 'three';
 
-    // ============ 1. GENERATIVE AUDIO ENGINE ============
-    // Creative ambient soundtrack that plays automatically (like IG's showreel audio)
+    // ========== AUDIO ENGINE ==========
     class AmbientAudio {
-      constructor() {
-        this.ctx = null;
-        this.isPlaying = false;
-        this.isMuted = false;
-        this.nodes = [];
-        this.analyser = null;
-        this.freqData = null;
-        this.masterGain = null;
-        this.initPromise = null;
+      constructor(){
+        this.ctx=null;this.isPlaying=false;this.isMuted=true;
+        this.nodes=[];this.analyser=null;this.freqData=null;this.masterGain=null;
+        this._arpId=null;
       }
-
-      async init() {
-        if (this.initPromise) return this.initPromise;
-        this.initPromise = this._init();
-        return this.initPromise;
-      }
-
-      async _init() {
-        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        this.analyser = this.ctx.createAnalyser();
-        this.analyser.fftSize = 64;
-        this.analyser.smoothingTimeConstant = 0.85;
-        this.freqData = new Uint8Array(this.analyser.frequencyBinCount);
-
-        this.masterGain = this.ctx.createGain();
-        this.masterGain.gain.value = 0.2;
+      async init(){
+        if(this.ctx) return;
+        this.ctx=new(window.AudioContext||window.webkitAudioContext)();
+        this.analyser=this.ctx.createAnalyser();
+        this.analyser.fftSize=64;this.analyser.smoothingTimeConstant=0.85;
+        this.freqData=new Uint8Array(this.analyser.frequencyBinCount);
+        this.masterGain=this.ctx.createGain();
+        this.masterGain.gain.value=0;
         this.masterGain.connect(this.analyser);
         this.analyser.connect(this.ctx.destination);
 
-        // Warm evolving pads
-        [55, 65.41, 82.41, 110].forEach((freq, i) => {
-          const osc = this.ctx.createOscillator();
-          osc.type = 'sawtooth';
-          osc.frequency.value = freq;
-          osc.detune.value = (Math.random() - 0.5) * 15;
-          const g = this.ctx.createGain();
-          g.gain.value = 0.045;
-          const lfo = this.ctx.createOscillator();
-          lfo.type = 'sine';
-          lfo.frequency.value = 0.04 + Math.random() * 0.06;
-          const lg = this.ctx.createGain();
-          lg.gain.value = 0.04;
-          lfo.connect(lg); lg.connect(g.gain);
-          osc.connect(g); g.connect(this.masterGain);
-          osc.start(); lfo.start();
-          this.nodes.push(osc, lfo);
+        // Pads
+        [55,65.41,82.41,110].forEach((f,i)=>{
+          const o=this.ctx.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=(Math.random()-0.5)*15;
+          const g=this.ctx.createGain();g.gain.value=0.045;
+          const l=this.ctx.createOscillator();l.type='sine';l.frequency.value=0.04+Math.random()*0.06;
+          const lg=this.ctx.createGain();lg.gain.value=0.04;
+          l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(this.masterGain);
+          o.start();l.start();this.nodes.push(o,l);
         });
 
-        // Bass pulse
-        const bass = this.ctx.createOscillator();
-        bass.type = 'sine'; bass.frequency.value = 36.71;
-        const bg = this.ctx.createGain(); bg.gain.value = 0.06;
-        const blfo = this.ctx.createOscillator();
-        blfo.type = 'sine'; blfo.frequency.value = 0.15;
-        const blg = this.ctx.createGain(); blg.gain.value = 0.05;
-        blfo.connect(blg); blg.connect(bg.gain);
-        bass.connect(bg); bg.connect(this.masterGain);
-        bass.start(); blfo.start();
-        this.nodes.push(bass, blfo);
+        // Bass
+        const b=this.ctx.createOscillator();b.type='sine';b.frequency.value=36.71;
+        const bg=this.ctx.createGain();bg.gain.value=0.06;
+        const bl=this.ctx.createOscillator();bl.type='sine';bl.frequency.value=0.15;
+        const blg=this.ctx.createGain();blg.gain.value=0.05;
+        bl.connect(blg);blg.connect(bg.gain);b.connect(bg);bg.connect(this.masterGain);
+        b.start();bl.start();this.nodes.push(b,bl);
 
-        // Arp: gentle melodic pattern
-        const arpNotes = [261.63, 311.13, 392.00, 466.16, 523.25, 392.00, 349.23, 293.66];
-        let step = 0;
-        const arpOsc = this.ctx.createOscillator();
-        arpOsc.type = 'sine';
-        const arpGain = this.ctx.createGain();
-        arpGain.gain.value = 0;
-        const arpFilter = this.ctx.createBiquadFilter();
-        arpFilter.type = 'lowpass'; arpFilter.frequency.value = 2000; arpFilter.Q.value = 2;
-        arpOsc.connect(arpGain); arpGain.connect(arpFilter); arpFilter.connect(this.masterGain);
-        arpOsc.start();
-        this.nodes.push(arpOsc);
-
-        let nextNoteTime = this.ctx.currentTime;
-        const scheduleArp = () => {
-          if (!this.isPlaying) return;
-          const now = this.ctx.currentTime;
-          while (nextNoteTime < now + 0.1) {
-            const note = arpNotes[step % arpNotes.length];
-            const noteGain = 0.015 + Math.random() * 0.01;
-            const dur = 0.2 + Math.random() * 0.3;
-            arpGain.gain.setValueAtTime(noteGain, nextNoteTime);
-            arpGain.gain.exponentialRampToValueAtTime(0.001, nextNoteTime + dur);
-            arpOsc.frequency.setValueAtTime(note, nextNoteTime);
-            arpFilter.frequency.setValueAtTime(600 + Math.random() * 2000, nextNoteTime);
-            step++;
-            nextNoteTime += 0.25 + Math.random() * 0.15;
+        // Arp
+        const an=[261.63,311.13,392.00,466.16,523.25,392.00,349.23,293.66];
+        let si=0;
+        const ao=this.ctx.createOscillator();ao.type='sine';
+        const ag=this.ctx.createGain();ag.gain.value=0;
+        const af=this.ctx.createBiquadFilter();af.type='lowpass';af.frequency.value=2000;af.Q.value=2;
+        ao.connect(ag);ag.connect(af);af.connect(this.masterGain);ao.start();
+        this.nodes.push(ao);
+        let nt=this.ctx.currentTime;
+        const sa=()=>{if(!this.isPlaying)return;
+          const nw=this.ctx.currentTime;
+          while(nt<nw+0.1){
+            const note=an[si%an.length],ng=0.015+Math.random()*0.01,dur=0.2+Math.random()*0.3;
+            ag.gain.setValueAtTime(ng,nt);ag.gain.exponentialRampToValueAtTime(0.001,nt+dur);
+            ao.frequency.setValueAtTime(note,nt);af.frequency.setValueAtTime(600+Math.random()*2000,nt);
+            si++;nt+=0.25+Math.random()*0.15;
           }
-          requestAnimationFrame(scheduleArp);
+          this._arpId=requestAnimationFrame(sa);
         };
+        this._arp=sa;sa();
 
-        // Shimmer
-        for (let i = 0; i < 4; i++) {
-          const osc = this.ctx.createOscillator();
-          osc.type = 'sine';
-          const f = 2000 + Math.random() * 3000;
-          osc.frequency.value = f;
-          const g = this.ctx.createGain(); g.gain.value = 0.004;
-          const lfo = this.ctx.createOscillator();
-          lfo.type = 'sine'; lfo.frequency.value = 0.15 + Math.random() * 0.3;
-          const lg = this.ctx.createGain(); lg.gain.value = 150;
-          lfo.connect(lg); lg.connect(osc.frequency);
-          const filt = this.ctx.createBiquadFilter();
-          filt.type = 'bandpass'; filt.frequency.value = f; filt.Q.value = 12;
-          osc.connect(g); g.connect(filt); filt.connect(this.masterGain);
-          osc.start(); lfo.start();
-          this.nodes.push(osc, lfo);
-        }
-
-        // Brown noise texture
-        const buf = this.ctx.createBuffer(1, 4 * this.ctx.sampleRate, this.ctx.sampleRate);
-        const d = buf.getChannelData(0);
-        let last = 0;
-        for (let i = 0; i < d.length; i++) {
-          d[i] = (Math.random() * 2 - 1) * 0.008;
-          d[i] += last * 0.99;
-          last = d[i];
-        }
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buf; noise.loop = true;
-        const ng = this.ctx.createGain(); ng.gain.value = 0.008;
-        const nf = this.ctx.createBiquadFilter();
-        nf.type = 'lowpass'; nf.frequency.value = 120;
-        noise.connect(nf); nf.connect(ng); ng.connect(this.masterGain);
-        noise.start();
-        this.nodes.push(noise);
-
-        // Start arp scheduler
-        this._arpSchedule = scheduleArp;
-        scheduleArp();
+        // Brown noise
+        const buf=this.ctx.createBuffer(1,4*this.ctx.sampleRate,this.ctx.sampleRate);
+        const d=buf.getChannelData(0);let last=0;
+        for(let i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*0.008;d[i]+=last*0.99;last=d[i];}
+        const ns=this.ctx.createBufferSource();ns.buffer=buf;ns.loop=true;
+        const ng=this.ctx.createGain();ng.gain.value=0.008;
+        const nf=this.ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=120;
+        ns.connect(nf);nf.connect(ng);ng.connect(this.masterGain);ns.start();
+        this.nodes.push(ns);
       }
-
-      start() {
-        if (this.isPlaying) return;
-        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
-        this.isPlaying = true;
-      }
-
-      toggle() {
-        if (this.isMuted) {
-          if (this.masterGain) this.masterGain.gain.value = 0.2;
-          this.isMuted = false;
-        } else {
-          if (this.masterGain) this.masterGain.gain.value = 0;
-          this.isMuted = true;
-        }
+      start(){if(this.isPlaying)return;if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();this.isPlaying=true;}
+      toggle(){
+        this.isMuted=!this.isMuted;
+        if(this.masterGain)this.masterGain.gain.value=this.isMuted?0:0.2;
         return !this.isMuted;
       }
-
-      getAverageLevel() {
-        if (!this.analyser) return 0;
+      getLevel(){
+        if(!this.analyser)return 0;
         this.analyser.getByteFrequencyData(this.freqData);
-        let sum = 0;
-        for (let i = 0; i < this.freqData.length; i++) sum += this.freqData[i];
-        return sum / this.freqData.length / 255;
+        let s=0;for(let i=0;i<this.freqData.length;i++)s+=this.freqData[i];
+        return s/this.freqData.length/255*2;
       }
     }
 
-    // ============ 2. THREE.JS ============
-    const canvas = document.getElementById('three-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
+    // ========== THREE.JS BACKGROUND ==========
+    const canvas=document.getElementById('three-canvas');
+    const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setClearColor(0x000000,0);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene=new THREE.Scene();
+    const camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 
-    // Custom shader — fluid organic background
-    const uniforms = {
-      u_time: { value: 0 },
-      u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-      u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
-      u_scroll: { value: 0 },
-      u_audio: { value: 0 },
+    const u={
+      u_time:{value:0},
+      u_resolution:{value:new THREE.Vector2(window.innerWidth,window.innerHeight)},
+      u_mouse:{value:new THREE.Vector2(0.5,0.5)},
+      u_scroll:{value:0},
+      u_audio:{value:0},
     };
 
-    const vs = `void main(){gl_Position=vec4(position,1.0);}`;
+    const vs=`void main(){gl_Position=vec4(position,1.0);}`;
 
-    const fs = `
+    // IG-style organic fluid shader — FBM noise + mouse parallax + scroll reactive
+    const fs=`
       precision highp float;
-      uniform vec2 u_resolution;
-      uniform float u_time;
-      uniform vec2 u_mouse;
-      uniform float u_scroll;
-      uniform float u_audio;
+      uniform vec2 u_resolution; uniform float u_time;
+      uniform vec2 u_mouse; uniform float u_scroll; uniform float u_audio;
 
-      mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
+      mat2 r(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
 
       float fbm(vec2 p){
-        float v=0.0,a=0.5;
-        vec2 sh=vec2(100.0);
-        for(int i=0;i<5;i++){
-          p=rot(0.5+u_time*0.02)*p;
-          v+=a*sin(p.x*1.5+p.y*1.2+u_time*0.06);
-          p=p*2.0+sh;a*=0.5;
-        }
+        float v=0.0,a=0.5;vec2 sh=vec2(100.0);
+        for(int i=0;i<5;i++){p=r(0.5+u_time*0.02)*p;v+=a*sin(p.x*1.5+p.y*1.2+u_time*0.06);p=p*2.0+sh;a*=0.5;}
         return v;
       }
 
-      float organic(vec2 p){
+      float org(vec2 p){
         float t=u_time*0.03;
-        float v=0.0;
-        v+=sin(p.x*2.0+p.y*1.7+t)*0.5;
-        v+=sin(p.x*3.5-p.y*2.3+t*0.7)*0.25;
-        v+=sin(p.x*5.2+p.y*4.1+t*0.5)*0.125;
-        v+=sin(p.x*8.0-p.y*7.0+t*0.3)*0.0625;
-        return v*0.5+0.5;
+        return (sin(p.x*2.0+p.y*1.7+t)*0.5+sin(p.x*3.5-p.y*2.3+t*0.7)*0.25+sin(p.x*5.2+p.y*4.1+t*0.5)*0.125+sin(p.x*8.0-p.y*7.0+t*0.3)*0.0625)*0.5+0.5;
       }
 
       void main(){
         vec2 uv=gl_FragCoord.xy/u_resolution.xy;
         vec2 p=(gl_FragCoord.xy-0.5*u_resolution.xy)/u_resolution.y;
-        p+=(u_mouse-0.5)*0.2;
+        p+=(u_mouse-0.5)*0.15;
         float s=u_scroll*0.1;
-        float a=u_audio*0.15;
-        float v1=organic(p*1.5+vec2(s,s*0.05));
+        float a=u_audio*0.1;
+        float v1=org(p*1.5+vec2(s,s*0.05));
         float v2=fbm(p*2.0+vec2(s*0.1,-s*0.05));
-        float v3=organic(p*3.0+vec2(u_time*0.015,u_time*0.01));
+        float v3=org(p*3.0+vec2(u_time*0.015,u_time*0.01));
         float mv=mix(v1,v2,0.4+a)*0.8+v3*0.2;
         float vig=1.0-length(uv-0.5)*0.6;
         vig=smoothstep(0.3,0.8,vig);
-        float base=0.92-mv*0.1-a*0.03;
+        float base=0.92-mv*0.12-a*0.03;
         vec3 c=vec3(base+0.01,base+0.005,base+0.02)*vig;
         float g=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.008;
-        c+=g;
-        gl_FragColor=vec4(c,1.0);
+        gl_FragColor=vec4(c+g,1.0);
       }
     `;
 
-    const mat = new THREE.ShaderMaterial({ uniforms, vertexShader: vs, fragmentShader: fs, depthWrite: false, depthTest: false });
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+    const mat=new THREE.ShaderMaterial({uniforms:u,vertexShader:vs,fragmentShader:fs,depthWrite:false,depthTest:false});
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),mat));
 
     // Subtle 3D overlay
-    const s3d = new THREE.Scene();
-    const c3d = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50);
-    c3d.position.set(0, 0, 8);
+    const s3d=new THREE.Scene();
+    const c3d=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,50);
+    c3d.position.set(0,0,8);
 
-    s3d.add(new THREE.AmbientLight(0x8888aa, 0.3));
-    const dl = new THREE.DirectionalLight(0xffeedd, 0.4);
-    dl.position.set(3, 5, 4);
-    s3d.add(dl);
-
-    const knot = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(0.9, 0.2, 64, 8),
-      new THREE.MeshPhysicalMaterial({ color: 0x9999bb, transparent: true, opacity: 0.06, wireframe: true, depthWrite: false })
+    const knot=new THREE.Mesh(
+      new THREE.TorusKnotGeometry(0.6,0.15,64,8),
+      new THREE.MeshPhysicalMaterial({color:0x9999bb,transparent:true,opacity:0.04,wireframe:true,depthWrite:false})
     );
     s3d.add(knot);
 
-    const glow = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.4, 1),
-      new THREE.MeshPhysicalMaterial({ color: 0x8888cc, transparent: true, opacity: 0.03, wireframe: true, depthWrite: false })
-    );
-    s3d.add(glow);
-
-    const dc = 150;
-    const dp = new Float32Array(dc * 3);
-    for (let i = 0; i < dc; i++) {
-      const t = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), r = 1.5 + Math.random() * 3.5;
-      dp[i*3] = r * Math.sin(ph) * Math.cos(t);
-      dp[i*3+1] = r * Math.cos(ph);
-      dp[i*3+2] = r * Math.sin(ph) * Math.sin(t);
-    }
-    const dg = new THREE.BufferGeometry();
-    dg.setAttribute('position', new THREE.BufferAttribute(dp, 3));
-    const dots = new THREE.Points(dg, new THREE.PointsMaterial({
-      color: 0x8888bb, size: 0.02, transparent: true, opacity: 0.1,
-      blending: THREE.AdditiveBlending, sizeAttenuation: true, depthWrite: false
-    }));
+    const dc=120;
+    const dp=new Float32Array(dc*3);
+    for(let i=0;i<dc;i++){const t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),r=1.5+Math.random()*3.5;dp[i*3]=r*Math.sin(ph)*Math.cos(t);dp[i*3+1]=r*Math.cos(ph);dp[i*3+2]=r*Math.sin(ph)*Math.sin(t);}
+    const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));
+    const dots=new THREE.Points(dg,new THREE.PointsMaterial({color:0x8888bb,size:0.015,transparent:true,opacity:0.08,blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false}));
     s3d.add(dots);
 
-    // ============ 3. AUDIO INIT ============
-    const audio = new AmbientAudio();
-    const stoggle = document.getElementById('sound-toggle');
-    const sicon = document.getElementById('sound-icon');
-    let audioReady = false;
+    const clock=new THREE.Clock();
+    let time=0,mx=0.5,my=0.5,sp=0,tsp=0;
 
-    // Start audio on first user interaction (browser policy)
-    async function initAudio() {
-      if (audioReady) return;
-      await audio.init();
-      audio.start();
-      audioReady = true;
-      stoggle.classList.remove('sound--muted');
-      sicon.textContent = '♫';
+    // ========== AUDIO ==========
+    const audio=new AmbientAudio();
+    const st=document.getElementById('sound-toggle');
+    let aReady=false;
+
+    async function initA(){
+      if(aReady)return;await audio.init();audio.start();aReady=true;
+      audio.toggle();st.classList.remove('sound--muted');
     }
 
-    stoggle.addEventListener('click', async () => {
-      if (!audioReady) {
-        await initAudio();
-      } else {
-        const playing = audio.toggle();
-        if (playing) {
-          stoggle.classList.remove('sound--muted');
-          sicon.textContent = '♫';
-        } else {
-          stoggle.classList.add('sound--muted');
-          sicon.textContent = '♪';
-        }
+    st.addEventListener('click',async()=>{
+      if(!aReady){await initA();}
+      else{const on=audio.toggle();
+        if(on)st.classList.remove('sound--muted');
+        else st.classList.add('sound--muted');
       }
     });
 
-    // Also start on any click if not started
-    document.addEventListener('click', initAudio, { once: true });
+    document.addEventListener('click',()=>{
+      if(!aReady)initA();
+      const ring=document.getElementById('sound-ring');
+      if(ring)ring.style.transition='stroke-dashoffset 0.8s ease';
+    },{once:true});
 
-    // ============ 4. MOUSE + SCROLL ============
-    let mx = 0.5, my = 0.5;
-    document.addEventListener('mousemove', (e) => {
-      mx = e.clientX / window.innerWidth;
-      my = 1 - e.clientY / window.innerHeight;
-      uniforms.u_mouse.value.set(mx, my);
-    });
+    // ========== EVENTS ==========
+    document.addEventListener('mousemove',(e)=>{mx=e.clientX/window.innerWidth;my=1-e.clientY/window.innerHeight;u.u_mouse.value.set(mx,my);});
+    const sc=document.getElementById('scroll-container');
+    sc.addEventListener('scroll',()=>{const mx=sc.scrollHeight-sc.clientHeight;tsp=mx>0?sc.scrollTop/mx:0;});
+    window.addEventListener('resize',()=>{const w=window.innerWidth,h=window.innerHeight;u.u_resolution.value.set(w,h);c3d.aspect=w/h;c3d.updateProjectionMatrix();renderer.setSize(w,h);});
 
-    const sc = document.getElementById('scroll-container');
-    let sp = 0, tsp = 0;
-    sc.addEventListener('scroll', () => {
-      const max = sc.scrollHeight - sc.clientHeight;
-      tsp = max > 0 ? sc.scrollTop / max : 0;
-    });
+    // ========== INTRO LOADER ==========
+    setTimeout(()=>{
+      const il=document.getElementById('intro-loader');
+      if(il)il.classList.add('hidden');
+      setTimeout(()=>{if(il)il.style.display='none';},1500);
+    },3200);
 
-    window.addEventListener('resize', () => {
-      const w = window.innerWidth, h = window.innerHeight;
-      uniforms.u_resolution.value.set(w, h);
-      c3d.aspect = w / h; c3d.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    });
+    // ========== ANIMATION ==========
+    function animate(){
+      const dt=Math.min(clock.getDelta(),0.05);time+=dt;
+      sp+=(tsp-sp)*0.05;u.u_scroll.value=sp;u.u_time.value=time;
+      let aR=0;if(aReady&&audio.isPlaying&&!audio.isMuted)aR=audio.getLevel();
+      u.u_audio.value=aR;
 
-    // ============ 5. ANIMATION ============
-    const clock = new THREE.Clock();
-    let time = 0;
+      knot.rotation.x=Math.sin(time*0.06)*0.08+(mx-0.5)*0.15;
+      knot.rotation.y=time*0.05+(my-0.5)*0.15;
+      knot.material.opacity=0.035+Math.sin(time*0.15)*0.01+aR*0.03;
 
-    function animate() {
-      const dt = Math.min(clock.getDelta(), 0.05);
-      time += dt; const t = time;
-
-      sp += (tsp - sp) * 0.05;
-      uniforms.u_scroll.value = sp;
-      uniforms.u_time.value = t;
-
-      let aR = 0;
-      if (audioReady && audio.isPlaying && !audio.isMuted) {
-        aR = audio.getAverageLevel();
+      const dpos=dots.geometry.attributes.position.array;
+      for(let i=0;i<dc;i++){
+        const theta=i*2.4+time*(0.02+i%3*0.008)+aR*0.08;
+        const phi=Math.acos(2*Math.sin(time*0.015+i*0.01)-1);
+        const r=1.5+Math.sin(time*0.03+i*0.02)*0.3+2.0+aR*0.2;
+        dpos[i*3]=r*Math.sin(phi)*Math.cos(theta);
+        dpos[i*3+1]=r*Math.cos(phi);
+        dpos[i*3+2]=r*Math.sin(phi)*Math.sin(theta);
       }
-      uniforms.u_audio.value = aR;
+      dots.geometry.attributes.position.needsUpdate=true;
 
-      knot.rotation.x = Math.sin(t * 0.06) * 0.08 + (mx - 0.5) * 0.15;
-      knot.rotation.y = t * 0.05 + (my - 0.5) * 0.15;
-      glow.rotation.x = -t * 0.04;
-      glow.rotation.y = t * 0.06;
+      c3d.position.z+=((8-sp*1.5)-c3d.position.z)*0.03;
+      c3d.lookAt(0,0,0);
 
-      knot.material.opacity = 0.05 + Math.sin(t * 0.15) * 0.015 + aR * 0.03;
-      glow.material.opacity = 0.025 + Math.sin(t * 0.12) * 0.01 + aR * 0.02;
-
-      const dpos = dots.geometry.attributes.position.array;
-      for (let i = 0; i < dc; i++) {
-        const theta = i * 2.4 + t * (0.02 + i % 3 * 0.008) + aR * 0.08;
-        const phi = Math.acos(2 * Math.sin(t * 0.015 + i * 0.01) - 1);
-        const r = 1.5 + Math.sin(t * 0.03 + i * 0.02) * 0.3 + 2.0 + aR * 0.2;
-        dpos[i*3] = r * Math.sin(phi) * Math.cos(theta);
-        dpos[i*3+1] = r * Math.cos(phi);
-        dpos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
-      }
-      dots.geometry.attributes.position.needsUpdate = true;
-
-      c3d.position.z += (8 - sp * 1.5 - c3d.position.z) * 0.03;
-      c3d.lookAt(0, 0, 0);
-
-      renderer.render(scene, camera);
-      renderer.render(s3d, c3d);
+      renderer.render(scene,camera);
+      renderer.render(s3d,c3d);
       requestAnimationFrame(animate);
     }
     animate();
+
+    // SVG sound ring animation
+    const ring=document.getElementById('sound-ring');
+    if(ring){
+      let rOn=false;
+      setInterval(()=>{
+        if(!aReady||audio.isMuted){ring.style.strokeDashoffset='81.68';return;}
+        rOn=!rOn;
+        ring.style.strokeDashoffset=rOn?'0':'81.68';
+      },1200);
+    }
   </script>
 </body>
 </html>
