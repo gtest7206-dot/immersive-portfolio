@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
+  <title>Immersive Garden — Innovative digital experiences studio</title>
+  <meta name="description" content="Transcend anything seen or felt before by crafting unparalleled experiences for ambitious brands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    @font-face { font-family:'PSTimes'; font-style:normal; font-weight:400; src:url(data:font/woff2;base64,) format('woff2'); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; overflow:hidden; }
+    body {
+      font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+      background:#e8e8e8; color:#030303;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      text-rendering:optimizeLegibility;
+      -ms-overflow-style:none; scrollbar-width:none;
+    }
+    ::-webkit-scrollbar { display:none; }
+    body.bg--black { background:#030303; }
+
+    /* WebGL */
+    .webgl-app { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:1; }
+    .webgl-app canvas { position:absolute; top:0; left:0; width:100%; height:100%; }
+
+    /* Sound toggle — exactly like IG style */
+    .soundWrapper {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      z-index: 100;
+    }
+    .sound {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(3,3,3,0.08);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: rgba(3,3,3,0.35);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .sound:hover { border-color: rgba(3,3,3,0.2); color: #030303; }
+    .sound--muted { opacity: 0.7; }
+    .sound--muted:hover { opacity: 1; }
+
+    /* Lenis scroll */
+    .scroll-container { position:relative; z-index:1; height:100vh; overflow-y:auto; overflow-x:hidden; }
+    html.lenis { height:auto; }
+    .lenis.lenis-smooth { scroll-behavior:auto; }
+    .lenis.lenis-stopped { overflow:hidden; }
+
+    /* Nav */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:50;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:40px 48px; pointer-events:none;
+    }
+    nav > * { pointer-events:auto; }
+    nav .logo { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#030303; font-weight:500; }
+    nav .menu { display:flex; gap:32px; list-style:none; }
+    nav .menu li { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(3,3,3,0.4); cursor:pointer; transition:color 0.3s; }
+    nav .menu li:hover { color:#030303; }
+
+    section { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:6rem 48px; position:relative; }
+
+    /* Hero */
+    #hero {
+      min-height:100vh;
+      justify-content:flex-end;
+      padding-bottom:12.5vw;
+      pointer-events:none;
+      user-select:none;
+    }
+    #hero h1 {
+      font-family:'PSTimes','Times New Roman',Georgia,serif;
+      font-size:clamp(1.8rem,3.05vw,3.5rem);
+      font-weight:400;
+      line-height:1.1;
+      letter-spacing:-0.01em;
+      color:#030303;
+      max-width:10em;
+    }
+    #hero .scroll-indication {
+      font-size:12px;
+      color:rgba(3,3,3,0.3);
+      margin-top:40px;
+      letter-spacing:0.02em;
+    }
+
+    .section-label { font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(3,3,3,0.25); margin-bottom:16px; }
+    .section-title { font-family:'PSTimes','Times New Roman',Georgia,serif; font-size:clamp(2rem,4.5vw,4.5rem); font-weight:400; line-height:1.05; color:#030303; }
+
+    /* Projects */
+    #projects { padding:6rem 48px; }
+    .projects-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
+    .project-card {
+      position:relative; cursor:pointer; overflow:hidden;
+      background:#d8d8d8; aspect-ratio:16/10;
+      transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .project-card:hover { transform:scale(0.97); }
+    .project-card .card-bg { width:100%; height:100%; object-fit:cover; transition:transform 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .project-card:hover .card-bg { transform:scale(1.05); }
+    .project-card .card-overlay { position:absolute; bottom:0; left:0; right:0; padding:24px; pointer-events:none; }
+    .project-card .card-title { font-family:'PSTimes','Times New Roman',Georgia,serif; font-size:1.2rem; color:#030303; margin-bottom:4px; }
+    .project-card .card-category { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(3,3,3,0.35); }
+
+    /* Marquee */
+    #marquee { min-height:20vh; justify-content:center; padding:2rem 48px; overflow:hidden; }
+    .marquee-track { display:flex; gap:32px; white-space:nowrap; animation:marqueeScroll 40s linear infinite; }
+    .marquee-track span {
+      font-family:'PSTimes','Times New Roman',Georgia,serif;
+      font-size:clamp(4rem,10vw,10rem);
+      font-style:italic;
+      color:rgba(3,3,3,0.04);
+      letter-spacing:-0.03em;
+    }
+    @keyframes marqueeScroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+    /* Dark */
+    .dark-section { background:#030303; color:#e8e8e8; }
+    .dark-section .section-label { color:rgba(232,232,232,0.3); }
+
+    /* About */
+    #about { min-height:80vh; flex-direction:row; align-items:center; gap:80px; padding:6rem 48px; }
+    #about .about-left { flex:1; }
+    #about .about-right { flex:1; display:flex; flex-direction:column; gap:24px; }
+    .service-item { border-top:1px solid rgba(232,232,232,0.06); padding-top:20px; }
+    .service-item h3 { font-size:14px; font-weight:500; color:#e8e8e8; margin-bottom:6px; }
+    .service-item p { font-size:13px; font-weight:300; color:rgba(232,232,232,0.4); line-height:1.6; }
+
+    /* Contact */
+    #contact { min-height:100vh; justify-content:flex-end; padding:6rem 48px 40px; }
+    #contact .contact-email {
+      font-family:'PSTimes','Times New Roman',Georgia,serif;
+      font-size:clamp(1.5rem,3.5vw,3.5rem);
+      color:#e8e8e8; text-align:center; cursor:pointer;
+      transition:opacity 0.3s;
+    }
+    #contact .contact-email:hover { opacity:0.6; }
+    #contact .contact-address { font-size:12px; color:rgba(232,232,232,0.4); text-align:center; margin-top:48px; }
+    .footer-bottom {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      font-size:11px; color:rgba(232,232,232,0.25); letter-spacing:0.05em; margin-top:80px;
+    }
+    .footer-bottom .networks { display:flex; gap:32px; }
+    .footer-bottom a { color:rgba(232,232,232,0.25); text-decoration:none; transition:color 0.3s; }
+    .footer-bottom a:hover { color:rgba(232,232,232,0.6); }
+
+    .footer__projectsCta {
+      font-family:'PSTimes','Times New Roman',Georgia,serif;
+      font-size:clamp(1.2rem,3vw,3rem);
+      color:#e8e8e8; cursor:pointer; display:inline-block; position:relative;
+    }
+    .footer__projectsCta::after {
+      content:"(51)";
+      font-family:'PSTimes',serif;
+      font-size:clamp(0.6rem,1.1vw,1.1rem);
+      position:absolute; left:105%; top:8%;
+      color:rgba(232,232,232,0.4);
+    }
+    .footer__projectsCta:hover { opacity:0.6; }
+
+    @media (max-width:768px) {
+      nav { padding:24px; }
+      nav .menu { display:none; }
+      section { padding:3rem 24px; }
+      #hero { padding-bottom:60px; }
+      .projects-grid { grid-template-columns:1fr; gap:12px; }
+      #about { flex-direction:column; gap:40px; }
+      .soundWrapper { bottom:24px; right:24px; }
+      .footer-bottom { flex-direction:column; gap:16px; align-items:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="webgl-app"><canvas id="three-canvas"></canvas></div>
+
+  <!-- Sound toggle — like IG's -->
+  <div class="soundWrapper">
+    <div class="sound" id="sound-toggle">
+      <span id="sound-icon">♪</span>
+    </div>
+  </div>
+
+  <nav>
+    <div class="logo">Immersive Garden</div>
+    <ul class="menu">
+      <li>Projects</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+
+  <div class="scroll-container" id="scroll-container">
+
+    <section id="hero">
+      <h1>Transcend anything seen<br> or felt before by crafting<br> unparalleled experiences<br> for ambitious brands.</h1>
+      <div class="scroll-indication">Scroll down</div>
+    </section>
+
+    <section id="projects">
+      <div class="section-label">Selected work</div>
+      <div class="projects-grid">
+        <div class="project-card"><div class="card-bg" style="background:#d4d4d4;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">✦</span></div><div class="card-overlay"><div class="card-title">Louis Vuitton</div><div class="card-category">Brand experience</div></div></div>
+        <div class="project-card"><div class="card-bg" style="background:#d0d0d0;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">◆</span></div><div class="card-overlay"><div class="card-title">Cartier</div><div class="card-category">Interactive installation</div></div></div>
+        <div class="project-card" style="grid-column:span 2;aspect-ratio:21/9;"><div class="card-bg" style="background:#c8c8c8;display:flex;align-items:center;justify-content:center;"><span style="font-size:3.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">▲</span></div><div class="card-overlay"><div class="card-title">Longines Spirit Zulu Time</div><div class="card-category">Product launch</div></div></div>
+        <div class="project-card"><div class="card-bg" style="background:#d2d2d2;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">●</span></div><div class="card-overlay"><div class="card-title">David Whyte</div><div class="card-category">Spatial experience</div></div></div>
+        <div class="project-card"><div class="card-bg" style="background:#cdcdcd;display:flex;align-items:center;justify-content:center;"><span style="font-size:2.5rem;color:rgba(3,3,3,0.08);font-family:'PSTimes',serif;">▣</span></div><div class="card-overlay"><div class="card-title">Chartogne-Taillet</div><div class="card-category">WebGL experience</div></div></div>
+      </div>
+      <div style="margin-top:48px;"><span class="footer__projectsCta">See all projects</span></div>
+    </section>
+
+    <section id="marquee">
+      <div class="marquee-track">
+        <span>Digital &mdash; 3D &mdash; Interactive &mdash; Design &mdash; Experience &mdash;</span>
+        <span>Digital &mdash; 3D &mdash; Interactive &mdash; Design &mdash; Experience &mdash;</span>
+      </div>
+    </section>
+
+    <section id="about" class="dark-section">
+      <div class="about-left">
+        <div class="section-label">The studio</div>
+        <div class="section-title">Crafted with<br>intention</div>
+        <p class="section-desc" style="color:rgba(232,232,232,0.4);font-size:14px;font-weight:300;max-width:380px;line-height:1.8;">We are a small team of designers, engineers, and artists dedicated to creating digital experiences that resonate.</p>
+      </div>
+      <div class="about-right">
+        <div class="service-item"><h3>3D Web Development</h3><p>Custom WebGL experiences optimized for performance across all devices.</p></div>
+        <div class="service-item"><h3>Interactive Design</h3><p>Scroll-driven narratives and spatial interfaces that feel natural.</p></div>
+        <div class="service-item"><h3>Creative Technology</h3><p>From concept to implementation — merging art direction with technical innovation.</p></div>
+      </div>
+    </section>
+
+    <section id="contact" class="dark-section">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;">
+        <div class="contact-email">hello@immersive-garden.com</div>
+        <div class="contact-address">123 Creative Lane, Design District, NY 10001</div>
+      </div>
+      <div class="footer-bottom">
+        <div class="networks"><a href="#">Instagram</a><a href="#">Twitter</a><a href="#">LinkedIn</a></div>
+        <span>&copy; 2025 Immersive Garden</span>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // ============ 1. GENERATIVE AUDIO ENGINE ============
+    // Creative ambient soundtrack that plays automatically (like IG's showreel audio)
+    class AmbientAudio {
+      constructor() {
+        this.ctx = null;
+        this.isPlaying = false;
+        this.isMuted = false;
+        this.nodes = [];
+        this.analyser = null;
+        this.freqData = null;
+        this.masterGain = null;
+        this.initPromise = null;
+      }
+
+      async init() {
+        if (this.initPromise) return this.initPromise;
+        this.initPromise = this._init();
+        return this.initPromise;
+      }
+
+      async _init() {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this.analyser = this.ctx.createAnalyser();
+        this.analyser.fftSize = 64;
+        this.analyser.smoothingTimeConstant = 0.85;
+        this.freqData = new Uint8Array(this.analyser.frequencyBinCount);
+
+        this.masterGain = this.ctx.createGain();
+        this.masterGain.gain.value = 0.2;
+        this.masterGain.connect(this.analyser);
+        this.analyser.connect(this.ctx.destination);
+
+        // Warm evolving pads
+        [55, 65.41, 82.41, 110].forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          osc.type = 'sawtooth';
+          osc.frequency.value = freq;
+          osc.detune.value = (Math.random() - 0.5) * 15;
+          const g = this.ctx.createGain();
+          g.gain.value = 0.045;
+          const lfo = this.ctx.createOscillator();
+          lfo.type = 'sine';
+          lfo.frequency.value = 0.04 + Math.random() * 0.06;
+          const lg = this.ctx.createGain();
+          lg.gain.value = 0.04;
+          lfo.connect(lg); lg.connect(g.gain);
+          osc.connect(g); g.connect(this.masterGain);
+          osc.start(); lfo.start();
+          this.nodes.push(osc, lfo);
+        });
+
+        // Bass pulse
+        const bass = this.ctx.createOscillator();
+        bass.type = 'sine'; bass.frequency.value = 36.71;
+        const bg = this.ctx.createGain(); bg.gain.value = 0.06;
+        const blfo = this.ctx.createOscillator();
+        blfo.type = 'sine'; blfo.frequency.value = 0.15;
+        const blg = this.ctx.createGain(); blg.gain.value = 0.05;
+        blfo.connect(blg); blg.connect(bg.gain);
+        bass.connect(bg); bg.connect(this.masterGain);
+        bass.start(); blfo.start();
+        this.nodes.push(bass, blfo);
+
+        // Arp: gentle melodic pattern
+        const arpNotes = [261.63, 311.13, 392.00, 466.16, 523.25, 392.00, 349.23, 293.66];
+        let step = 0;
+        const arpOsc = this.ctx.createOscillator();
+        arpOsc.type = 'sine';
+        const arpGain = this.ctx.createGain();
+        arpGain.gain.value = 0;
+        const arpFilter = this.ctx.createBiquadFilter();
+        arpFilter.type = 'lowpass'; arpFilter.frequency.value = 2000; arpFilter.Q.value = 2;
+        arpOsc.connect(arpGain); arpGain.connect(arpFilter); arpFilter.connect(this.masterGain);
+        arpOsc.start();
+        this.nodes.push(arpOsc);
+
+        let nextNoteTime = this.ctx.currentTime;
+        const scheduleArp = () => {
+          if (!this.isPlaying) return;
+          const now = this.ctx.currentTime;
+          while (nextNoteTime < now + 0.1) {
+            const note = arpNotes[step % arpNotes.length];
+            const noteGain = 0.015 + Math.random() * 0.01;
+            const dur = 0.2 + Math.random() * 0.3;
+            arpGain.gain.setValueAtTime(noteGain, nextNoteTime);
+            arpGain.gain.exponentialRampToValueAtTime(0.001, nextNoteTime + dur);
+            arpOsc.frequency.setValueAtTime(note, nextNoteTime);
+            arpFilter.frequency.setValueAtTime(600 + Math.random() * 2000, nextNoteTime);
+            step++;
+            nextNoteTime += 0.25 + Math.random() * 0.15;
+          }
+          requestAnimationFrame(scheduleArp);
+        };
+
+        // Shimmer
+        for (let i = 0; i < 4; i++) {
+          const osc = this.ctx.createOscillator();
+          osc.type = 'sine';
+          const f = 2000 + Math.random() * 3000;
+          osc.frequency.value = f;
+          const g = this.ctx.createGain(); g.gain.value = 0.004;
+          const lfo = this.ctx.createOscillator();
+          lfo.type = 'sine'; lfo.frequency.value = 0.15 + Math.random() * 0.3;
+          const lg = this.ctx.createGain(); lg.gain.value = 150;
+          lfo.connect(lg); lg.connect(osc.frequency);
+          const filt = this.ctx.createBiquadFilter();
+          filt.type = 'bandpass'; filt.frequency.value = f; filt.Q.value = 12;
+          osc.connect(g); g.connect(filt); filt.connect(this.masterGain);
+          osc.start(); lfo.start();
+          this.nodes.push(osc, lfo);
+        }
+
+        // Brown noise texture
+        const buf = this.ctx.createBuffer(1, 4 * this.ctx.sampleRate, this.ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < d.length; i++) {
+          d[i] = (Math.random() * 2 - 1) * 0.008;
+          d[i] += last * 0.99;
+          last = d[i];
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buf; noise.loop = true;
+        const ng = this.ctx.createGain(); ng.gain.value = 0.008;
+        const nf = this.ctx.createBiquadFilter();
+        nf.type = 'lowpass'; nf.frequency.value = 120;
+        noise.connect(nf); nf.connect(ng); ng.connect(this.masterGain);
+        noise.start();
+        this.nodes.push(noise);
+
+        // Start arp scheduler
+        this._arpSchedule = scheduleArp;
+        scheduleArp();
+      }
+
+      start() {
+        if (this.isPlaying) return;
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        this.isPlaying = true;
+      }
+
+      toggle() {
+        if (this.isMuted) {
+          if (this.masterGain) this.masterGain.gain.value = 0.2;
+          this.isMuted = false;
+        } else {
+          if (this.masterGain) this.masterGain.gain.value = 0;
+          this.isMuted = true;
+        }
+        return !this.isMuted;
+      }
+
+      getAverageLevel() {
+        if (!this.analyser) return 0;
+        this.analyser.getByteFrequencyData(this.freqData);
+        let sum = 0;
+        for (let i = 0; i < this.freqData.length; i++) sum += this.freqData[i];
+        return sum / this.freqData.length / 255;
+      }
+    }
+
+    // ============ 2. THREE.JS ============
+    const canvas = document.getElementById('three-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    // Custom shader — fluid organic background
+    const uniforms = {
+      u_time: { value: 0 },
+      u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+      u_scroll: { value: 0 },
+      u_audio: { value: 0 },
+    };
+
+    const vs = `void main(){gl_Position=vec4(position,1.0);}`;
+
+    const fs = `
+      precision highp float;
+      uniform vec2 u_resolution;
+      uniform float u_time;
+      uniform vec2 u_mouse;
+      uniform float u_scroll;
+      uniform float u_audio;
+
+      mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
+
+      float fbm(vec2 p){
+        float v=0.0,a=0.5;
+        vec2 sh=vec2(100.0);
+        for(int i=0;i<5;i++){
+          p=rot(0.5+u_time*0.02)*p;
+          v+=a*sin(p.x*1.5+p.y*1.2+u_time*0.06);
+          p=p*2.0+sh;a*=0.5;
+        }
+        return v;
+      }
+
+      float organic(vec2 p){
+        float t=u_time*0.03;
+        float v=0.0;
+        v+=sin(p.x*2.0+p.y*1.7+t)*0.5;
+        v+=sin(p.x*3.5-p.y*2.3+t*0.7)*0.25;
+        v+=sin(p.x*5.2+p.y*4.1+t*0.5)*0.125;
+        v+=sin(p.x*8.0-p.y*7.0+t*0.3)*0.0625;
+        return v*0.5+0.5;
+      }
+
+      void main(){
+        vec2 uv=gl_FragCoord.xy/u_resolution.xy;
+        vec2 p=(gl_FragCoord.xy-0.5*u_resolution.xy)/u_resolution.y;
+        p+=(u_mouse-0.5)*0.2;
+        float s=u_scroll*0.1;
+        float a=u_audio*0.15;
+        float v1=organic(p*1.5+vec2(s,s*0.05));
+        float v2=fbm(p*2.0+vec2(s*0.1,-s*0.05));
+        float v3=organic(p*3.0+vec2(u_time*0.015,u_time*0.01));
+        float mv=mix(v1,v2,0.4+a)*0.8+v3*0.2;
+        float vig=1.0-length(uv-0.5)*0.6;
+        vig=smoothstep(0.3,0.8,vig);
+        float base=0.92-mv*0.1-a*0.03;
+        vec3 c=vec3(base+0.01,base+0.005,base+0.02)*vig;
+        float g=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.008;
+        c+=g;
+        gl_FragColor=vec4(c,1.0);
+      }
+    `;
+
+    const mat = new THREE.ShaderMaterial({ uniforms, vertexShader: vs, fragmentShader: fs, depthWrite: false, depthTest: false });
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+
+    // Subtle 3D overlay
+    const s3d = new THREE.Scene();
+    const c3d = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50);
+    c3d.position.set(0, 0, 8);
+
+    s3d.add(new THREE.AmbientLight(0x8888aa, 0.3));
+    const dl = new THREE.DirectionalLight(0xffeedd, 0.4);
+    dl.position.set(3, 5, 4);
+    s3d.add(dl);
+
+    const knot = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(0.9, 0.2, 64, 8),
+      new THREE.MeshPhysicalMaterial({ color: 0x9999bb, transparent: true, opacity: 0.06, wireframe: true, depthWrite: false })
+    );
+    s3d.add(knot);
+
+    const glow = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.4, 1),
+      new THREE.MeshPhysicalMaterial({ color: 0x8888cc, transparent: true, opacity: 0.03, wireframe: true, depthWrite: false })
+    );
+    s3d.add(glow);
+
+    const dc = 150;
+    const dp = new Float32Array(dc * 3);
+    for (let i = 0; i < dc; i++) {
+      const t = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), r = 1.5 + Math.random() * 3.5;
+      dp[i*3] = r * Math.sin(ph) * Math.cos(t);
+      dp[i*3+1] = r * Math.cos(ph);
+      dp[i*3+2] = r * Math.sin(ph) * Math.sin(t);
+    }
+    const dg = new THREE.BufferGeometry();
+    dg.setAttribute('position', new THREE.BufferAttribute(dp, 3));
+    const dots = new THREE.Points(dg, new THREE.PointsMaterial({
+      color: 0x8888bb, size: 0.02, transparent: true, opacity: 0.1,
+      blending: THREE.AdditiveBlending, sizeAttenuation: true, depthWrite: false
+    }));
+    s3d.add(dots);
+
+    // ============ 3. AUDIO INIT ============
+    const audio = new AmbientAudio();
+    const stoggle = document.getElementById('sound-toggle');
+    const sicon = document.getElementById('sound-icon');
+    let audioReady = false;
+
+    // Start audio on first user interaction (browser policy)
+    async function initAudio() {
+      if (audioReady) return;
+      await audio.init();
+      audio.start();
+      audioReady = true;
+      stoggle.classList.remove('sound--muted');
+      sicon.textContent = '♫';
+    }
+
+    stoggle.addEventListener('click', async () => {
+      if (!audioReady) {
+        await initAudio();
+      } else {
+        const playing = audio.toggle();
+        if (playing) {
+          stoggle.classList.remove('sound--muted');
+          sicon.textContent = '♫';
+        } else {
+          stoggle.classList.add('sound--muted');
+          sicon.textContent = '♪';
+        }
+      }
+    });
+
+    // Also start on any click if not started
+    document.addEventListener('click', initAudio, { once: true });
+
+    // ============ 4. MOUSE + SCROLL ============
+    let mx = 0.5, my = 0.5;
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX / window.innerWidth;
+      my = 1 - e.clientY / window.innerHeight;
+      uniforms.u_mouse.value.set(mx, my);
+    });
+
+    const sc = document.getElementById('scroll-container');
+    let sp = 0, tsp = 0;
+    sc.addEventListener('scroll', () => {
+      const max = sc.scrollHeight - sc.clientHeight;
+      tsp = max > 0 ? sc.scrollTop / max : 0;
+    });
+
+    window.addEventListener('resize', () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      uniforms.u_resolution.value.set(w, h);
+      c3d.aspect = w / h; c3d.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+
+    // ============ 5. ANIMATION ============
+    const clock = new THREE.Clock();
+    let time = 0;
+
+    function animate() {
+      const dt = Math.min(clock.getDelta(), 0.05);
+      time += dt; const t = time;
+
+      sp += (tsp - sp) * 0.05;
+      uniforms.u_scroll.value = sp;
+      uniforms.u_time.value = t;
+
+      let aR = 0;
+      if (audioReady && audio.isPlaying && !audio.isMuted) {
+        aR = audio.getAverageLevel();
+      }
+      uniforms.u_audio.value = aR;
+
+      knot.rotation.x = Math.sin(t * 0.06) * 0.08 + (mx - 0.5) * 0.15;
+      knot.rotation.y = t * 0.05 + (my - 0.5) * 0.15;
+      glow.rotation.x = -t * 0.04;
+      glow.rotation.y = t * 0.06;
+
+      knot.material.opacity = 0.05 + Math.sin(t * 0.15) * 0.015 + aR * 0.03;
+      glow.material.opacity = 0.025 + Math.sin(t * 0.12) * 0.01 + aR * 0.02;
+
+      const dpos = dots.geometry.attributes.position.array;
+      for (let i = 0; i < dc; i++) {
+        const theta = i * 2.4 + t * (0.02 + i % 3 * 0.008) + aR * 0.08;
+        const phi = Math.acos(2 * Math.sin(t * 0.015 + i * 0.01) - 1);
+        const r = 1.5 + Math.sin(t * 0.03 + i * 0.02) * 0.3 + 2.0 + aR * 0.2;
+        dpos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+        dpos[i*3+1] = r * Math.cos(phi);
+        dpos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+      }
+      dots.geometry.attributes.position.needsUpdate = true;
+
+      c3d.position.z += (8 - sp * 1.5 - c3d.position.z) * 0.03;
+      c3d.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+      renderer.render(s3d, c3d);
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
