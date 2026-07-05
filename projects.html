@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,minimal-ui">
+  <title>Projects - Immersive Garden</title>
+  <meta name="description" content="All projects from Immersive Garden, Innovative digital experience studio.">
+  <meta name="author" content="Immersive Garden">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Immersive Garden">
+  <meta name="theme-color" content="#e8e8e8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 22'><path fill='%23030303' fill-rule='evenodd' d='M16 0H0v13.537c0 2.483.947 4.24 2.404 5.544 1.436 1.286 3.358 2.123 5.311 2.81l.268.11.316-.105c1.957-.688 3.877-1.526 5.309-2.815C15.057 17.775 15.996 16.019 15.996 13.537V10.162H8.819V2.151H7.207v8.011H3.036l-.002.788h11.35v3.075c0 1.787-.58 3.479-1.597 4.504-.953.96-2.302 1.696-3.968 2.353v-8.55H7.207v8.55c-1.665-.656-3.015-1.392-3.968-2.353C2.223 17.503 1.643 15.811 1.643 14.025V.768H16V0z'/></svg>">
+
+  <style>
+    *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}
+    html{font-family:HelveticaNeueRegular,HelveticaNeueLight,PSTimes,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;height:100%;overflow:hidden;-moz-user-select:none;user-select:none}
+    html.lenis{height:auto}
+    body{height:100%;overflow:hidden;color:#030303;background:#e8e8e8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;margin:0}
+    body::-webkit-scrollbar{display:none}
+    *{-webkit-tap-highlight-color:transparent;-ms-overflow-style:none;scrollbar-width:none}
+    ::-webkit-scrollbar{display:none}
+    img,video{pointer-events:none;user-select:none;display:block;width:100%}
+    a{text-decoration:none;color:inherit}
+    canvas{display:block}
+    @font-face{font-display:swap;font-family:PSTimes;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/PSTimes-Regular.BKbmUxeR.woff) format("woff");src:url(https://immersive-g.com/assets/PSTimes-Regular.hY69LrJ0.woff2) format("woff2")}
+    @font-face{font-display:swap;font-family:HelveticaNeueRegular;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.Cby7U49T.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.XE2tdPOO.woff2) format("woff2")}
+    @font-face{font-display:swap;font-family:HelveticaNeueLight;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Light.Cws8QGQI.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Light.DlSTh50s.woff2) format("woff2")}
+    #app{height:100%;overflow:auto;scroll-behavior:smooth}
+    .main{position:relative;min-height:100%}
+    .page{position:relative;z-index:1;min-height:100%}.page__wrapper{position:relative;z-index:1}
+    .webglApp{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .webglApp canvas{width:100%;height:100%;display:block}
+    .gridWrapper{padding-left:60px;padding-right:60px;width:100%;max-width:1920px;margin:0 auto}
+    @media(max-width:1024px){.gridWrapper{padding-left:30px!important;padding-right:30px!important}}
+    .gridWrapper.padding{padding-left:30px;padding-right:30px}
+    .headerBlock{position:fixed;top:40px;right:40px;z-index:50}
+    .headerBlock__menu{display:flex;align-items:center;gap:24px}
+    .headerBlock__menu a{font-family:HelveticaNeueLight;font-size:14px;color:#030303;cursor:pointer;text-decoration:none;text-transform:uppercase;letter-spacing:.05em}
+    .headerBlock__menu a:hover{opacity:.5}
+    .ctaButton{display:inline-flex;align-items:center;gap:4px;font-family:HelveticaNeueLight;font-size:14px;color:#030303;cursor:pointer;background:none;border:none;position:relative;overflow:hidden}
+    .ctaButton .text{position:relative}
+    .ctaButton .text__hover{position:absolute;top:0;left:0;white-space:nowrap;pointer-events:none;opacity:0}
+    .ctaButton:hover .text__hover{opacity:1}
+    .prevNextBttnWrapper{position:fixed;top:40px;left:40px;z-index:50}
+    .prevNextBttn{font-size:14px;color:#030303}
+    .projectPage__wrapper{padding:100px 0;position:relative}
+    .listing__content{min-height:50vh}
+    .listingProjects{padding:30px 0}
+    .listingProjects__previewItems{display:flex;flex-direction:column;gap:0;will-change:transform}
+    .projectPreviewItem{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid rgba(3,3,3,.08);cursor:pointer;position:relative;transition:opacity .3s}
+    .projectPreviewItem:hover{opacity:.6}
+    .projectPreviewItem__image{width:140px;height:80px;overflow:hidden;flex-shrink:0;border-radius:2px;background:rgba(3,3,3,.03)}
+    .projectPreviewItem__image video,.projectPreviewItem__image img{width:100%;height:100%;object-fit:cover}
+    .projectPreviewItem__wrapper{display:flex;flex:1;align-items:center;justify-content:space-between;padding-left:24px}
+    .projectPreviewItem__wrapper .title{font-family:PSTimes;font-size:22px;letter-spacing:-.01em}
+    .projectPreviewItem__wrapper .specs{font-family:HelveticaNeueLight;font-size:13px;color:rgba(3,3,3,.4)}
+    .projectPreviewItem__wrapper .type{font-family:HelveticaNeueLight;font-size:11px;color:rgba(3,3,3,.3);text-transform:uppercase;letter-spacing:.05em;display:none}
+    @media(max-width:768px){
+      .projectPreviewItem{flex-direction:column;align-items:flex-start;padding:16px 0}
+      .projectPreviewItem__image{width:100%;height:auto;aspect-ratio:16/9;margin-bottom:12px}
+      .projectPreviewItem__wrapper{padding-left:0;flex-direction:column;align-items:flex-start;gap:4px}
+      .projectPreviewItem__wrapper .title{font-size:18px}
+      .prevNextBttnWrapper{top:20px;left:20px}.headerBlock{top:20px;right:20px}
+    }
+  </style>
+</head>
+<body>
+<div id="app" class="app">
+  <div class="main">
+    <div class="webglApp"><canvas id="webgl-canvas"></canvas></div>
+    <div class="page projectsPage">
+      <div class="page__wrapper">
+
+        <div class="prevNextBttnWrapper">
+          <a href="index.html" class="ctaButton prevNextBttn">
+            <div class="text"><span class="text__default">Back to Home</span></div>
+          </a>
+        </div>
+
+        <div class="projectPage__wrapper">
+          <div class="listing__content">
+            <div class="listingProjects listing__content--default">
+              <div class="gridWrapper padding listingProjects__previewItems" id="projectsList"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <header class="headerBlock">
+      <nav class="headerBlock__menu"><a href="index.html">About</a></nav>
+    </header>
+  </div>
+</div>
+
+<script>
+const ALL_PROJECTS = [
+  {slug:"amazon-new-world",title:"Amazon New World",type:"Web Experience",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/New_World_2c69665f23.mp4"},
+  {slug:"artisans-d-idees",title:"Artisans d'Id\u00e9es",type:"Web Experience",specs:"Design, Tech, Branding, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Artisans_Idees_9826a2a989.mp4"},
+  {slug:"aten7",title:"Aten7",type:"Web Experience",specs:"Design, Tech, Strategy, 3D, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Aten_15e9ca1563.mp4"},
+  {slug:"cartier-end-of-year-23",title:"Cartier End of Year 23",type:"E-Shop",specs:"Design, Experience, E-shop",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_23_b70aa8fb93.mp4"},
+  {slug:"chartogne-taillet-1",title:"Chartogne Taillet",type:"Web Experience",specs:"Design, Champagne, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Chartogne_Taillet_b27c381bcb.mp4"},
+  {slug:"cartier-in-time",title:"Cartier in Time",type:"Web Experience",specs:"Experience, Design, Film",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_In_Time_0d0e4b63f5.mp4"},
+  {slug:"cartier-watches-and-wonders-24",title:"Cartier Watches and Wonders 24",type:"Web Experience",specs:"Design, E-shop, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_WW_24_7ac2dc2678.mp4"},
+  {slug:"dioriviera-1",title:"Dioriviera",type:"Web Experience",specs:"Design, E-shop, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Dioriviera_b236f22e56.mp4"},
+  {slug:"gleec",title:"Gleec",type:"Corporate",specs:"Design, Tech, Strategy",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Gleec_2c54d1400b.mp4"},
+  {slug:"longines-zulu-time",title:"Longines Spirit Zulu Time",type:"Web Experience",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_Zulu_9130a7b73b.mp4"},
+  {slug:"louis-vuitton-1",title:"Louis Vuitton VIA",type:"Web Experience",specs:"Design, Tech, E-shop, NFT, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Louis_Vuitton_VIA_2f46e3bef0.mp4"},
+  {slug:"masar-destination",title:"Masar Destination",type:"Web Experience",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_dcf3d60609.mp4"},
+  {slug:"midwam",title:"Midwam",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Midwam_b8ba0ecf37.mp4"},
+  {slug:"omega-clearspace",title:"Omega Clearspace",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_Clearspace_a65aec959d.mp4"},
+  {slug:"orano",title:"Orano",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Orano_d50a99948e.mp4"},
+  {slug:"prior-holding",title:"Prior Holding",type:"Web Experience",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Prior_6756769e01.mp4"},
+  {slug:"girard-perregaux-casquette-1",title:"Girard Perregaux Casquette",type:"E-Shop",specs:"Design, E-shop",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/GP_Casquette_17422ab1b8.mp4"},
+  {slug:"hatom",title:"Hatom",type:"Web Experience",specs:"Design, Tech, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Hatom_0b284cc62b.mp4"},
+  {slug:"0-days-off",title:"0 days off",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/0_Days_dda67bf2e1.mp4"},
+  {slug:"eight-advisory",title:"Eight Advisory",type:"Corporate",specs:"Design, Branding, Strategy",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/8_Advisory_7f4c83082b.mp4"},
+  {slug:"alireza",title:"Alireza",type:"Corporate",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Alireza_0ac3a7bf09.mp4"},
+  {slug:"Carolina-Herrera",title:"Carolina Herrera Virtual Store",type:"Web Experience",specs:"Design, E-shop, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Carolina_Herrera_7e6a921c86.mp4"},
+  {slug:"cartier-love-is-all",title:"Cartier Love Is All",type:"E-Shop",specs:"Design, E-shop, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Love_Is_All_c5174756c3.mp4"},
+  {slug:"creandum",title:"Creandum",type:"Web Experience",specs:"Design, Tech",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Creandum_85bbb40573.mp4"},
+  {slug:"dna-capital",title:"DNA Capital",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/DNA_a5a2e29cf2.mp4"},
+  {slug:"eqt-ventures",title:"EQT Ventures",type:"Corporate",specs:"Design, Tech",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/EQT_c152ca01a1.mp4"},
+  {slug:"mimco",title:"Mimco",type:"Corporate",specs:"Design, Tech, Branding",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Mimco_8daa9bb473.mp4"},
+  {slug:"le-dernier-gaulois",title:"Le Dernier Gaulois",type:"Web Experience",specs:"Design, Tech, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Le_Dernier_Gaulois_5138b09383.mp4"},
+  {slug:"leroy-merlin",title:"Leroy Merlin",type:"E-Shop",specs:"Design, E-shop, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Leroy_Merlin_c4e164fb6b.mp4"},
+  {slug:"longines-flyback",title:"Longines Spirit Flyback",type:"Web Experience",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_Fly_Back_de436cbb08.mp4"},
+  {slug:"longines-mini-dolce-vita",title:"Longines Mini Dolce Vita",type:"Web Experience",specs:"Design, E-shop, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_Dolce_Vita_f728935cba.mp4"},
+  {slug:"maman-corp",title:"Maman Corp",type:"Corporate",specs:"Design, Tech",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Maman_Corp_2f9aa21787.mp4"},
+  {slug:"2219-mechachain",title:"2219 Mechachain",type:"Web Experience",specs:"Design, Web3, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Mecchachain2219_153ebf6726.mp4"},
+  {slug:"citrix-new-mobile-workforce-experience",title:"Citrix New Mobile Workforce Experience",type:"Web Experience",specs:"Design, Tech, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Citrix_80907de67a.mp4"},
+  {slug:"rain-forest-food",title:"Rain Forest Food",type:"Web Experience",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Rain_Forest_70e5046001.mp4"},
+  {slug:"the-hunt-for-the-cheshire-cat",title:"The Hunt for the Cheshire Cat",type:"Web Experience",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/The_Hunt_For_The_Chesire_Cat_db5fdee924.mp4"},
+  {slug:"travelshift",title:"Travelshift",type:"Corporate",specs:"Design",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Travel_Shift_0ec8ece104.mp4"},
+  {slug:"vallourec",title:"Vallourec",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Vallourec_726aec391a.mp4"},
+  {slug:"varagon",title:"Varagon",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Varagon_943d6baeb1.mp4"},
+  {slug:"you-are-the-stylist",title:"You Are The Stylist",type:"Web Experience",specs:"Design, E-shop, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Your_Are_The_Stylist_cad5c164a0.mp4"},
+  {slug:"david-whyte-experience",title:"David Whyte Experience",type:"Web Experience",specs:"Design, Experience, Watercolor",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/David_Whyte_XP_42d74a137a.mp4"},
+  {slug:"omega-space",title:"Omega Space Sustainability",type:"Corporate",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_Space_4a2c7fecbf.mp4"},
+  {slug:"cartier-end-of-year-22",title:"Cartier End of Year 22",type:"E-Shop",specs:"Design, E-shop, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_22_4aa8340ca1.mp4"},
+  {slug:"cartier-watches-and-wonders-23",title:"Cartier Watches and Wonders 23",type:"Web Experience",specs:"Design, E-shop, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_WW_23_7412a262d2.mp4"},
+  {slug:"louis-vuitton-via-pharrell-williams",title:"Louis Vuitton VIA Pharrell Williams",type:"Film",specs:"Design, Tech, Film, NFT",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Louis_Vuitton_PH_2848034413.mp4"},
+  {slug:"louis-vuitton-via-nicolas-ghesquiere",title:"Louis Vuitton VIA Nicolas Ghesqui\u00e8re",type:"Film",specs:"Design, Tech, Film, NFT",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Louis_Vuitton_NG_b24e5278b3.mp4"},
+  {slug:"longines-touch-screen",title:"Longines Touch Screen",type:"Installation",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_Touch_Screen_71ba406d16.mp4"},
+  {slug:"uasc",title:"UASC",type:"Installation",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/UASC_c280195d45.mp4"},
+  {slug:"longines-positioning-system-1",title:"Longines Positioning System",type:"Installation",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_LPS_b675414513.mp4"},
+  {slug:"longines-smash-corner",title:"Longines Smash Corner",type:"Installation",specs:"Design, Experience",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_Smash_Corner_c61a834c6f.mp4"},
+  {slug:"masar-cityscape-global-exhibition",title:"Masar Cityscape Global Exhibition",type:"Installation",specs:"Design, Experience, 3D",video:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_Installation_784f1a811f.mp4"}
+];
+
+(function(){
+  var list = document.getElementById('projectsList');
+  if (!list) return;
+  list.innerHTML = ALL_PROJECTS.map(function(p){
+    return '<div class="projectPreviewItem" slug="'+p.slug+'" title="'+p.title+'" projecttype="'+p.type+'">' +
+      '<div class="projectPreviewItem__image">' +
+        '<video muted loop preload="none" playsinline>' +
+          '<source src="'+p.video+'" type="video/mp4">' +
+        '</video>' +
+      '</div>' +
+      '<div class="projectPreviewItem__wrapper">' +
+        '<p class="title">'+p.title+'</p>' +
+        '<p class="specs">'+p.specs+'</p>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Hover play videos
+  var items = document.querySelectorAll('.projectPreviewItem');
+  items.forEach(function(item){
+    var vid = item.querySelector('video');
+    if (!vid) return;
+    item.addEventListener('mouseenter', function(){ vid.play().catch(function(){}); });
+    item.addEventListener('mouseleave', function(){ vid.pause(); vid.currentTime = 0; });
+  });
+})();
+
+// ===== WEBGL =====
+(function(){
+  var c=document.getElementById('webgl-canvas');
+  var gl=c.getContext('webgl')||c.getContext('experimental-webgl');
+  if(!gl)return;
+  function resize(){
+    c.width=window.innerWidth*(window.devicePixelRatio||1);
+    c.height=window.innerHeight*(window.devicePixelRatio||1);
+    c.style.width=window.innerWidth+'px';c.style.height=window.innerHeight+'px';
+    gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight);
+  }
+  window.addEventListener('resize',resize);resize();
+  var vs='attribute vec2 a;varying vec2 v;void main(){v=a;gl_Position=vec4(a,0,1);}';
+  var fs='precision highp float;uniform float t;uniform vec2 r;varying vec2 v;void main(){vec2 u=gl_FragCoord.xy/r;float s=sin(u.x*3.0+t*0.03)*0.03+cos(u.y*2.0+t*0.02)*0.02;s+=sin((u.x+u.y)*5.0+t*0.04)*0.01;float b=0.91+s;gl_FragColor=vec4(b*0.012,b*0.012,b*0.012,1);}';
+  var p=gl.createProgram();
+  function addShader(t,s){var sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);gl.attachShader(p,sh);}
+  addShader(gl.VERTEX_SHADER,vs);addShader(gl.FRAGMENT_SHADER,fs);gl.linkProgram(p);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(p,'a');gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);gl.useProgram(p);
+  function draw(time){
+    gl.uniform1f(gl.getUniformLocation(p,'t'),time*0.001);
+    gl.uniform2f(gl.getUniformLocation(p,'r'),c.width,c.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(draw);
+  }
+  draw(0);
+})();
+</script>
+</body>
+</html>

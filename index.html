@@ -210,7 +210,7 @@
         <div class="gridWrapper footer" type="footer">
           <div class="gridWrapper footer__projects">
             <div class="footer__projectsCtaWrapper">
-              <a href="/projects/" class="underlinedButton footer__projectsCta" data-after="(51)">
+              <a href="projects.html" class="underlinedButton footer__projectsCta" data-after="(51)">
                 <span class="underlinedButton__text">See all projects</span>
                 <span class="underlinedButton__line"></span>
               </a>
@@ -372,7 +372,7 @@ function renderMediaBlock(b, slug) {
   if (b.empty) return '<div class="mediaBlock"><div class="gridWrapper padding"></div></div>';
   if (b.t && !b.m) {
     let cls = 'mediaBlock__image text noMedia width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit';
-    return '<div class="mediaBlock hasText textOnly"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><div class="'+cls+'"><p>'+b.t+'</p><a href="/projects/'+slug+'" class="text__mobileLink"><p class="title">'+(b.title||slug)+'</p><p class="type">'+(b.typeT||'')+'</p></a></div></div></div>';
+    return '<div class="mediaBlock hasText textOnly"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><div class="'+cls+'"><p>'+b.t+'</p><a href="projects.html" class="text__mobileLink"><p class="title">'+(b.title||slug)+'</p><p class="type">'+(b.typeT||'')+'</p></a></div></div></div>';
   }
   if (b.t && b.m) {
     return '<div class="mediaBlock hasText"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><img class="mediaBlock__image image width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit'+(b.portrait?' portrait':'')+'" src="https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Showreel_63aa7388ec.jpg" data-src="'+b.m+'" width="1920" height="'+(b.h||1080)+'" alt=""><div class="mediaBlock__image text width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit"><p>'+b.t+'</p><a href="/projects/'+slug+'" class="text__mobileLink"><p class="title">'+(b.title||slug)+'</p><p class="type">'+(b.typeT||'')+'</p></a></div></div></div>';
