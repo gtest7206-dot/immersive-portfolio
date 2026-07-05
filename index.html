@@ -6,567 +6,524 @@
   <title>Immersive Garden</title>
   <meta name="description" content="Immersive Garden, Innovative digital experience studio.">
   <meta name="author" content="Immersive Garden">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='0' y='14' font-size='16'>🌱</text></svg>">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Immersive Garden">
+  <meta property="og:image" content="https://immersive-g.com/images/share/immersive-garden.jpg">
+  <meta name="theme-color" content="#e8e8e8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 22'><path fill='%23030303' fill-rule='evenodd' d='M16 0H0v13.537c0 2.483.947 4.24 2.404 5.544 1.436 1.286 3.358 2.123 5.311 2.81l.268.11.316-.105c1.957-.688 3.877-1.526 5.309-2.815C15.057 17.775 15.996 16.019 15.996 13.537V10.162H8.819V2.151H7.207v8.011H3.036l-.002.788h11.35v3.075c0 1.787-.58 3.479-1.597 4.504-.953.96-2.302 1.696-3.968 2.353v-8.55H7.207v8.55c-1.665-.656-3.015-1.392-3.968-2.353C2.223 17.503 1.643 15.811 1.643 14.025V.768H16V0z'/></svg>">
+
   <style>
-    @font-face{font-family:PSTimes;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/PSTimes-Regular.hY69LrJ0.woff2) format("woff2")}
-    @font-face{font-family:HelveticaNeueRegular;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.XE2tdPOO.woff2) format("woff2")}
-    @font-face{font-family:HelveticaNeueLight;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Light.DlSTh50s.woff2) format("woff2")}
-    *,:after,:before{box-sizing:border-box;margin:0;padding:0;border:0;outline:none;-webkit-tap-highlight-color:transparent}
-    html{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;-moz-user-select:none;-webkit-user-select:none;user-select:none}
-    body{height:100%;overflow:hidden;font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;color:#030303;background:#e8e8e8;-ms-overflow-style:none;scrollbar-width:none}
-    html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}.lenis.lenis-stopped{overflow:hidden;padding-right:var(--scrollbar-width,0)}
-    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
-    a{text-decoration:none;color:inherit}button{background:none;cursor:pointer;border:none}
-    img,video{display:block;max-width:100%;pointer-events:none;user-select:none}
-
-    /* === WebGL Canvas === */
-    #webgl-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
-
-    /* === Logo === */
-    .logo{position:fixed;top:48px;left:48px;z-index:50}
-    .logo svg{width:170px;height:22px;display:block}
-    .logo svg path{fill:#030303}
-    @media(max-width:768px){.logo{top:24px;left:24px}.logo svg{width:130px}}
-
-    /* === Sound Toggle === */
-    .soundWrapper{position:fixed;bottom:40px;right:40px;z-index:100001;pointer-events:none}
-    .soundWrapper>*{pointer-events:auto}
-    @media(max-width:768px){.soundWrapper{right:32px;bottom:32px}}
-    .sound{--c:#030303;cursor:pointer;display:flex;align-items:center;user-select:none}
-    .sound .text{color:var(--c);font-family:HelveticaNeueRegular,sans-serif;font-size:14px;line-height:1.1;margin-right:30px}
-    .sound .wrapper{position:relative}
-    .sound .text__off{opacity:1;position:absolute;right:-6px}
-    .sound .text__on{opacity:0;position:relative}
-    .sound--muted .text__off{opacity:0}
-    .sound--muted .text__on{opacity:1}
-    .sound .icon{position:absolute;right:-13px;height:30px;width:30px}
-    .sound .icon circle{stroke:var(--c);stroke-dasharray:81.68;stroke-dashoffset:81.68;transition:stroke-dashoffset 1.2s ease,opacity 0.5s}
-    .sound .icon .dot{display:flex;align-items:center;justify-content:center;height:30px;width:30px;position:absolute}
-    .sound .icon .dot__child{background:var(--c);border-radius:100%;height:3px;width:3px}
-    .sound--playing .icon circle{stroke-dashoffset:0;opacity:1}
-    .sound--dark-bg{--c:#e8e8e8}
-
-    /* === Intro Loader === */
-    .introLoader{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:1010;color:#e8e8e8;pointer-events:none;transition:opacity 1.5s ease}
+    *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}
+    html{font-family:HelveticaNeueRegular,HelveticaNeueLight,PSTimes,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;height:100%;overflow:hidden;-moz-user-select:none;user-select:none}
+    html.lenis{height:auto}
+    .lenis.lenis-smooth{scroll-behavior:auto}
+    .lenis.lenis-stopped{overflow:hidden;padding-right:var(--scrollbar-width,0)}
+    body{height:100%;overflow:hidden;color:#030303;background:#e8e8e8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;margin:0}
+    body::-webkit-scrollbar{display:none}
+    *{-webkit-tap-highlight-color:transparent;-ms-overflow-style:none;scrollbar-width:none}
+    ::-webkit-scrollbar{display:none}
+    img{pointer-events:none;user-select:none;display:block}
+    a{text-decoration:none;color:inherit}
+    canvas{display:block}
+    h1{font-size:inherit;font-weight:inherit;margin:0}
+    p{margin:0}
+    @font-face{font-display:swap;font-family:PSTimes;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/PSTimes-Regular.BKbmUxeR.woff) format("woff");src:url(https://immersive-g.com/assets/PSTimes-Regular.hY69LrJ0.woff2) format("woff2")}
+    @font-face{font-display:swap;font-family:HelveticaNeueRegular;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.Cby7U49T.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.XE2tdPOO.woff2) format("woff2")}
+    @font-face{font-display:swap;font-family:HelveticaNeueLight;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Light.Cws8QGQI.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Light.DlSTh50s.woff2) format("woff2")}
+    #app{height:100%;overflow:auto;scroll-behavior:smooth}
+    .main{position:relative}.app{height:100%;overflow:auto}
+    .webglApp{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .webglApp canvas{width:100%;height:100%;display:block}
+    .page{position:relative;z-index:1;min-height:100%}.page__wrapper{position:relative;z-index:1}
+    .gridWrapper{padding-left:60px;padding-right:60px;width:100%;max-width:1920px;margin:0 auto}
+    @media(max-width:1024px){.gridWrapper{padding-left:30px!important;padding-right:30px!important}}
+    .gridWrapper.padding{padding-left:30px;padding-right:30px}
+    .gridWrapper.rowGap{gap:30px 0;display:flex;flex-direction:column}
+    .width__1{width:8.333%}.width__2{width:16.666%}.width__3{width:25%}
+    .width__4{width:33.333%}.width__5{width:41.666%}.width__6{width:50%}
+    .width__7{width:58.333%}.width__8{width:66.666%}.width__9{width:75%}
+    .width__10{width:83.333%}.width__11{width:91.666%}.width__12{width:100%}
+    .introLoader{position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:#030303;color:#e8e8e8;display:flex;align-items:center;justify-content:center;transition:opacity .6s;opacity:1;pointer-events:auto}
     .introLoader.hidden{opacity:0;pointer-events:none}
-    .introLoader .bg{background:#030303;position:absolute;top:0;left:0;width:100%;height:100%}
-    .introLoader .wrapper{display:flex;align-items:center;height:100%;padding:0 48px}
-    .introLoader .text{font-family:PSTimes,serif;font-size:58.52px;line-height:1.1;letter-spacing:-0.01em}
-    .introLoader .text>div{padding-top:0.1em;opacity:0;transform:translateY(30px);animation:fadeUp 0.8s ease forwards}
-    .introLoader .text>div:nth-child(1){animation-delay:0.4s}
-    .introLoader .text>div:nth-child(2){animation-delay:0.7s}
-    .introLoader .text>div:nth-child(3){animation-delay:1.0s}
-    .introLoader .text>div:nth-child(4){animation-delay:1.3s}
-    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-    @media(max-width:1113px){.introLoader .text{font-size:34px}}
-    @media(max-width:560px){.introLoader .wrapper{padding:0 24px}}
-
-    /* === Page Container === */
-    .page{height:100%;left:0;overflow:auto;position:absolute;top:0;width:100%;pointer-events:auto}
-    .page.hidden{opacity:0;pointer-events:none}
-
-    /* === Hero === */
-    .hero{height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 239.4px;position:relative;pointer-events:none;user-select:none}
-    .hero h1{font-family:PSTimes,serif;font-size:58.52px;font-weight:400;line-height:1.1;letter-spacing:-0.01em;color:#030303}
-    .scroll-indication{text-align:right;align-self:flex-end;margin-top:40px;color:rgba(3,3,3,0.3);opacity:0;animation:fadeIn 1s ease 3.5s forwards;font-size:14px;line-height:1.1}
-    @keyframes fadeIn{to{opacity:1}}
-    @media(max-width:1113px){.hero h1{font-size:34px}}
-    @media(max-width:432px){.hero{padding:0 24px 54px}}
-
-    /* === Showreel === */
-    .showreel-section{padding:0 48px;margin:40px 0}
-    .showreel-section video{width:100%;height:auto;border-radius:4px;background:rgba(3,3,3,0.02)}
-    .showreel-section .label{margin-top:16px;font-size:14px;color:rgba(3,3,3,0.25);font-family:HelveticaNeueRegular,sans-serif}
-    @media(max-width:768px){.showreel-section{padding:0 24px}}
-
-    /* === Text Sections === */
-    .text-section{padding:0 48px;margin:80px 0 120px;display:grid;grid-template-columns:repeat(12,1fr);grid-column-gap:16px}
-    .text-section .text1{grid-column:1/5;font-family:HelveticaNeueRegular,sans-serif;font-size:14px;line-height:1.1;color:rgba(3,3,3,0.5);margin-bottom:16px}
-    .text-section .text2{grid-column:5/13;font-family:HelveticaNeueLight,Helvetica,Arial,sans-serif;font-size:28px;line-height:1.2;color:#030303}
-    @media(max-width:1024px){.text-section{grid-template-columns:1fr}.text-section .text1,.text-section .text2{grid-column:1/2}}
-    @media(max-width:768px){.text-section{padding:0 24px}.text-section .text2{font-size:22px}}
-
-    /* === Project Cards === */
-    .projectBlock{padding:0 48px;margin:160px 0}
-    .projectBlock+.projectBlock{margin-top:27.7778vw}
-    @media(min-width:1915px){.projectBlock+.projectBlock{margin-top:532px}}
-    @media(max-width:432px){.projectBlock+.projectBlock{margin-top:120px}}
-    .projectBlock .card{display:flex;align-items:center;cursor:pointer;padding:24px 0;border-top:1px solid rgba(3,3,3,0.03);gap:24px;opacity:0;transform:translateY(40px);animation:cardIn 1s ease forwards}
-    .projectBlock .card:nth-child(1){animation-delay:0.1s}
-    .projectBlock .card:nth-child(2){animation-delay:0.2s}
-    @keyframes cardIn{to{opacity:1;transform:translateY(0)}}
-    .projectBlock .card:hover{opacity:0.6}
-    .projectBlock .thumb{width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(3,3,3,0.03)}
-    .projectBlock .thumb img{width:100%;height:100%;object-fit:cover}
-    .projectBlock .desc{flex:1;font-family:HelveticaNeueRegular,sans-serif;font-size:14px;line-height:1.5;color:rgba(3,3,3,0.6)}
-    .projectBlock .arr{width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(3,3,3,0.15);font-size:20px}
-    @media(max-width:768px){.projectBlock{padding:0 24px;margin:80px 0}.projectBlock .card{padding:16px 0;gap:16px}.projectBlock .thumb{width:60px;height:60px}}
-
-    /* === See All Projects === */
-    .all-projects{padding:40px 48px 80px}
-    .all-projects a{display:inline-flex;align-items:center;gap:6px;font-family:HelveticaNeueRegular,sans-serif;font-size:14px;line-height:1.1;color:#030303;cursor:pointer}
-    .all-projects a:hover{opacity:0.5}
-    .all-projects .count{color:rgba(3,3,3,0.3)}
-    .all-projects .arrow{transition:transform 0.3s;font-size:12px}
-    .all-projects a:hover .arrow{transform:translateX(4px)}
-    @media(max-width:768px){.all-projects{padding:32px 24px 60px}}
-
-    /* === Footer === */
-    .footer{color:#e8e8e8;background:#030303;height:100dvh;position:relative;pointer-events:none;display:flex;flex-direction:column;justify-content:center;align-items:center}
-    .footer>*{pointer-events:auto}
-    .footer .cta{font-family:PSTimes,serif;font-size:3.0556vw;font-weight:400;line-height:1.1;position:absolute;top:23%;left:50%;transform:translateX(-50%);color:#e8e8e8;cursor:pointer;transition:opacity 0.5s}
-    .footer .cta:hover{opacity:0.6}
-    .footer .cta .after{font-family:PSTimes,serif;font-size:1.1111vw;margin-left:0.3em;position:absolute;top:10%}
-    .footer .email{font-family:PSTimes,serif;font-size:3.0556vw;font-weight:400;position:absolute;top:46.75%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1.2}
-    .footer .email a{color:#e8e8e8;cursor:pointer;transition:opacity 0.5s}
-    .footer .email a:hover{opacity:0.6}
-    .footer .newsletter{position:absolute;bottom:40px;left:40px;font-family:HelveticaNeueRegular,sans-serif;font-size:14px}
-    .footer .newsletter button{color:#e8e8e8;position:relative;padding-bottom:6px;font-size:14px;font-family:HelveticaNeueRegular,sans-serif}
-    .footer .newsletter button span{border-bottom:1px solid #e8e8e8;padding-bottom:1px}
-    .footer .networks{position:absolute;bottom:40px;right:48px;display:flex;gap:2.7778vw;font-family:HelveticaNeueRegular,sans-serif;font-size:14px}
-    .footer .networks a{color:#e8e8e8;cursor:pointer;transition:opacity 0.5s}
-    .footer .networks a:hover{opacity:0.6}
-    .footer .address{position:absolute;bottom:5.5556vw;left:50%;transform:translateX(-50%);font-size:14px;font-family:HelveticaNeueRegular,sans-serif;opacity:0.3;color:#e8e8e8;text-align:center}
-    @media(min-width:1915px){.footer .cta,.footer .email{font-size:58.52px}.footer .cta .after{font-size:21.28px}.footer .address{bottom:106.4px}}
-    @media(max-width:1113px){.footer .cta,.footer .email{font-size:34px}.footer .cta .after{font-size:13px}}
-    @media(max-width:785px){.footer .email{font-size:24px}}
-    @media(max-width:768px){.footer .newsletter{bottom:32px;left:32px}.footer .networks{bottom:32px;right:32px}}
-
-    /* === Project Detail Page === */
-    .project-detail{background:#e8e8e8;min-height:100vh}
-    .project-detail .back{position:fixed;top:48px;left:48px;z-index:20;font-family:HelveticaNeueRegular,sans-serif;font-size:14px;color:#030303;cursor:pointer;display:flex;align-items:center;gap:8px}
-    .project-detail .back:hover{opacity:0.6}
-    .project-detail .back .arrow{font-size:16px}
-    .project-detail .title-wrap{padding:120px 48px 40px}
-    .project-detail .title-wrap h1{font-family:PSTimes,serif;font-size:58.52px;font-weight:400;line-height:1.1;letter-spacing:-0.01em;color:#030303}
-    .project-detail .specs{font-family:HelveticaNeueRegular,sans-serif;font-size:14px;color:rgba(3,3,3,0.5);margin-top:12px}
-    .project-detail .project-buttons{display:flex;gap:24px;padding:0 48px 40px;font-family:HelveticaNeueRegular,sans-serif;font-size:14px}
-    .project-detail .project-buttons a{color:#030303;cursor:pointer;position:relative;padding-bottom:6px;border-bottom:1px solid rgba(3,3,3,0.2)}
-    .project-detail .project-buttons a:hover{opacity:0.6}
-    .project-detail .media-block{padding:0 48px;margin:60px 0}
-    .project-detail .media-block video,.project-detail .media-block img{width:100%;height:auto;border-radius:4px;background:rgba(3,3,3,0.02)}
-    .project-detail .media-block .legend{font-family:HelveticaNeueRegular,sans-serif;font-size:14px;color:rgba(3,3,3,0.5);margin-top:16px;line-height:1.5}
-    .project-detail .media-block .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-    .project-detail .media-block .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
-    .project-detail .media-block .width-6{width:50%;margin:0 auto}
-    .project-detail .media-block .width-8{width:66.666%}
-    .project-detail .media-block .width-4{width:33.333%}
-    @media(max-width:1113px){.project-detail .title-wrap h1{font-size:34px}.project-detail .title-wrap{padding:100px 24px 30px}.project-detail .media-block{padding:0 24px}.project-detail .project-buttons{padding:0 24px}.project-detail .back{top:24px;left:24px}}
-    @media(max-width:768px){.project-detail .media-block .grid-2,.project-detail .media-block .grid-3{grid-template-columns:1fr}.project-detail .media-block .width-6,.project-detail .media-block .width-8,.project-detail .media-block .width-4{width:100%}}
+    .introLoader__wrapper{align-items:center;justify-content:center;text-align:center;position:relative}
+    .introLoader__logo{margin-bottom:40px}
+    .introLoader__logo svg path{fill:#e8e8e8!important}
+    .introLoader__progressWrapper{position:relative;margin-bottom:30px;display:flex;flex-direction:column;align-items:center;gap:40px}
+    .introLoader__progressBar{width:0;height:1px;background:#e8e8e8;transition:width 2.5s ease}
+    .introLoader__progressBar.complete{width:200px}
+    .introLoader__baseline{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;font-family:PSTimes;font-size:32px;letter-spacing:.02em}
+    @media(max-width:768px){.introLoader__baseline{font-size:20px}}
+    .introLoader__baseline>div{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+    .introLoader__baseline>div.show{opacity:1;transform:translateY(0)}
+    .introLoader__scrollDown{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:HelveticaNeueLight;font-size:14px;color:rgba(232,232,232,.5);opacity:0;transition:opacity .6s}
+    .introLoader__scrollDown.show{opacity:1}
+    .hero{min-height:100vh;display:flex;align-items:center;padding:120px 0;position:relative}
+    .hero .gridWrapper{width:100%}
+    .hero__text1{font-family:PSTimes;font-size:clamp(32px,5vw,72px);line-height:1.15;letter-spacing:-.01em;max-width:900px;text-align:left;color:#030303}
+    .mediaBlock{position:relative;padding:30px 0;width:100%}
+    .mediaBlock .gridWrapper{display:flex;flex-wrap:wrap;gap:0}
+    .mediaBlock__image{position:relative;overflow:hidden;flex-shrink:0}
+    .mediaBlock__image img,.mediaBlock__image video{width:100%;height:auto;display:block;object-fit:cover}
+    .mediaBlock__image.portrait img,.mediaBlock__image.portrait video{height:80vh;object-fit:cover}
+    .mediaBlock__image.text{padding:40px;display:flex;flex-direction:column;justify-content:center}
+    .mediaBlock__image.text p{font-family:PSTimes;font-size:clamp(18px,2.2vw,32px);line-height:1.3;color:#030303;max-width:500px}
+    .mediaBlock__image.text .text__mobileLink{display:none;margin-top:20px}
+    .text__mobileLink .title{font-family:PSTimes;font-size:18px}
+    .text__mobileLink .type{font-family:HelveticaNeueLight;font-size:13px;color:rgba(3,3,3,.4);margin-top:4px}
+    .mediaBlock.hasText .mediaBlock__image.text p{font-family:PSTimes;font-size:clamp(18px,2.2vw,32px)}
+    .mediaBlock.hasText.textOnly .mediaBlock__image.text{align-items:flex-start}
+    .offsetY__center{align-self:center}
+    [class*=" position__"]{order:var(--pos-order,0)}
+    .position__2{--pos-order:1}.position__3{--pos-order:2}.position__4{--pos-order:3}
+    .position__5{--pos-order:4}.position__6{--pos-order:5}.position__7{--pos-order:6}
+    .position__8{--pos-order:7}.position__9{--pos-order:8}
+    .textBlock{padding:80px 0}.textBlock.align--center{text-align:center}
+    .textBlock__text{font-family:PSTimes}
+    .textBlock__text--1{font-size:clamp(14px,1.2vw,20px);margin-bottom:20px;color:rgba(3,3,3,.4)}
+    .textBlock__text--2{font-size:clamp(24px,3vw,48px);line-height:1.2}
+    .textBlock__text--2>div{margin-bottom:4px}
+    .projectBlock{padding:30px 0;position:relative}
+    .projectBlock:not(:last-child){border-bottom:1px solid rgba(3,3,3,.08)}
+    .footer{padding:60px 0;position:relative}
+    .footer__projects{padding:40px 0;border-top:1px solid rgba(3,3,3,.08);border-bottom:1px solid rgba(3,3,3,.08);margin-bottom:60px}
+    .footer__projectsCtaWrapper{text-align:center}
+    .underlinedButton{display:inline-flex;align-items:center;gap:8px;font-family:PSTimes;font-size:52px;color:#030303;position:relative;cursor:pointer;background:none;border:none}
+    .underlinedButton__text{position:relative}
+    .underlinedButton__line{position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:#030303;transform-origin:left;transition:transform .4s}
+    .underlinedButton:hover .underlinedButton__line{transform:scaleX(0)}
+    .underlinedButton[data-after] .underlinedButton__text:after{content:attr(data-after);font-family:HelveticaNeueLight;font-size:14px;color:rgba(3,3,3,.3);margin-left:6px;vertical-align:super}
+    .footer__contacts{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+    .footer__email{font-family:PSTimes;font-size:clamp(28px,4vw,58px)}
+    .footer__email button{font-family:PSTimes;font-size:inherit;background:none;border:none;cursor:pointer;color:#030303}
+    .footer__address{font-family:HelveticaNeueLight;font-size:14px;color:rgba(3,3,3,.4);line-height:1.6}
+    .footer__address p{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+    .footer__newsletterOpen{margin:10px 0}
+    .basicButton{background:none;border:none;cursor:pointer;font-family:HelveticaNeueLight;font-size:14px;color:rgba(3,3,3,.4);padding:4px 0;text-decoration:none;display:inline-block}
+    .basicButton:hover{color:#030303}
+    .footer__networks{display:flex;gap:20px;margin-top:20px;justify-content:center}
+    .headerBlock{position:fixed;top:40px;right:40px;z-index:50}
+    .headerBlock.hidden{display:none}
+    .headerBlock__menu{display:flex;align-items:center;gap:24px}
+    .headerBlock__menu a{font-family:HelveticaNeueLight;font-size:14px;color:#030303;cursor:pointer;text-decoration:none;text-transform:uppercase;letter-spacing:.05em}
+    .headerBlock__menu a:hover{opacity:.5}
+    .soundWrapper{position:fixed;bottom:40px;right:40px;z-index:50}
+    .sound{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+    .sound .text{position:relative}
+    .sound .wrapper{position:relative;width:40px;height:18px}
+    .sound .text__off{font-family:HelveticaNeueLight;font-size:11px;color:rgba(3,3,3,.4);position:absolute;top:0;left:0;transition:opacity .3s}
+    .sound .text__on{font-family:HelveticaNeueLight;font-size:11px;color:rgba(3,3,3,.4);position:absolute;top:0;right:0;transition:opacity .3s;opacity:0}
+    .sound--muted .text__off{opacity:0}
+    .sound--muted .text__on{opacity:1!important;color:#030303}
+    .sound .icon{position:relative;width:30px;height:30px}
+    .sound .circles{width:60px;height:60px;position:absolute;top:-15px;left:-15px}
+    .sound .dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#030303;transition:opacity .3s}
+    .sound--muted .dot{opacity:0}
+    .cursor{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99;pointer-events:none;transition:opacity .3s}
+    .cursor.hidden{opacity:0}.cursor.isLowOpacity{opacity:.3}
+    .cursor__follow{position:absolute;width:12px;height:12px;border-radius:50%;background:#030303;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+    .cursor__ease{position:absolute;width:12px;height:12px;border-radius:50%;background:#030303;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor__text{position:absolute;white-space:nowrap;font-family:HelveticaNeueLight;font-size:11px;color:#030303;letter-spacing:.1em;pointer-events:none;transform:translate(-50%,-50%)}
+    .cursor__text>div{display:inline-flex}
+    .scrollCursor{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none}
+    .scrollCursor .dots{display:flex;gap:6px;justify-content:center;height:4px;align-items:center}
+    .scrollCursor .dot{width:4px;height:4px;border-radius:50%;background:rgba(3,3,3,.15);transition:all .3s}
+    .scrollCursor .dots__fast .dot{animation:scrollDot 1.4s infinite}
+    @keyframes scrollDot{0%{opacity:.15}50%{opacity:1}100%{opacity:.15}}
+    .scrollCursor .dots__fast .dot:nth-child(2){animation-delay:.1s}
+    .scrollCursor .dots__fast .dot:nth-child(3){animation-delay:.2s}
+    .showreelLabel{position:absolute;bottom:20px;right:40px;font-family:HelveticaNeueLight;font-size:12px;color:rgba(3,3,3,.3);z-index:2}
+    @media(max-width:1024px){
+      .gridWrapper{padding-left:20px!important;padding-right:20px!important}
+      .hero{padding:80px 0}.mediaBlock{padding:15px 0}.projectBlock{padding:15px 0}
+      .mediaBlock__image.text p{font-size:16px!important}
+      .underlinedButton{font-size:32px}
+      .projectsBttnWrapper{bottom:20px;left:20px}.soundWrapper{bottom:20px;right:20px}
+      .headerBlock{top:20px;right:20px}.text__mobileLink{display:block!important}
+    }
+    @media(max-width:768px){
+      [class*=" width__"]{width:100%!important}
+      [class*=" position__"]{--pos-order:0!important}
+      .offsetY__center{align-self:flex-start!important}
+      .mediaBlock__image.portrait img,.mediaBlock__image.portrait video{height:auto!important}
+      .hero__text1{font-size:28px}.textBlock{padding:40px 0}
+      .footer__email{font-size:28px}
+      .footer__projectsCta .underlinedButton{font-size:24px}
+    }
   </style>
 </head>
 <body>
+<div id="app" class="app">
+  <div class="main">
 
-  <canvas id="webgl-canvas"></canvas>
+    <!-- WEBGL -->
+    <div class="webglApp"><canvas id="webgl-canvas"></canvas></div>
 
-  <!-- Logo -->
-  <div class="logo" id="logo">
-    <svg viewBox="0 0 170 22" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 0H0V13.5368C0 16.0195 0.947081 17.7763 2.40398 19.0805C3.8405 20.3666 5.76249 21.204 7.71528 21.8914L7.98311 22L8.29863 21.8954C10.2554 21.2075 12.1754 20.369 13.6075 19.0801C15.0569 17.7753 15.996 16.0185 15.996 13.5368V10.1623H8.81888V2.15074H7.20745V10.1623H3.03603L3.03404 10.9496H14.3831V14.0248C14.3831 15.8117 13.8032 17.5039 12.7861 18.5288C11.8335 19.4896 10.484 20.2254 8.81839 20.8823V12.3311H7.20696V20.8823C5.54186 20.2254 4.1918 19.4896 3.23925 18.5288C2.22261 17.5034 1.64273 15.8112 1.64273 14.0248V0.768488H16V0Z" fill="#030303"/><path d="M32 7.65184L32.9003 7.80157V13.9518L32 14.1016V14.3514H34.8019V14.1016L33.9016 13.9518V7.80157L34.8019 7.65184V7.40198H32V7.65184Z" fill="#030303"/><path d="M41.9563 12.7016L39.7047 7.40198H37.6037V7.65184L38.504 7.80157V13.9022L37.6037 14.052V14.3018H39.9545V14.052L39.0047 13.9022V8.35184L41.5558 14.3514H41.756L44.6075 8.35184V13.9518L43.6567 14.1016V14.3514H46.4586V14.1016L45.5583 13.9518V7.80157L46.4586 7.65184V7.40198H44.4578L41.9563 12.7016Z" fill="#030303"/><path d="M53.5128 12.7016L51.2612 7.40198H49.1603V7.65184L50.0606 7.80157V13.9022L49.1603 14.052V14.3018H51.5111V14.052L50.5612 13.9022V8.35184L53.1123 14.3514H53.3126L56.1144 8.35184V13.9518L55.1636 14.1016V14.3514H57.9655V14.1016L57.0643 13.9518V7.80157L57.9655 7.65184V7.40198H55.9638L53.5128 12.7016Z" fill="#030303"/><path d="M65.7703 13.8021C65.5205 13.8517 64.9197 13.9022 64.0194 13.9022H62.669V11.0021H64.7699V10.552H62.669V7.85211H64.1195C64.8701 7.85211 65.4203 7.85211 65.8209 7.90171L65.9706 9.05184H66.3206V7.40198H60.7169V7.65184L61.6171 7.80157V13.9518L60.7169 14.1016H60.7664V14.3514H66.3197L66.4198 12.5013H66.0698L65.7694 13.8012L65.7703 13.8021Z" fill="#030303"/><path d="M75.0753 13.6514L73.4245 11.1518C73.8746 11.0021 74.2246 10.8018 74.4754 10.4518C74.7253 10.1018 74.8759 9.70131 74.8759 9.25211C74.8759 8.60171 74.6757 8.15251 74.2751 7.85211C73.825 7.55171 73.1746 7.40198 72.3239 7.40198H69.3218V7.65184L70.2221 7.80157V13.9518L69.4219 14.1016V14.3514H72.3239V14.1016L71.273 13.9518V11.3016H72.4241L73.9251 13.6514C74.2255 14.1512 74.7758 14.4516 75.3757 14.4516H76.0757V14.2017C75.6751 14.2017 75.3251 14.0014 75.0753 13.6514ZM72.1237 10.8018H71.2234V7.85211H72.1237C72.7741 7.85211 73.2242 8.00184 73.4741 8.20211C73.7239 8.45197 73.8746 8.80198 73.8746 9.35224C73.8746 9.85198 73.7745 10.2525 73.4245 10.4528C73.1746 10.7026 72.7245 10.8018 72.1237 10.8018Z" fill="#030303"/><path d="M82.8801 11.1013C82.6798 10.9516 82.4795 10.8009 82.2793 10.7017C82.079 10.6016 81.8787 10.552 81.6289 10.4518C81.4286 10.3517 81.1787 10.3021 80.9785 10.202C80.7286 10.1524 80.5283 10.0522 80.3786 9.95211C80.2279 9.85198 80.0782 9.70224 79.9781 9.55251C79.8779 9.40278 79.8283 9.25211 79.8283 9.00224C79.8283 8.65224 79.9781 8.40238 80.2279 8.20211C80.4787 8.00184 80.8783 7.90171 81.3285 7.90171C81.8292 7.90171 82.2793 8.05144 82.6293 8.30131L82.8295 9.15104H83.2797V7.70144C82.5797 7.55171 81.9789 7.50117 81.4286 7.50117C80.6781 7.50117 80.0782 7.65091 79.6777 7.95131C79.2771 8.25171 79.0778 8.70091 79.0778 9.25117C79.0778 9.55157 79.1274 9.85104 79.2275 10.0513C79.3277 10.2516 79.4774 10.4509 79.6281 10.6016C79.8283 10.7513 80.0277 10.8514 80.2279 10.9516C80.4282 11.0517 80.6285 11.1013 80.8783 11.2014C81.0786 11.3016 81.3285 11.3512 81.5288 11.4513C81.7786 11.5514 81.9789 11.6516 82.1296 11.7517C82.2793 11.8518 82.429 12.0016 82.5291 12.1513C82.6293 12.301 82.6798 12.5013 82.6798 12.7512C82.6798 13.1508 82.5797 13.5008 82.2793 13.7516C81.9789 14.0014 81.6289 14.1016 81.1292 14.1016C80.7782 14.1016 80.4787 14.0014 80.1783 13.9013C79.8779 13.7516 79.6777 13.6009 79.528 13.4512L79.3277 12.5013H78.8775V14.3009C79.1779 14.401 79.4774 14.5012 79.8779 14.5508C80.2785 14.6004 80.6781 14.6509 81.029 14.6509C81.8291 14.6509 82.429 14.4506 82.8295 14.1006C83.2301 13.7506 83.4304 13.2004 83.4304 12.5509C83.4304 12.2009 83.3798 11.951 83.2797 11.7012C83.1796 11.4513 83.0794 11.251 82.8801 11.1013Z" fill="#030303"/><path d="M86.6814 7.65184L87.5826 7.80157V13.9518L86.6814 14.1016V14.3514H89.4833V14.1016L88.583 13.9518V7.80157L89.4833 7.65184V7.40198H86.6814V7.65184Z" fill="#030303"/><path d="M97.2376 7.65184L98.1388 7.80157L96.0369 12.9018L93.936 7.80157L94.8868 7.65184V7.40198H92.0849V7.65184L92.885 7.80157L95.7365 14.5021H95.9873L98.7882 7.80157L99.5388 7.65184V7.40198H97.2376V7.65184Z" fill="#030303"/><path d="M107.094 13.8021C106.843 13.8517 106.243 13.9022 105.343 13.9022H103.991V11.0021H106.093V10.552H103.991V7.85211H105.443C106.193 7.85211 106.744 7.85211 107.143 7.90171L107.294 9.05184H107.644V7.40198H102.091V7.65184L102.991 7.80157V13.9518L102.091 14.1016V14.3514H107.644L107.744 12.5013H107.394L107.094 13.8021Z" fill="#030303"/><path d="M119.901 11.5514L120.802 11.7012V13.701C120.601 13.8012 120.352 13.9013 120.051 13.9509C119.751 14.0005 119.451 14.051 119.151 14.051C118.35 14.051 117.699 13.8012 117.3 13.2509C116.85 12.7512 116.649 11.951 116.649 10.9506C116.649 9.90064 116.85 9.1005 117.249 8.55024C117.65 7.99997 118.3 7.7501 119.201 7.7501C119.551 7.7501 119.901 7.7997 120.251 7.89984C120.601 7.99997 120.851 8.1497 121.102 8.29943L121.252 9.14917H121.602V7.64903C120.802 7.44877 120.002 7.34863 119.151 7.34863C117.95 7.34863 117.049 7.64903 116.449 8.2489C115.848 8.84877 115.549 9.79863 115.549 10.9993C115.549 12.2 115.848 12.9992 116.499 13.599C117.149 14.1989 118 14.4993 119.151 14.4993C119.651 14.4993 120.101 14.4497 120.552 14.3496C121.002 14.2494 121.402 14.1493 121.802 13.9996H121.753V11.6993L122.453 11.5496V11.2492H119.901V11.5514Z" fill="#030303"/><path d="M129.206 7.35144H128.206L125.854 13.9518L125.054 14.1016V14.3514H127.355V14.1016L126.405 13.9518L127.105 11.952H129.857L130.558 13.9518L129.607 14.1016V14.3514H132.559V14.1016L131.658 13.9518L129.206 7.35144ZM127.255 11.5018L128.456 8.10197L129.657 11.5018H127.255Z" fill="#030303"/><path d="M150.269 8.25171C149.668 7.70144 148.718 7.40198 147.418 7.40198H144.266V7.65184L145.166 7.80157V14.0014L144.266 14.1512V14.401H147.668C148.819 14.401 149.719 14.1006 150.319 13.5008C150.92 12.9009 151.22 12.0006 151.22 10.8505C151.22 9.70037 150.869 8.80104 150.269 8.25171ZM149.519 13.1517C149.118 13.6514 148.468 13.9022 147.617 13.9022C147.017 13.9022 146.516 13.9022 146.117 13.8517V7.85211H147.067C148.068 7.85211 148.819 8.10198 149.318 8.60171C149.869 9.10144 150.118 9.85197 150.118 10.8018C150.118 11.9014 149.919 12.652 149.519 13.1517Z" fill="#030303"/><path d="M159.074 13.8021C158.824 13.8517 158.224 13.9022 157.322 13.9022H155.972V11.0021H158.073V10.552H155.972V7.85211H157.423C158.173 7.85211 158.723 7.85211 159.124 7.90171L159.274 9.05184H159.625V7.40198H154.071V7.65184L154.972 7.80157V13.9518L154.071 14.1016V14.3514H159.625L159.725 12.5013H159.374L159.074 13.8021Z" fill="#030303"/><path d="M167.428 7.40198V7.65184L168.379 7.80157V12.5518L164.777 7.40198H162.676V7.65184L163.577 7.80157V13.9518L162.676 14.1016V14.3514H165.027V14.1016L164.077 13.9518V8.10197L168.379 14.3514H168.88V7.80157L169.78 7.65184V7.40198H167.428Z" fill="#030303"/></svg>
-  </div>
+    <!-- PAGE -->
+    <div class="page homePage firsRoute">
+      <div class="page__wrapper">
 
-  <!-- Sound toggle -->
-  <div class="soundWrapper"><div class="sound--muted sound" id="soundToggle">
-    <div class="text"><div class="wrapper"><div class="text__off"> Off </div><div class="text__on"> On </div></div></div>
-    <svg class="icon" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" stroke="#030303" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="81.68" id="soundRing" transform="rotate(-90 15 15)"/><g class="dot"><circle class="dot__child" cx="15" cy="15" r="1.5"/></g></svg>
-  </div></div>
+        <!-- HERO -->
+        <div class="hero hasFitHeight left">
+          <div class="gridWrapper padding wrapper">
+            <h1 class="hero__text1 left" data-webgl-title>Transcend anything seen<br> or felt before by crafting<br> unparalleled experiences<br> for ambitious brands.</h1>
+          </div>
+        </div>
 
-  <!-- Intro Loader -->
-  <div class="introLoader" id="introLoader">
-    <div class="bg"></div>
-    <div class="wrapper">
-      <div class="text">
-        <div>Innovative</div><div>digital</div><div>experiences</div><div>studio</div>
+        <!-- SHOWREEL -->
+        <div class="mediaBlock" type="media">
+          <div class="gridWrapper padding" style="display:flex;flex-wrap:wrap">
+            <img class="mediaBlock__image image width__8 position__3 offsetY__center offsetX__inherit"
+                 src="https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Showreel_63aa7388ec.jpg"
+                 data-src="https://ig-medias-prod.ams3.digitaloceanspaces.com/Showreel_Short_3_f3699e2f02.mp4"
+                 width="1920" height="1080" alt="Showreel" style="width:100%">
+          </div>
+          <div class="showreelLabel">Showreel — 2024</div>
+        </div>
+
+        <!-- OUR APPROACH -->
+        <div class="gridWrapper padding textBlock align--center" id="approach">
+          <div class="textBlock__text textBlock__text--1">Our approach</div>
+          <div class="textBlock__text textBlock__text--2 fontSize--large">
+            <div>A global leader in groundbreaking digital</div>
+            <div>design and strategy, we help</div>
+            <div>forward‑thinking clients achieve impact</div>
+            <div>and growth.</div>
+          </div>
+        </div>
+
+        <!-- PROJECTS 1-3 -->
+        <div id="projects-container"></div>
+
+        <!-- OUR MISSION -->
+        <div class="gridWrapper padding textBlock align--center" id="mission">
+          <div class="textBlock__text textBlock__text--1">Our mission</div>
+          <div class="textBlock__text textBlock__text--2 fontSize--large">
+            <div>We partner with exceptional clients, helping</div>
+            <div>drive their success.</div>
+          </div>
+        </div>
+
+        <!-- PROJECTS 4-18 -->
+        <div id="projects-container-2"></div>
+
+        <!-- FOOTER -->
+        <div class="gridWrapper footer" type="footer">
+          <div class="gridWrapper footer__projects">
+            <div class="footer__projectsCtaWrapper">
+              <a href="/projects/" class="underlinedButton footer__projectsCta" data-after="(51)">
+                <span class="underlinedButton__text">See all projects</span>
+                <span class="underlinedButton__line"></span>
+              </a>
+            </div>
+          </div>
+          <div class="footer__contacts">
+            <div class="footer__email">
+              <button onclick="window.location='mailto:inquiries@immersive-g.com'">inquiries@immersive-g.com</button>
+            </div>
+            <div class="footer__address">
+              <p><span>Immersive Garden</span> <span>/</span> <span>14 avenue Claude Vellefaux</span> <span>/</span> <span>Paris 75010</span></p>
+            </div>
+            <div class="footer__newsletterOpen">
+              <button class="basicButton">Newsletter</button>
+            </div>
+            <div class="footer__networks">
+              <a href="https://x.com/Immersive_g" target="_blank" class="basicButton">X</a>
+              <a href="https://www.instagram.com/immersive_g/" target="_blank" class="basicButton">Instagram</a>
+              <a href="https://fr.linkedin.com/company/immersive-garden" target="_blank" class="basicButton">Linkedin</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
 
-  <!-- Page Container -->
-  <div id="app"></div>
+    <!-- HEADER -->
+    <header class="headerBlock">
+      <nav class="headerBlock__menu"><a href="/about">About</a></nav>
+    </header>
 
-  <script>
-  // ============================================
-  // PROJECT DATA (from real payload)
-  // ============================================
-  const PROJECTS = [
-    {id:"1",slug:"louis-vuitton-1",title:"Louis Vuitton VIA",type:"Web Experience",specs:"Design, Tech, E-shop, NFT, 3D",legend:"Explore our collaboration with Louis Vuitton on VIA, showcasing the Maison's Web 3 vision through its first digital trunk.",next:"david-whyte-experience",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/LV_01_44142e6b4a.mp4",type:"video",w:8,pos:"left",p:"grid_1",legend:"Explore our collaboration with Louis Vuitton on VIA, showcasing the Maison's Web 3 vision through its first digital trunk."},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/LV_02_v2_ce900a9d2a.mp4",type:"video",w:4,pos:"right",p:"",h:1440}]},
-    {id:"2",slug:"david-whyte-experience",title:"David Whyte Experience",type:"Web Experience",specs:"Design, Experience, Watercolor",legend:"Step into David Whyte's poetry in a digital journey, capturing life's profound moments with artistic depth.",next:"cartier-end-of-year-23",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/David_Whyte_01_v2_838d74bd8d.mp4",type:"video",w:8,pos:"right",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/David_Whyte_03_9e40ec2070.mp4",type:"video",w:4,pos:"left",p:"",h:1440}]},
-    {id:"3",slug:"cartier-end-of-year-23",title:"Cartier End of Year 23",type:"E-Shop",specs:"Design, Experience, E-shop",legend:"Discover Cartier's End of Year: redefining elegance with an immersive campaign, Above the Clouds.",next:"chartogne-taillet-1",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_01_310fc52fe3.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_02_v2_dc59d7f090.mp4",type:"video",w:4,pos:"right",p:"",h:1440},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/CARTIER_EOY_v3_79b0f89b22.glb",type:"glb",w:3,pos:"left",p:"grid_2",ph:800}]},
-    {id:"4",slug:"chartogne-taillet-1",title:"Chartogne Taillet",type:"Web Experience",specs:"Design, Champagne, Experience, 3D",legend:"Explore the rich heritage and vineyards of Chartogne-Taillet through immersive digital storytelling.",next:"cartier-in-time",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Chartogne_01_114d7da5b8.mp4",type:"video",w:8,pos:"center",p:"grid_3"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Chartogne_03_7476a61852.jpg",type:"img",w:5,pos:"left",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Chartogne_02_v2_0e70cde19a.jpg",type:"img",w:8,pos:"right",p:""}]},
-    {id:"5",slug:"cartier-in-time",title:"Cartier in Time",type:"Web Experience",specs:"Experience, Design, Film",legend:"Dive into a journey with Jake Gyllenhaal, unveiling Cartier's timeless bond with time in a stunning digital showcase.",next:"aten7",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Time_01_0a3d952723.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Time_02_v2_4ff6778abf.mp4",type:"video",w:4,pos:"right",p:"",h:1440}]},
-    {id:"6",slug:"aten7",title:"Aten7",type:"Web Experience",specs:"Experience, Design, Tech",legend:"Uncover the secrets of Aten7 and the rise of EVA in the immersive \"Toom Archives\" experience.",next:"gleec",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Showreel_Short_3_f3699e2f02.mp4",type:"video",w:8,pos:"center",p:""}]},
-    {id:"7",slug:"gleec",title:"GLEEC",type:"Web Experience",specs:"Design, Tech, Crypto",legend:"Explore the GLEEC ecosystem — a mobile-first gateway showcasing their unified crypto ecosystem through cutting-edge digital design.",next:"dioriviera-1",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Showreel_Short_3_f3699e2f02.mp4",type:"video",w:8,pos:"center",p:""}]},
-    {id:"8",slug:"dioriviera-1",title:"Dioriviera",type:"Web Experience",specs:"Design, E-shop, Experience",legend:"Step into an exquisite 3D journey through Dioriviera, where Maria Grazia Chiuri's visionary designs come to life in breathtaking detail.",next:"longines-zulu-time",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Dior_01_f274422e91.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Dior_02_99b0564cb0.mp4",type:"video",w:4,pos:"right",p:"",h:1440}]},
-    {id:"9",slug:"longines-zulu-time",title:"Longines Spirit Zulu Time",type:"E-Shop",specs:"Design, E-shop, Experience, 3D",legend:"Embark on the pioneering flights of Amy Johnson, Clyde Pangborn, and Hugh Herndon Jr. Discover Longines Spirit Zulu Time: honoring aviation pioneers with precision and innovation.",next:"masar-destination",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_01_v2_40249484cb.mp4",type:"video",w:8,pos:"left",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_02_v2_0c31a77891.mp4",type:"video",w:5,pos:"right",p:""}]},
-    {id:"10",slug:"masar-destination",title:"Masar Destination",type:"Web Experience",specs:"Design, Experience, 3D",legend:"Explore Masar's Vision: A captivating digital experience redefining the urban heart of Saudi Arabia.",next:"midwam",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_01_v2_96ba3b6853.mp4",type:"video",w:8,pos:"center",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_02_v2_48e6a8c72c.jpg",type:"img",w:5,pos:"left",p:"grid_2"}]},
-    {id:"11",slug:"midwam",title:"Midwam",type:"E-Shop",specs:"Design, E-shop, Experience, 3D",legend:"Dive deeper into Midwam's vision — an extraordinary blend of human-centric design and immersive storytelling.",next:"omega-space",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Midwam_01_53916bc619.mp4",type:"video",w:8,pos:"right",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Midwam_02_62d209d0c9.mp4",type:"video",w:5,pos:"right",p:""}]},
-    {id:"12",slug:"omega-space",title:"Omega Space Sustainability",type:"E-Shop",specs:"Design, E-shop, Experience, 3D",legend:"Discover OMEGA's Journey in Space Sustainability — Shaping Innovation and Pioneering Impact.",next:"orano",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_01_dc50de4e80.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_02_v2_5f34880dd9.mp4",type:"video",w:4,pos:"right",p:"",h:1440}]},
-    {id:"13",slug:"orano",title:"Orano",type:"E-Shop",specs:"Design, E-shop, Experience, 3D",legend:"Navigate safely through radioactive zones with Orano's cutting-edge innovations — explore interactive wireframes and gamified design solutions.",next:"prior-holding",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Orano_01_V2_8c629ee69d.mp4",type:"video",w:8,pos:"right",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Orano_02_v2_d7a650dc54.mp4",type:"video",w:5,pos:"left",p:""}]},
-    {id:"14",slug:"prior-holding",title:"Prior Holding",type:"Web Experience",specs:"Design, Tech, Branding, Experience",legend:"Unveil the essence of authentic hospitality with Prior Holdings — an immersive experience that celebrates dreams and culture.",next:"artisans-d-idees",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Prior_01_v2_7234d8cd63.mp4",type:"video",w:8,pos:"right",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Prior_02_v2_2540e4b13e.mp4",type:"video",w:4,pos:"left",p:"",h:1440}]},
-    {id:"15",slug:"artisans-d-idees",title:"Artisans d'Id\u00e9es",type:"Web Experience",specs:"Design, Tech, Branding, Experience",legend:"Step into Artisans d'Id\u00e9es' digital world — an interactive journey blending art, history, and storytelling for a truly immersive experience.",next:"cartier-watches-and-wonders-24",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Artisans_d_idees_01_080f9b65c8.mp4",type:"video",w:8,pos:"center",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Artisans_d_idees_03_2ec8c9f5bc.mp4",type:"video",w:5,pos:"right",p:""}]},
-    {id:"16",slug:"cartier-watches-and-wonders-24",title:"Cartier Watches and Wonders 24",type:"Web Experience",specs:"Design, E-shop, Experience",legend:"An inspiring selection of Cartier timepieces, offering a remarkable journey for Watches and Wonders 2024.",next:"girard-perregaux-casquette-1",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Watches_Wonders_24_01_v2_6c8ac11487.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Watches_Wonders_24_02_v2_77cd58cd1b.jpg",type:"img",w:5,pos:"right",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/CARTIER_WW_24_v3_974a09cb82.glb",type:"glb",w:4,pos:"left",p:"grid_2",ph:800}]},
-    {id:"17",slug:"girard-perregaux-casquette-1",title:"Girard Perregaux Casquette",type:"Web Experience",specs:"Design, E-shop",legend:"Rediscover the Limited Edition GP Casquette – Experience Modern Elegance and Timeless Heritage from Girard-Perregaux.",next:"hatom",medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/GP_Casquette_01_8e555dc895.mp4",type:"video",w:8,pos:"left",p:"grid_2"},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/GP_Casquette_02_aaf206a3ff.mp4",type:"video",w:4,pos:"right",p:"",h:1440}]},
-    {id:"18",slug:"hatom",title:"Hatom",type:"Web Experience",specs:"Design, Tech, Experience, 3D",legend:"Dive into the essence of cryptocurrency and explore Hatom's immersive universe — unlocking the story of their evolving crypto platform through symbolic storytelling.",next:null,medias:[
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Hatom_01_20596dd308.mp4",type:"video",w:8,pos:"center",p:""},
-      {url:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Hatom_02_c9918730ab.mp4",type:"video",w:8,pos:"right",p:"",h:1040}]}
-  ];
-
-  // ============================================
-  // HOME PAGE RENDERER
-  // ============================================
-  function renderHome() {
-    document.title = "Immersive Garden";
-    const projects_html = PROJECTS.map((p,i) => `
-      <div class="projectBlock">
-        <div class="card" onclick="navigate('${p.slug}')">
-          <div class="thumb"><img src="https://ig-medias-prod.ams3.digitaloceanspaces.com/thumbnail_${p.slug.includes('louis')?'LV_01_v2':p.slug.includes('david')?'David_Whyte_01':p.slug.includes('cartier-eoy')?'Cartier_EOY_01_V2':p.slug.includes('chartogne')?'Chartogne_01_v2':p.slug.includes('cartier-time')?'Cartier_Time_01_v2':p.slug.includes('aten7')?'Showreel_63aa7388ec':p.slug.includes('gleec')?'Showreel_63aa7388ec':p.slug.includes('dioriviera')?'Dior_01_v2':p.slug.includes('longines')?'Longines_01_v2':p.slug.includes('masar')?'Masar_01_v2':p.slug.includes('midwam')?'Midwam_01_v2':p.slug.includes('omega')?'Omega_01_v2':p.slug.includes('orano')?'Orano_01_v2':p.slug.includes('prior')?'Prior_01_v2':p.slug.includes('artisans')?'Artisans_d_idees_01_v2':p.slug.includes('watches')?'Cartier_Watches_Wonders_24_01_V2':p.slug.includes('casquette')?'GP_Casquette_01_v2':p.slug.includes('hatom')?'Hatom_01_v2':'Showreel_63aa7388ec'}_aea1561d31.jpg" onerror="this.parentElement.innerHTML='${p.title[0]}'" alt=""></div>
-          <div class="desc">${p.legend}</div>
-          <div class="arr">→</div>
+    <!-- SOUND -->
+    <div class="soundWrapper">
+      <div class="sound sound--muted" id="soundToggle">
+        <div class="text"><div class="wrapper">
+          <span class="text__off">Off</span>
+          <span class="text__on">On</span>
+        </div></div>
+        <div class="icon">
+          <canvas id="soundCanvas" width="60" height="60" class="circles"></canvas>
+          <div class="dot"><div class="dot__child"></div></div>
         </div>
       </div>
-    `).join('');
+    </div>
 
-    return `
-    <div class="page" id="page-home">
-      <section class="hero">
-        <h1 data-webgl-title>Transcend anything seen<br>or felt before by crafting<br>unparalleled experiences<br>for ambitious brands.</h1>
-        <div class="scroll-indication">Scroll down</div>
-      </section>
-
-      <section class="showreel-section">
-        <video autoplay muted loop playsinline poster="https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Showreel_63aa7388ec.jpg">
-          <source src="https://ig-medias-prod.ams3.digitaloceanspaces.com/Showreel_Short_3_f3699e2f02.mp4" type="video/mp4">
-        </video>
-        <div class="label">Showreel — 2024</div>
-      </section>
-
-      <section class="text-section">
-        <div class="text1">Our approach</div>
-        <div class="text2">A global leader in groundbreaking digital design and strategy, we help forward‑thinking clients achieve impact and growth.</div>
-      </section>
-
-      ${projects_html}
-
-      <section class="text-section">
-        <div class="text1">Our mission</div>
-        <div class="text2">We partner with exceptional clients, helping drive their success.</div>
-      </section>
-
-      <div class="all-projects">
-        <a href="https://immersive-g.com/projects" target="_blank">See all projects <span class="count">(51)</span> <span class="arrow">→</span></a>
+    <!-- CURSOR -->
+    <div class="cursor hidden isLowOpacity" id="cursor">
+      <div class="cursor__follow" id="cursorFollow"></div>
+      <div class="cursor__ease" id="cursorEase">
+        <div class="cursor__text" id="cursorText" style="display:none">Click to enable sound</div>
       </div>
-      ${renderFooter()}
-    </div>`;
-  }
+    </div>
 
-  // ============================================
-  // FOOTER RENDERER
-  // ============================================
-  function renderFooter() {
-    return `
-    <footer class="footer">
-      <div class="cta" onclick="navigate('home')">See all projects<span class="after">(51)</span></div>
-      <div class="email"><a href="mailto:hello@immersive-garden.com">hello@immersive‑garden.com</a></div>
-      <div class="newsletter"><button onclick="alert('Newsletter signup')"><span>Newsletter</span></button></div>
-      <div class="networks">
-        <a href="https://x.com/immersivegrdn" target="_blank">X</a>
-        <a href="https://instagram.com/immersive.garden" target="_blank">Instagram</a>
-        <a href="https://linkedin.com" target="_blank">Linkedin</a>
+    <!-- SCROLL CURSOR -->
+    <div class="scrollCursor" id="scrollCursor">
+      <div class="dots" id="scrollDots"></div>
+      <div class="dots dots__fast"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INTRO LOADER -->
+<div class="introLoader" id="introLoader">
+  <div class="gridWrapper padding rowGap introLoader__wrapper">
+    <div class="introLoader__logo">
+      <svg width="170" height="22" viewBox="0 0 170 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 0H0v13.537c0 2.483.947 4.24 2.404 5.544C3.84 20.367 5.762 21.204 7.715 21.89l.268.11.316-.105c1.957-.688 3.877-1.526 5.309-2.815C15.057 17.775 15.996 16.019 15.996 13.537V10.162H8.819V2.151H7.207v8.011H3.036l-.002.788h11.35v3.075c0 1.787-.58 3.479-1.597 4.504-.953.96-2.302 1.696-3.968 2.353v-8.55H7.207v8.55c-1.665-.656-3.015-1.392-3.968-2.353C2.223 17.503 1.643 15.811 1.643 14.025V.768H16V0z" fill="black"/><path d="M32 7.652l.9.15v6.15L32 14.1v.25h2.802v-.25l-.9-.15V7.8l.9-.15v-.25H32v.25zM41.956 12.7l-2.251-5.3H37.604v.25l.9.15v6.1l-.9.15v.25h2.35v-.25l-.95-.15V8.35l2.55 6h.201l2.852-6v5.6l-.951.15v.25h2.802v-.25l-.9-.15V7.8l.9-.15v-.25h-2l-2.502 5.3zM53.513 12.7l-2.252-5.3h-2.1v.25l.9.15v6.1l-.9.15v.25h2.35v-.25l-.95-.15V8.35l2.55 6h.201l2.802-6v5.6l-.951.15v.25h2.802v-.25l-.9-.15V7.8l.9-.15v-.25h-2.002l-2.451 5.3zM65.77 13.802c-.25.05-.85.1-1.75.1H62.67v-2.9h2.1v-.45h-2.1V7.85h1.45c.75 0 1.3 0 1.7.05l.15 1.15h.35V7.4h-5.604v.25l.9.15v6.15l-.9.15v.25h5.554l.1-1.85h-.35l-.3 1.3zM75.075 13.65l-1.65-2.5c.45-.15.8-.35 1.05-.7s.4-.75.4-1.2c0-.65-.2-1.1-.6-1.4-.45-.3-1.1-.45-1.95-.45h-3.003v.25l.9.15v6.15l-.8.15v.25h2.902v-.25l-1.05-.15V11.3h1.15l1.501 2.35c.3.5.85.8 1.45.8h.7v-.25c-.4 0-.75-.2-1-.55zM82.88 11.1c-.2-.15-.4-.3-.6-.4-.2-.1-.4-.15-.65-.25-.2-.1-.45-.15-.65-.25-.25-.05-.45-.15-.6-.25-.15-.1-.3-.25-.4-.4s-.15-.3-.15-.55c0-.35.15-.6.4-.8.25-.2.65-.3 1.1-.3.5 0 .95.15 1.3.4l.2.85h.45V7.7c-.7-.15-1.3-.2-1.85-.2-.75 0-1.35.15-1.75.45-.4.3-.6.75-.6 1.3 0 .3.05.6.15.8.1.2.25.4.4.55.2.15.4.25.6.35.2.1.4.15.65.25.2.1.45.15.65.25.25.1.45.2.6.3s.3.25.4.4.15.35.15.6c0 .4-.1.75-.4 1-.3.25-.65.35-1.15.35-.35 0-.65-.1-.95-.25-.3-.15-.5-.3-.65-.45l-.2-.95h-.45v1.8c.3.1.6.2 1 .25s.8.1 1.15.1c.8 0 1.4-.2 1.8-.55.4-.35.6-.9.6-1.55 0-.35-.05-.6-.15-.85-.1-.25-.2-.45-.4-.6zM140.763 13.65l-1.65-2.5c.45-.15.8-.35 1.05-.7s.4-.75.4-1.2c0-.65-.2-1.1-.6-1.4-.45-.3-1.1-.45-1.95-.45h-3.003v.25l.9.15v6.15l-.8.15v.25h2.902v-.25l-1.05-.15V11.3h1.15l1.501 2.35c.3.5.85.8 1.45.8h.7v-.25c-.4 0-.75-.2-1-.55zM86.68 7.65l.9.15v6.15l-.9.15v.25h2.802v-.25l-.9-.15V7.8l.9-.15v-.25H86.68v.25zM97.238 7.65l.9.15L96.037 12.9l-2.1-5.1.95-.15v-.25h-2.802v.25l.8.15 2.852 6.7h.25l2.802-6.7.75-.15v-.25h-2.3v.25zM107.094 13.802c-.25.05-.85.1-1.75.1h-1.353v-2.9h2.101v-.45h-2.101V7.85h1.45c.75 0 1.301 0 1.7.05l.15 1.15h.35V7.4h-5.553v.25l.9.15v6.15l-.9.15v.25h5.553l.1-1.85h-.35l-.3 1.3zM119.901 11.55l.9.15v2c-.2.1-.45.2-.75.25-.3.05-.6.1-.9.1-.8 0-1.45-.25-1.85-.8-.45-.5-.65-1.3-.65-2.3s.2-1.85.6-2.4c.4-.55 1.05-.8 1.95-.8.35 0 .7.05 1.05.15s.6.25.85.4l.15.85h.35V7.65c-.8-.2-1.6-.3-2.45-.3-1.2 0-2.1.3-2.7.9-.6.6-.9 1.55-.9 2.75s.3 2 .95 2.6c.65.6 1.5.9 2.65.9.5 0 .95-.05 1.4-.15s.85-.2 1.25-.35h-.05v-2.3l.7-.15v-.3h-2.55v.3zM129.206 7.35h-1l-2.352 6.6-.8.15v.25h2.3v-.25l-.95-.15.7-2h2.752l.7 2-.95.15v.25h2.951v-.25l-.9-.15-2.453-6.6zm-1.95 4.15l1.2-3.4 1.201 3.4h-2.4zM150.269 8.25c-.6-.55-1.55-.85-2.85-.85h-3.153v.25l.9.15v6.2l-.9.15v.25H147.668c1.15 0 2.05-.3 2.65-.9s1.05-1.5 1.05-2.65c0-1.15-.35-2.05-.95-2.6zm-.75 4.9c-.4.5-1.05.75-1.9.75-.6 0-1.1 0-1.5-.05V7.85h.95c1 0 1.75.25 2.25.75s.8 1.25.8 2.2c0 1.1-.2 1.85-.6 2.35zM159.074 13.802c-.25.05-.85.1-1.75.1h-1.352v-2.9h2.1v-.45h-2.1V7.85H157.422c.75 0 1.3 0 1.7.05l.15 1.15h.352V7.4H154.07v.25l.9.15v6.15l-.9.15v.25h5.554l.1-1.85h-.35l-.3 1.3zM167.428 7.4v.25l.95.15v4.75l-3.602-5.15h-2.1v.25l.9.15v6.15l-.9.15v.25h2.35v-.25l-.95-.15V8.1l4.302 6.25h.5V7.8l.9-.15v-.25h-2.35z" fill="#030303"/></svg>
+    </div>
+    <div class="introLoader__progressWrapper">
+      <div class="introLoader__baseline" id="introBaseline">
+        <div>Innovative&nbsp;</div>
+        <div>digital&nbsp;</div>
+        <div>experiences&nbsp;</div>
+        <div>studio&nbsp;</div>
       </div>
-      <div class="address">© Immersive Garden — 2025</div>
-    </footer>`;
+      <div class="introLoader__progressBar" id="progressBar"></div>
+    </div>
+    <div class="introLoader__scrollDown" id="scrollDownText">Scroll down</div>
+  </div>
+</div>
+
+<script>
+// ===== PROJECT DATA =====
+const PROJECTS = [
+  {id:"1",slug:"louis-vuitton-1",name:"Louis Vuitton VIA",type:"Web Experience",specs:"Design, Tech, E-shop, NFT, 3D",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/LV_01_44142e6b4a.mp4",w:6,p:2,t:"Explore our collaboration with Louis Vuitton on VIA, showcasing the Maison's Web 3 vision through its first digital trunk.",title:"Louis Vuitton VIA",typeT:"Web Experience"},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/LV_02_v2_ce900a9d2a.mp4",w:4,p:8,portrait:true,h:1440}]},
+  {id:"2",slug:"david-whyte-experience",name:"David Whyte Experience",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/David_Whyte_01_v2_838d74bd8d.mp4",w:6,p:6},
+    {w:3,p:9,t:"Step into David Whyte's poetry in a digital journey, capturing life's profound moments with artistic depth.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/David_Whyte_03_9e40ec2070.mp4",w:4,p:2,portrait:true,h:1440}]},
+  {id:"3",slug:"cartier-end-of-year-23",name:"Cartier End of Year 23",type:"E-Shop",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_01_310fc52fe3.mp4",w:6,p:3},
+    {w:3,p:3,t:"Discover Cartier's End of Year: redefining elegance with an immersive campaign, Above the Clouds.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_EOY_02_v2_dc59d7f090.mp4",w:4,p:8,portrait:true,h:1440},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/CARTIER_EOY_v3_79b0f89b22.glb",w:3,p:3}]},
+  {id:"4",slug:"chartogne-taillet-1",name:"Chartogne Taillet",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Chartogne_01_114d7da5b8.mp4",w:6,p:4},
+    {w:3,p:8,t:"Explore the rich heritage and vineyards of Chartogne-Taillet through immersive digital storytelling.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Chartogne_03_7476a61852.jpg",w:5,p:2}]},
+  {id:"5",slug:"cartier-in-time",name:"Cartier in Time",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Time_01_0a3d952723.mp4",w:6,p:3},
+    {w:3,p:3,t:"Dive into a journey with Jake Gyllenhaal, unveiling Cartier\u2019s timeless bond with time in a stunning digital showcase.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Time_02_v2_4ff6778abf.mp4",w:4,p:8,portrait:true,h:1440}]},
+  {id:"6",slug:"aten7",name:"Aten7",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Aten7_01_0835552052.mp4",w:6,p:2},
+    {w:3,p:2,t:"Uncover the secrets of Aten7 and the rise of EVA in the immersive \"Toom Archives\" experience.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Aten7_02_34d31c73cd.mp4",w:5,p:6}]},
+  {id:"7",slug:"gleec",name:"Gleec",type:"Corporate",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Gleec_01_3c7a042fbb.mp4",w:6,p:2},
+    {w:3,p:2,t:"Explore the GLEEC ecosystem \u2014 a mobile-first gateway showcasing their unified crypto ecosystem through cutting-edge digital design.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Gleec_02_v2_ceb8bfcf3c.mp4",w:5,p:6}]},
+  {id:"8",slug:"dioriviera-1",name:"Dioriviera",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Dior_01_f274422e91.mp4",w:5,p:7},
+    {w:3,p:8,t:"Step into an exquisite 3D journey through Dioriviera, where Maria Grazia Chiuri\u2019s visionary designs come to life in breathtaking detail.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Dior_02_99b0564cb0.mp4",w:4,p:2,portrait:true,h:1440}]},
+  {id:"9",slug:"longines-zulu-time",name:"Longines Spirit Zulu Time",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_01_v2_40249484cb.mp4",w:6,p:3},
+    {w:3,p:2,t:"Embark on the pioneering flights of Amy Johnson, Clyde Pangborn, and Hugh Herndon Jr. Discover Longines Spirit Zulu Time: honoring aviation pioneers with precision and innovation.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Longines_02_v2_0c31a77891.mp4",w:5,p:7}]},
+  {id:"10",slug:"masar-destination",name:"Masar Destination",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_01_v2_96ba3b6853.mp4",w:6,p:4},
+    {w:3,p:9,t:"Explore Masar\u2019s Vision: A captivating digital experience redefining the urban heart of Saudi Arabia.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Masar_02_v2_48e6a8c72c.jpg",w:5,p:3}]},
+  {id:"11",slug:"midwam",name:"Midwam",type:"Corporate",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Midwam_01_53916bc619.mp4",w:6,p:5},
+    {w:3,p:3,t:"Dive deeper into Midwam's vision \u2014 an extraordinary blend of human-centric design and immersive storytelling.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Midwam_02_62d209d0c9.mp4",w:5,p:7}]},
+  {id:"12",slug:"omega-space",name:"Omega Space Sustainability",type:"Corporate",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_01_dc50de4e80.mp4",w:6,p:3},
+    {w:3,p:3,t:"Discover OMEGA\u2019s Journey in Space Sustainability \u2014 Shaping Innovation and Pioneering Impact.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Omega_02_v2_5f34880dd9.mp4",w:4,p:8,portrait:true,h:1440}]},
+  {id:"13",slug:"orano",name:"Orano",type:"Corporate",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Orano_01_V2_8c629ee69d.mp4",w:6,p:6},
+    {w:3,p:8,t:"Navigate safely through radioactive zones with Orano\u2019s cutting-edge innovations \u2014 explore interactive wireframes and gamified design solutions.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Orano_02_v2_d7a650dc54.mp4",w:5,p:2}]},
+  {id:"14",slug:"prior-holding",name:"Prior Holding",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Prior_01_v2_7234d8cd63.mp4",w:6,p:5},
+    {w:3,p:9,t:"Unveil the essence of authentic hospitality with Prior Holdings \u2014 an immersive experience that celebrates dreams and culture.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Prior_02_v2_2540e4b13e.mp4",w:4,p:3,portrait:true,h:1440}]},
+  {id:"15",slug:"artisans-d-idees",name:"Artisans d'Id\u00e9es",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Artisans_d_idees_01_080f9b65c8.mp4",w:6,p:4},
+    {w:3,p:3,t:"Step into Artisans d\u2019Id\u00e9es\u2019 digital world \u2014 an interactive journey blending art, history, and storytelling for a truly immersive experience.",textOnly:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Artisans_d_idees_03_2ec8c9f5bc.mp4",w:5,p:7}]},
+  {id:"16",slug:"cartier-watches-and-wonders-24",name:"Cartier Watches and Wonders 24",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Watches_Wonders_24_01_v2_6c8ac11487.mp4",w:6,p:2},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Cartier_Watches_Wonders_24_02_v2_77cd58cd1b.jpg",w:5,p:7,t:"An inspiring selection of Cartier timepieces, offering a remarkable journey for Watches and Wonders 2024.",title:"Cartier Watches and Wonders 24",typeT:"Web Experience"},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/CARTIER_WW_24_v3_974a09cb82.glb",w:4,p:3}]},
+  {id:"17",slug:"girard-perregaux-casquette-1",name:"Girard Perregaux Casquette",type:"E-Shop",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/GP_Casquette_01_8e555dc895.mp4",w:6,p:3,t:"Rediscover the Limited Edition GP Casquette \u2013 Experience Modern Elegance and Timeless Heritage from Girard-Perregaux.",title:"Girard Perregaux Casquette",typeT:"E-Shop"},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/GP_Casquette_02_aaf206a3ff.mp4",w:4,p:8,portrait:true,h:1440}]},
+  {id:"18",slug:"hatom",name:"Hatom",type:"Web Experience",blocks:[
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Hatom_01_20596dd308.mp4",w:6,p:4,t:"Dive into the essence of cryptocurrency and explore Hatom\u2019s immersive universe \u2014 unlocking the story of their evolving crypto platform through symbolic storytelling.",title:"Hatom",typeT:"Web Experience"},
+    {empty:true},
+    {m:"https://ig-medias-prod.ams3.digitaloceanspaces.com/Hatom_02_c9918730ab.mp4",w:6,p:6,h:1040}]},
+];
+
+function renderMediaBlock(b, slug) {
+  if (b.empty) return '<div class="mediaBlock"><div class="gridWrapper padding"></div></div>';
+  if (b.t && !b.m) {
+    let cls = 'mediaBlock__image text noMedia width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit';
+    return '<div class="mediaBlock hasText textOnly"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><div class="'+cls+'"><p>'+b.t+'</p><a href="/projects/'+slug+'" class="text__mobileLink"><p class="title">'+(b.title||slug)+'</p><p class="type">'+(b.typeT||'')+'</p></a></div></div></div>';
   }
-
-  // ============================================
-  // PROJECT PAGE RENDERER
-  // ============================================
-  function renderProject(slug) {
-    const p = PROJECTS.find(x => x.slug === slug);
-    if (!p) return renderHome();
-    document.title = p.title + " - Immersive Garden";
-
-    const nextP = PROJECTS.find(x => x.slug === p.next);
-    
-    function mediaHTML(m) {
-      if (!m.url) return '';
-      const wClass = m.w === 8 ? 'width-8' : m.w === 5 ? 'width-6' : m.w === 4 ? 'width-4' : '';
-      const style = m.h ? ` style="max-height:${m.h}px;width:auto;margin:0 auto"` : '';
-      if (m.type === 'video') {
-        return `<video autoplay muted loop playsinline class="${wClass}"${style}>
-          <source src="${m.url}" type="video/mp4">
-        </video>`;
-      }
-      if (m.type === 'img') {
-        return `<img src="${m.url}" class="${wClass}"${style} alt="">`;
-      }
-      return `<div class="${wClass}" style="background:rgba(3,3,3,0.02);border-radius:4px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:rgba(3,3,3,0.15);font-size:12px">3D Model</div>`;
-    }
-
-    const medias = p.medias.map(m => {
-      const blockClass = m.p ? '' : '';
-      return `<div class="media-block ${m.p||''}">
-        ${mediaHTML(m)}
-        ${m.legend ? `<div class="legend">${m.legend}</div>` : ''}
-      </div>`;
-    }).join('');
-
-    return `
-    <div class="page project-detail" id="page-project">
-      <div class="back" onclick="navigate('home')"><span class="arrow">←</span> Back to Home</div>
-      <div class="title-wrap">
-        <h1>${p.title}</h1>
-        <div class="specs">${p.type} — ${p.specs}</div>
-      </div>
-      <div class="project-buttons">
-        <a href="#">See backstage</a>
-        <a href="#">Launch website</a>
-        ${nextP ? `<a href="#" onclick="navigate('${nextP.slug}');return false">See next project →</a>` : ''}
-      </div>
-      ${medias}
-      ${renderFooter()}
-    </div>`;
+  if (b.t && b.m) {
+    return '<div class="mediaBlock hasText"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><img class="mediaBlock__image image width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit'+(b.portrait?' portrait':'')+'" src="https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Showreel_63aa7388ec.jpg" data-src="'+b.m+'" width="1920" height="'+(b.h||1080)+'" alt=""><div class="mediaBlock__image text width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit"><p>'+b.t+'</p><a href="/projects/'+slug+'" class="text__mobileLink"><p class="title">'+(b.title||slug)+'</p><p class="type">'+(b.typeT||'')+'</p></a></div></div></div>';
   }
+  var thumb = 'https://ig-medias-prod.ams3.digitaloceanspaces.com/medium_Showreel_63aa7388ec.jpg';
+  return '<div class="mediaBlock"><div class="gridWrapper padding" style="display:flex;flex-wrap:wrap"><img class="mediaBlock__image image width__'+b.w+' position__'+(b.p||1)+' offsetY__center offsetX__inherit'+(b.portrait?' portrait':'')+'" src="'+thumb+'" data-src="'+b.m+'" width="1920" height="'+(b.h||1080)+'" alt=""></div></div>';
+}
+function renderProject(p){return '<section class="projectBlock" data-name="'+p.name+'" data-slug="'+p.slug+'">'+p.blocks.map(function(b){if(!b.title&&b.t){b.title=p.name;b.typeT=p.type}return renderMediaBlock(b,p.slug)}).join('')+'</section>';}
+function renderProjects(ids,id){var c=document.getElementById(id);if(!c||!ids)return;c.innerHTML=ids.map(function(i){var p=PROJECTS.find(function(x){return x.id===i});return p?renderProject(p):''}).join('');}
+renderProjects(['1','2','3'],'projects-container');
+renderProjects(['4','5','6','7','8','9','10','11','12','13','14','15','16','17','18'],'projects-container-2');
 
-  // ============================================
-  // ROUTER
-  // ============================================
-  let currentPage = 'home';
-
-  function navigate(target) {
-    const app = document.getElementById('app');
-    if (target === 'home' || target === '' || target === null) {
-      app.innerHTML = renderHome();
-      currentPage = 'home';
-      try { history.pushState({page:'home'}, '', '/'); } catch(e) {}
-    } else {
-      app.innerHTML = renderProject(target);
-      currentPage = target;
-      try { history.pushState({page:target}, '', '/' + target); } catch(e) {}
-    }
-    window.scrollTo(0,0);
-    setupScroll();
-  }
-
-  function setupScroll() {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => {
-      p.addEventListener('scroll', () => {
-        const m = p.scrollHeight - p.clientHeight;
-        tsp = m > 0 ? p.scrollTop / m : 0;
-      });
+// ===== INTRO LOADER =====
+(function(){
+  var loader=document.getElementById('introLoader');
+  var logo=loader.querySelector('.introLoader__logo');
+  var baseline=document.getElementById('introBaseline');
+  var bar=document.getElementById('progressBar');
+  var scrollDown=document.getElementById('scrollDownText');
+  var words=baseline.querySelectorAll('div');
+  
+  // Animate in
+  setTimeout(function(){logo.style.opacity='1';logo.style.transition='opacity .4s'},200);
+  setTimeout(function(){
+    words.forEach(function(w,i){
+      setTimeout(function(){w.classList.add('show')},i*300);
     });
-  }
+  },500);
+  
+  // Progress bar
+  setTimeout(function(){bar.style.width='200px'},800);
+  
+  // Scroll down + fade out loader
+  setTimeout(function(){scrollDown.classList.add('show')},2200);
+  setTimeout(function(){
+    loader.classList.add('hidden');
+    // Document ready
+    document.documentElement.classList.add('lenis');
+    var app=document.getElementById('app');
+    app.classList.remove('lenis');
+  },3500);
+})();
 
-  function initHomeAnimations() {
-    const page = document.getElementById('page-home');
-    if (page) {
-      page.classList.remove('hidden');
-      setupScroll();
-    }
+// ===== WEBGL =====
+(function(){
+  var canvas=document.getElementById('webgl-canvas');
+  var gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');
+  if(!gl)return;
+  function resize(){
+    canvas.width=window.innerWidth*(window.devicePixelRatio||1);
+    canvas.height=window.innerHeight*(window.devicePixelRatio||1);
+    canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';
+    gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight);
   }
-
-  // ============================================
-  // AUDIO ENGINE
-  // ============================================
-  class AudioEngine {
-    constructor(){this.ctx=null;this.playing=false;this.muted=true;this.nodes=[];this.analyser=null;this.freqData=null;this.gain=null;}
-    async init(){
-      if(this.ctx)return;
-      this.ctx=new AudioContext();
-      this.analyser=this.ctx.createAnalyser();this.analyser.fftSize=64;this.analyser.smoothingTimeConstant=0.85;
-      this.freqData=new Uint8Array(this.analyser.frequencyBinCount);
-      this.gain=this.ctx.createGain();this.gain.gain.value=0;
-      this.gain.connect(this.analyser);this.analyser.connect(this.ctx.destination);
-      [55,65.41,82.41,110].forEach(f=>{const o=this.ctx.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=(Math.random()-0.5)*15;const g=this.ctx.createGain();g.gain.value=0.045;const l=this.ctx.createOscillator();l.type='sine';l.frequency.value=0.04+Math.random()*0.06;const lg=this.ctx.createGain();lg.gain.value=0.04;l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(this.gain);o.start();l.start();});
-      const b=this.ctx.createOscillator();b.type='sine';b.frequency.value=36.71;const bg=this.ctx.createGain();bg.gain.value=0.06;const bl=this.ctx.createOscillator();bl.type='sine';bl.frequency.value=0.15;const blg=this.ctx.createGain();blg.gain.value=0.05;bl.connect(blg);blg.connect(bg.gain);b.connect(bg);bg.connect(this.gain);b.start();bl.start();
-      const an=[261.63,311.13,392,466.16,523.25,392,349.23,293.66];let si=0;const ao=this.ctx.createOscillator();ao.type='sine';const ag=this.ctx.createGain();ag.gain.value=0;const af=this.ctx.createBiquadFilter();af.type='lowpass';af.frequency.value=2000;af.Q.value=2;ao.connect(ag);ag.connect(af);af.connect(this.gain);ao.start();let nt=this.ctx.currentTime;const sa=()=>{if(!this.playing)return;const nw=this.ctx.currentTime;while(nt<nw+0.1){const note=an[si%an.length],ng=0.015+Math.random()*0.01,dur=0.2+Math.random()*0.3;ag.gain.setValueAtTime(ng,nt);ag.gain.exponentialRampToValueAtTime(0.001,nt+dur);ao.frequency.setValueAtTime(note,nt);af.frequency.setValueAtTime(600+Math.random()*2000,nt);si++;nt+=0.25+Math.random()*0.15;}};sa();
-      const buf=this.ctx.createBuffer(1,4*this.ctx.sampleRate,this.ctx.sampleRate);const d=buf.getChannelData(0);let last=0;for(let i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*0.008;d[i]+=last*0.99;last=d[i];}const ns=this.ctx.createBufferSource();ns.buffer=buf;ns.loop=true;const ng=this.ctx.createGain();ng.gain.value=0.008;const nf=this.ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=120;ns.connect(nf);nf.connect(ng);ng.connect(this.gain);ns.start();
-    }
-    start(){if(this.playing)return;if(this.ctx?.state==='suspended')this.ctx.resume();this.playing=true;}
-    toggle(){this.muted=!this.muted;if(this.gain)this.gain.gain.value=this.muted?0:0.2;return!this.muted;}
-    level(){if(!this.analyser)return 0;this.analyser.getByteFrequencyData(this.freqData);let s=0;for(let i=0;i<this.freqData.length;i++)s+=this.freqData[i];return s/this.freqData.length/255*2;}
+  window.addEventListener('resize',resize);resize();
+  var vs='attribute vec2 a;varying vec2 v;void main(){v=a;gl_Position=vec4(a,0,1);}';
+  var fs='precision highp float;uniform float t;uniform vec2 r;uniform float a;varying vec2 v;void main(){vec2 u=gl_FragCoord.xy/r;float s=sin(u.x*3.0+t*0.03)*0.03+cos(u.y*2.0+t*0.02)*0.02;s+=sin((u.x+u.y)*5.0+t*0.04)*0.01;float b=0.91+s;a=clamp(a,0.,1.);float mx=mix(b,1.0-b,a*0.15);gl_FragColor=vec4(mx*0.012,mx*0.012,mx*0.012,1);}';
+  var p=gl.createProgram();
+  function addShader(t,s){var sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);gl.attachShader(p,sh);}
+  addShader(gl.VERTEX_SHADER,vs);addShader(gl.FRAGMENT_SHADER,fs);gl.linkProgram(p);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(p,'a');gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);gl.useProgram(p);
+  var audioLevel=0;
+  function draw(time){
+    gl.uniform1f(gl.getUniformLocation(p,'t'),time*0.001);
+    gl.uniform2f(gl.getUniformLocation(p,'r'),canvas.width,canvas.height);
+    gl.uniform1f(gl.getUniformLocation(p,'a'),audioLevel);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(draw);
   }
-
-  // ============================================
-  // WEBGL SHADER BACKGROUND  
-  // ============================================
-  (function initWebGL(){
-    const canvas=document.getElementById('webgl-canvas');
-    if(!canvas)return;
-    const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');
-    if(!gl)return;
+  draw(0);
+  
+  // Init audio on click
+  var started=false;
+  document.addEventListener('click',function(){
+    if(started)return;started=true;
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    ctx.resume();
     
-    function resize(){
-      canvas.width=window.innerWidth*devicePixelRatio;
-      canvas.height=window.innerHeight*devicePixelRatio;
-      canvas.style.width=window.innerWidth+'px';
-      canvas.style.height=window.innerHeight+'px';
-      gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight);
-    }
-    window.addEventListener('resize',resize);
-    resize();
-
-    const vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
-    const fs='precision highp float;uniform vec2 r;uniform float t;uniform vec2 m;uniform float s;uniform float a;mat2 rot(float x){float c=cos(x),si=sin(x);return mat2(c,-si,si,c);}float fbm(vec2 p){float v=0.0,amp=0.5;vec2 sh=vec2(100.0);for(int i=0;i<5;i++){p=rot(0.5+t*0.02)*p;v+=amp*sin(p.x*1.5+p.y*1.2+t*0.06);p=p*2.0+sh;amp*=0.5;}return v;}float org(vec2 p){float tm=t*0.03;return(sin(p.x*2.0+p.y*1.7+tm)*0.5+sin(p.x*3.5-p.y*2.3+tm*0.7)*0.25+sin(p.x*5.2+p.y*4.1+tm*0.5)*0.125+sin(p.x*8.0-p.y*7.0+tm*0.3)*0.0625)*0.5+0.5;}void main(){vec2 uv=gl_FragCoord.xy/r.xy;vec2 p=(gl_FragCoord.xy-0.5*r.xy)/r.y;p+=(m-0.5)*0.15;float sc=s*0.1,au=a*0.1;float v1=org(p*1.5+vec2(sc,sc*0.05));float v2=fbm(p*2.0+vec2(sc*0.1,-sc*0.05));float v3=org(p*3.0+vec2(t*0.015,t*0.01));float mv=mix(v1,v2,0.4+au)*0.8+v3*0.2;float vig=1.0-length(uv-0.5)*0.6;vig=smoothstep(0.3,0.8,vig);float base=0.92-mv*0.12-au*0.03;vec3 col=vec3(base+0.01,base+0.005,base+0.02)*vig;float g=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.008;gl_FragColor=vec4(col+g,1.0);}';
-
-    function compile(src,type){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null;}return s;}
-    const prog=gl.createProgram();
-    gl.attachShader(prog,compile(vs,gl.VERTEX_SHADER));
-    gl.attachShader(prog,compile(fs,gl.FRAGMENT_SHADER));
-    gl.linkProgram(prog);
-    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(prog));return;}
-    gl.useProgram(prog);
-
-    const data=new Float32Array([-1,-1,3,-1,-1,3]);
-    const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);
-    const ploc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(ploc);gl.vertexAttribPointer(ploc,2,gl.FLOAT,false,0,0);
-    const uloc={r:gl.getUniformLocation(prog,'r'),t:gl.getUniformLocation(prog,'t'),m:gl.getUniformLocation(prog,'m'),s:gl.getUniformLocation(prog,'s'),a:gl.getUniformLocation(prog,'a')};
-
-    let mx=0.5,my=0.5,sp=0,tsp=0,time=0,last=0;
-    document.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=1-e.clientY/window.innerHeight;});
-
-    function animate(now){
-      const dt=Math.min((now-last)/1000,0.05);last=now;time+=dt;
-      sp+=(tsp-sp)*0.05;
-      gl.uniform2f(uloc.r,canvas.width,canvas.height);
-      gl.uniform1f(uloc.t,time);
-      gl.uniform2f(uloc.m,mx,my);
-      gl.uniform1f(uloc.s,sp);
-      gl.uniform1f(uloc.a,audioEngine&&audioEngine.playing&&!audioEngine.muted?audioEngine.level():0);
-      gl.drawArrays(gl.TRIANGLES,0,3);
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-
-    // Expose scroll control
-    window.__setScroll = v => tsp = v;
-    // Hook scroll on pages
-    document.addEventListener('scroll',()=>{},true);
-    // Observe new pages
-    const obs=new MutationObserver(()=>{
-      const pages=document.querySelectorAll('.page');
-      pages.forEach(p=>{
-        if(!p._scrollHooked){
-          p._scrollHooked=true;
-          p.addEventListener('scroll',()=>{
-            const m=p.scrollHeight-p.clientHeight;
-            tsp=m>0?p.scrollTop/m:0;
-          });
-        }
-      });
+    // Pads
+    var pads=ctx.createGain();pads.gain.value=0.08;pads.connect(ctx.destination);
+    [[0,0.5],[2,0.3],[4,0.2],[7,0.1]].forEach(function(a){
+      var o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=55*Math.pow(2,a[0]/12);
+      var g=ctx.createGain();g.gain.value=a[1];o.connect(g);g.connect(pads);o.start();
     });
-    obs.observe(document.getElementById('app'),{childList:true,subtree:true});
-  })();
+    
+    // Bass
+    var bass=ctx.createOscillator();bass.type='sine';bass.frequency.value=55;
+    var bg=ctx.createGain();bg.gain.value=0.12;bass.connect(bg);bg.connect(ctx.destination);bass.start();
+    
+    // Arp
+    var arp=ctx.createOscillator();arp.type='triangle';
+    var ag=ctx.createGain();ag.gain.value=0.03;arp.connect(ag);ag.connect(ctx.destination);arp.start();
+    var arpN=[0,4,7,12,7,4],ai=0;
+    setInterval(function(){arp.frequency.value=110*Math.pow(2,arpN[ai]/12);ai=(ai+1)%arpN.length;},180);
+    
+    // Shimmer
+    var sh=ctx.createOscillator();sh.type='sine';sh.frequency.value=880;
+    var sg=ctx.createGain();sg.gain.value=0.008;sh.connect(sg);sg.connect(ctx.destination);
+    var lfo=ctx.createOscillator();lfo.frequency.value=0.3;
+    var lg=ctx.createGain();lg.gain.value=40;lfo.connect(lg);lg.connect(sh.frequency);lfo.start();sh.start();
+    
+    // Noise
+    var ns=ctx.createBufferSource();
+    var bf=ctx.createBuffer(1,ctx.sampleRate*4,ctx.sampleRate);
+    var d=bf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.02;
+    ns.buffer=bf;ns.loop=true;
+    var nf=ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=200;
+    var ng=ctx.createGain();ng.gain.value=0.06;ns.connect(nf);nf.connect(ng);ng.connect(ctx.destination);ns.start();
+    
+    // Audio level
+    var an=ctx.createAnalyser();an.fftSize=256;
+    setInterval(function(){
+      var data=new Uint8Array(an.frequencyBinCount);an.getByteFrequencyData(data);
+      var sum=0;for(var i=0;i<data.length;i++)sum+=data[i];
+      audioLevel=Math.min(1,sum/data.length/128);
+    },100);
+  },{once:true});
+  
+  // Sound toggle
+  var soundEl=document.getElementById('soundToggle');
+  soundEl.addEventListener('click',function(){soundEl.classList.toggle('sound--muted');});
+})();
 
-  // ============================================
-  // INIT
-  // ============================================
-  const audioEngine = new AudioEngine();
-  let audioReady = false;
-
-  document.getElementById('soundToggle').addEventListener('click', async function() {
-    if (!audioReady) {
-      await audioEngine.init();
-      audioEngine.start();
-      audioReady = true;
-      audioEngine.toggle();
-      this.classList.remove('sound--muted');
-      this.classList.add('sound--playing');
-    } else {
-      const on = audioEngine.toggle();
-      if (on) {
-        this.classList.remove('sound--muted');
-        this.classList.add('sound--playing');
-      } else {
-        this.classList.add('sound--muted');
-        this.classList.remove('sound--playing');
-      }
-    }
-  });
-
-  document.addEventListener('click', () => {
-    if (!audioReady) {
-      document.getElementById('soundToggle').click();
-    }
-  }, { once: true });
-
-  // Intro loader
-  setTimeout(() => {
-    const il = document.getElementById('introLoader');
-    if (il) il.classList.add('hidden');
-    setTimeout(() => { if (il) il.style.display = 'none'; }, 1500);
-  }, 3200);
-
-  // Sound ring animation
-  const ring = document.getElementById('soundRing');
-  if (ring) {
-    let on = false;
-    setInterval(() => {
-      const st = document.getElementById('soundToggle');
-      if (!audioReady || audioEngine.muted) {
-        ring.style.strokeDashoffset = '81.68';
-        ring.style.opacity = '0.3';
-        return;
-      }
-      on = !on;
-      ring.style.strokeDashoffset = on ? '0' : '81.68';
-      ring.style.opacity = '1';
-    }, 1200);
+// ===== CURSOR =====
+(function(){
+  var cursor=document.getElementById('cursor');
+  var follow=document.getElementById('cursorFollow');
+  var ease=document.getElementById('cursorEase');
+  var cursorText=document.getElementById('cursorText');
+  var mx=0,my=0,fx=0,fy=0,ex=0,ey=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.classList.remove('hidden');});
+  document.addEventListener('mouseleave',function(){cursor.classList.add('hidden');});
+  function anim(){
+    fx+=(mx-fx)*0.15;fy+=(my-fy)*0.15;
+    ex+=(mx-ex)*0.05;ey+=(my-ey)*0.05;
+    follow.style.transform='translate('+fx+'px,'+fy+'px) translate(-50%,-50%)';
+    ease.style.transform='translate('+ex+'px,'+ey+'px) translate(-50%,-50%)';
+    cursorText.style.transform='translate('+ex+'px,'+(ey-30)+'px) translate(-50%,-50%)';
+    requestAnimationFrame(anim);
   }
+  anim();
+})();
 
-  // Route handling
-  function routeFromPath() {
-    const path = window.location.pathname.replace(/\/$/,'');
-    if (path === '' || path === '/' || path === '/index.html') return 'home';
-    const slug = path.replace(/^\//,'');
-    const found = PROJECTS.find(p => p.slug === slug);
-    return found ? slug : 'home';
-  }
-
-  window.addEventListener('popstate', () => {
-    navigate(routeFromPath());
-  });
-
-  // Render initial page
-  navigate(routeFromPath());
-
-  console.log('🌱 Immersive Garden clone loaded');
-  console.log('📦', PROJECTS.length, 'projects available');
-  </script>
+// ===== SCROLL DOTS =====
+(function(){
+  var sd=document.getElementById('scrollDots');
+  if(sd)for(var i=0;i<60;i++){var d=document.createElement('div');d.className='dot'+(i<3?' dot__default':'');sd.appendChild(d);}
+})();
+</script>
 </body>
 </html>
