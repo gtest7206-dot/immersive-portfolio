@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,minimal-ui">
@@ -15,10 +15,7 @@
   <style>
     *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}
     html{font-family:HelveticaNeueRegular,HelveticaNeueLight,PSTimes,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;height:100%;overflow:hidden;-moz-user-select:none;user-select:none}
-    html.lenis{height:auto}
-    .lenis.lenis-smooth{scroll-behavior:auto}
-    .lenis.lenis-stopped{overflow:hidden;padding-right:var(--scrollbar-width,0)}
-    body{height:100%;overflow:hidden;color:#030303;background:#e8e8e8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;margin:0}
+    body{height:100%;color:#030303;background:#e8e8e8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;margin:0}
     body::-webkit-scrollbar{display:none}
     *{-webkit-tap-highlight-color:transparent;-ms-overflow-style:none;scrollbar-width:none}
     ::-webkit-scrollbar{display:none}
@@ -30,8 +27,8 @@
     @font-face{font-display:swap;font-family:PSTimes;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/PSTimes-Regular.BKbmUxeR.woff) format("woff");src:url(https://immersive-g.com/assets/PSTimes-Regular.hY69LrJ0.woff2) format("woff2")}
     @font-face{font-display:swap;font-family:HelveticaNeueRegular;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.Cby7U49T.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Regular.XE2tdPOO.woff2) format("woff2")}
     @font-face{font-display:swap;font-family:HelveticaNeueLight;font-style:normal;font-weight:400;src:url(https://immersive-g.com/assets/HelveticaNeue-Light.Cws8QGQI.woff) format("woff");src:url(https://immersive-g.com/assets/HelveticaNeue-Light.DlSTh50s.woff2) format("woff2")}
-    #app{height:100%;overflow:auto;scroll-behavior:smooth}
-    .main{position:relative}.app{height:100%;overflow:auto}
+    #app{height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+    .main{position:relative}
     .webglApp{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
     .webglApp canvas{width:100%;height:100%;display:block}
     .page{position:relative;z-index:1;min-height:100%}.page__wrapper{position:relative;z-index:1}
@@ -407,13 +404,7 @@ renderProjects(['4','5','6','7','8','9','10','11','12','13','14','15','16','17',
   
   // Scroll down + fade out loader
   setTimeout(function(){scrollDown.classList.add('show')},2200);
-  setTimeout(function(){
-    loader.classList.add('hidden');
-    // Document ready
-    document.documentElement.classList.add('lenis');
-    var app=document.getElementById('app');
-    app.classList.remove('lenis');
-  },3500);
+  setTimeout(function(){loader.classList.add('hidden')},3500);
 })();
 
 // ===== WEBGL =====
