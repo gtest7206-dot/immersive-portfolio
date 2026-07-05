@@ -1,58 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
-  <title>Immersive Garden — Innovative digital experiences studio</title>
-  <meta name="description" content="Transcend anything seen or felt before by crafting unparalleled experiences for ambitious brands.">
+  <title>Immersive Garden</title>
   <style>
-    @font-face{font-family:'PSTimes';font-style:normal;font-weight:400;src:local('Times New Roman'),local('Georgia')}
-    @font-face{font-family:'HelveticaNeueRegular';font-style:normal;font-weight:400;src:local('Helvetica Neue'),local('Helvetica'),local('Arial')}
-    @font-face{font-family:'HelveticaNeueLight';font-style:normal;font-weight:400;src:local('Helvetica Neue Light'),local('Helvetica-Light'),local('Arial')}
-    *,:after,:before{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%;overflow:hidden}
-    html{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;user-select:none}
+    @font-face{font-family:PSTimes;font-style:normal;font-weight:400;src:local('Times New Roman'),local('Georgia')}
+    @font-face{font-family:HelveticaNeueRegular;font-style:normal;font-weight:400;src:local('Helvetica Neue'),local('Helvetica'),local('Arial')}
+    @font-face{font-family:HelveticaNeueLight;font-style:normal;font-weight:400;src:local('Helvetica Neue Light'),local('Helvetica-Light'),local('Arial')}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
     body{
       font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
       background:#e8e8e8;color:#030303;
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-      text-rendering:optimizeLegibility;
-      -ms-overflow-style:none;scrollbar-width:none
+      text-rendering:optimizeLegibility;font-size:14px;line-height:1.4
     }
-    ::-webkit-scrollbar{display:none}
-    *{-ms-overflow-style:none;scrollbar-width:none}
-    img{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;display:block}
+    img,video{display:block;max-width:100%;pointer-events:none;user-select:none}
 
-    /* WebGL canvas */
-    #webgl-app{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-    #webgl-app canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+    /* WebGL background */
+    #webgl-app canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 
-    /* Lenis smooth scroll */
-    html.lenis{height:auto}
-    .lenis.lenis-smooth{scroll-behavior:auto}
-    .lenis.lenis-stopped{overflow:hidden;padding-right:var(--scrollbar-width,0)}
-    #scroll-container{position:relative;z-index:1;height:100vh;overflow-y:auto;overflow-x:hidden}
-    #scroll-container::-webkit-scrollbar{display:none}
+    /* Scroll container */
+    #sc{position:relative;z-index:1;min-height:100vh}
+    #sc::-webkit-scrollbar{display:none}
 
-    /* Grid */
-    .gridWrapper{display:grid;grid-template-columns:repeat(12,1fr);column-gap:16px}
-    .gridWrapper.padding{padding:0 48px}
-    @media(max-width:768px){.gridWrapper.padding{padding:0 24px}}
-
-    /* ======= NAV ======= */
-    nav{
-      position:fixed;top:0;left:0;right:0;z-index:50;pointer-events:none;
-      display:flex;justify-content:space-between;align-items:center
+    /* Logo - extracted from IG SVG, placed top-left */
+    .logo{
+      position:fixed;top:48px;left:48px;z-index:50;pointer-events:none
     }
-    nav>*{pointer-events:auto}
-    .navButton{
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
-      font-size:14px;line-height:1.1;color:#030303;text-decoration:none;cursor:pointer;
-      padding:40px;display:inline-flex;align-items:center
-    }
-    .navButton:hover{opacity:0.6}
+    .logo svg{width:170px;height:22px}
+    .logo path{fill:#030303}
+    @media(max-width:768px){.logo{top:24px;left:24px}.logo svg{width:130px;height:17px}}
 
-    /* ======= INTRO LOADER ======= */
+    /* Intro loader */
     #intro-loader{
       position:fixed;top:0;left:0;width:100%;height:100vh;z-index:200;
       background:#030303;color:#e8e8e8;
@@ -62,211 +43,123 @@
     #intro-loader.hidden{opacity:0}
     #intro-loader .intro-text{
       font-family:PSTimes,'Times New Roman',Georgia,serif;
-      font-size:clamp(2rem,3.8vw,3.8vw);line-height:1.1;
-      text-align:left;letter-spacing:-0.01em
+      font-size:58.52px;line-height:1.1;text-align:left;letter-spacing:-0.01em
     }
-    #intro-loader .intro-text > div{padding-top:0.15em;opacity:0;animation:fadeUp 0.8s ease forwards}
-    #intro-loader .intro-text > div:nth-child(1){animation-delay:0.4s}
-    #intro-loader .intro-text > div:nth-child(2){animation-delay:0.7s}
-    #intro-loader .intro-text > div:nth-child(3){animation-delay:1.0s}
-    #intro-loader .intro-text > div:nth-child(4){animation-delay:1.3s}
-    @keyframes fadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+    @media(max-width:1113px){#intro-loader .intro-text{font-size:34px}}
+    #intro-loader .intro-text>div{padding-top:0.1em;opacity:0;transform:translateY(30px);animation:fadeUp 0.8s ease forwards}
+    #intro-loader .intro-text>div:nth-child(1){animation-delay:0.4s}
+    #intro-loader .intro-text>div:nth-child(2){animation-delay:0.7s}
+    #intro-loader .intro-text>div:nth-child(3){animation-delay:1.0s}
+    #intro-loader .intro-text>div:nth-child(4){animation-delay:1.3s}
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
 
-    /* ======= HERO ======= */
+    /* Hero - WebGL overlay text */
     #hero{
       height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
-      padding-bottom:239.4px;pointer-events:none;user-select:none;padding:0 48px 12.5vw
+      padding:0 48px 239.4px;position:relative;z-index:1;pointer-events:none;user-select:none
     }
-    @media(max-width:432px){#hero{padding-bottom:54px;padding-left:24px;padding-right:24px}}
+    @media(max-width:432px){#hero{padding:0 24px 54px}}
     #hero h1{
       font-family:PSTimes,'Times New Roman',Georgia,serif;
-      font-size:58.52px;font-weight:400;line-height:1.1;
-      color:#030303;text-align:left;letter-spacing:-0.01em;
-      max-width:6em
+      font-size:58.52px;font-weight:400;line-height:1.1;letter-spacing:-0.01em;color:#030303
     }
     @media(max-width:1113px){#hero h1{font-size:34px}}
     .scroll-indication{
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
-      font-size:14px;font-weight:400;line-height:1.1;
-      color:#030303;text-align:right;
-      margin-top:40px;align-self:flex-end;opacity:0.25
+      margin-top:40px;text-align:right;align-self:flex-end;
+      color:rgba(3,3,3,0.3);opacity:0;animation:fadeIn 1s ease 3.5s forwards
+    }
+    @keyframes fadeIn{to{opacity:1}}
+
+    /* Showreel video section */
+    #showreel{position:relative;z-index:1;padding:0 48px;margin:40px 0}
+    @media(max-width:768px){#showreel{padding:0 24px}}
+    #showreel video{width:100%;height:auto;border-radius:4px;background:rgba(3,3,3,0.02)}
+    #showreel .play-label{
+      position:absolute;bottom:16px;left:48px;font-size:14px;
+      font-family:HelveticaNeueRegular,sans-serif;color:rgba(3,3,3,0.25)
     }
 
-    /* ======= SOUND TOGGLE (exact IG style) ======= */
+    /* Projects section - image cards like IG */
+    #projects{position:relative;z-index:1;padding:0 48px 40px}
+    @media(max-width:768px){#projects{padding:0 24px 32px}}
+    .project-card{
+      display:flex;flex-direction:row;align-items:center;cursor:pointer;
+      padding:24px 0;border-top:1px solid rgba(3,3,3,0.03);gap:24px
+    }
+    .project-card:hover{opacity:0.6}
+    .project-card .thumb{
+      width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;
+      background:rgba(3,3,3,0.03);display:flex;align-items:center;justify-content:center;
+      font-size:11px;color:rgba(3,3,3,0.15);letter-spacing:0.05em;text-transform:uppercase
+    }
+    .project-card .thumb img{width:100%;height:100%;object-fit:cover}
+    .project-card .desc{flex:1;font-size:14px;font-weight:400;line-height:1.5;color:rgba(3,3,3,0.6)}
+    .project-card .arr{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(3,3,3,0.15)}
+
+    /* See all projects */
+    #see-all{position:relative;z-index:1;padding:40px 48px 80px}
+    @media(max-width:768px){#see-all{padding:32px 24px 60px}}
+    #see-all a{color:#030303;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+    #see-all a:hover{opacity:0.5}
+    #see-all .count{color:rgba(3,3,3,0.3)}
+    #see-all .arr{transition:transform 0.3s;font-size:12px}
+    #see-all a:hover .arr{transform:translateX(4px)}
+
+    /* Sound toggle - exact IG SVG style */
     .soundWrapper{
-      position:fixed;bottom:0;right:0;padding:40px;z-index:100001;pointer-events:none
+      position:fixed;bottom:40px;right:40px;z-index:100001;pointer-events:none
     }
     .soundWrapper>*{pointer-events:auto}
-    @media(max-width:768px){.soundWrapper{padding:32px}}
-    .sound{
-      --sound-color:#030303;
-      cursor:pointer;position:relative;
-      display:flex;align-items:center;justify-content:center;
-      user-select:none;-webkit-user-select:none
-    }
-    .sound .icon{position:absolute;right:-13px;height:30px;width:30px;transform-origin:center;will-change:transform}
-    .sound .icon .circles{height:30px;width:30px;position:absolute}
-    .sound .icon .circles__animated{stroke:var(--sound-color);stroke-dasharray:226.2;stroke-dashoffset:0;transform-origin:center center;transition:stroke .5s ease;will-change:transform,opacity,stroke-dashoffset}
-    .sound .icon .dot{align-items:center;display:flex;height:30px;justify-content:center;position:absolute;transform:scale(1.15);width:30px;will-change:transform,opacity}
-    .sound .icon .dot__child{background:var(--sound-color);border-radius:100%;height:3px;transition:background .5s ease;width:3px;will-change:transform,opacity}
-    .sound .text{color:var(--sound-color);font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1;margin-right:30px;will-change:opacity}
+    @media(max-width:768px){.soundWrapper{right:32px}}
+    .sound{--c:#030303;cursor:pointer;position:relative;display:flex;align-items:center;user-select:none}
+    .sound .text{color:var(--c);font-family:HelveticaNeueRegular,sans-serif;font-size:14px;font-weight:400;line-height:1.1;margin-right:30px}
     .sound .text .wrapper{position:relative}
-    .sound .text__off{opacity:1;position:absolute;right:-6px;will-change:transform,opacity}
-    .sound .text__on{opacity:0;position:relative;will-change:transform,opacity}
+    .sound .text__off{opacity:1;position:absolute;right:-6px}
+    .sound .text__on{opacity:0;position:relative}
     .sound--muted .text__off{opacity:0}
     .sound--muted .text__on{opacity:1}
-    .sound--dark-bg{--sound-color:#e8e8e8}
-
-    /* ======= PROJECTS BUTTON (fixed bottom-left) ======= */
-    .projectsBttnWrapper{
-      position:fixed;bottom:0;left:0;padding:40px;z-index:1000;opacity:1;
-      transition:opacity 1.5s linear,visibility 0s linear;visibility:visible;
-      pointer-events:none
-    }
-    .projectsBttnWrapper>*{pointer-events:auto}
-    @media(max-width:768px){.projectsBttnWrapper{padding:32px}}
-    .projectsBttn{
-      align-items:center;color:#030303;cursor:pointer;display:flex;
-      padding:40px;margin:-40px;white-space:nowrap;width:-moz-fit-content;width:fit-content;
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1;
-      transition:color .5s ease;user-select:none;-webkit-user-select:none
-    }
-    .projectsBttn:hover{opacity:0.6}
-    .projectsBttn .wrapper{align-items:center;display:flex;justify-content:center;position:relative;transition:opacity .5s ease}
-    .projectsBttn .wrapper__text{font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.1}
-    .projectsBttn .wrapper__count{font-size:14px;color:rgba(3,3,3,0.3);margin-left:4px}
-    .projectsBttn--white .wrapper__count{color:rgba(232,232,232,0.3)}
-    .projectsBttn .wrapper__icon{height:1em;margin-left:-5px;margin-top:1px;position:relative;top:calc(-22.5px - -.5em);width:25px}
-    .projectsBttn .wrapper__icon>div{height:45px;width:45px}
-    .projectsBttn .wrapper__icon .icon--black{left:0;opacity:1;position:absolute;top:0;z-index:2}
-    .projectsBttn .wrapper__icon .icon--white{opacity:0}
-    .projectsBttn--white{color:#e8e8e8}
-    .projectsBttn--white .wrapper__icon .icon--black{opacity:0}
-    .projectsBttn--white .wrapper__icon .icon--white{opacity:1}
-
-    /* ======= PROJECTS SECTION ======= */
-    #projects{min-height:60vh;padding:6rem 48px}
-    .section-label{
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
-      font-size:14px;font-weight:400;line-height:1.1;
-      color:rgba(3,3,3,0.25);margin-bottom:24px
-    }
-    .project-item{
-      border-top:1px solid rgba(3,3,3,0.04);
-      display:flex;justify-content:space-between;align-items:center;
-      cursor:pointer;transition:opacity 0.3s;
-      font-family:HelveticaNeueRegular,sans-serif;
-      font-size:14px;font-weight:400;line-height:1.1;
-      padding:24px 0
-    }
-    .project-item:hover{opacity:0.5}
-    .project-item .project-cat{color:rgba(3,3,3,0.3);font-size:14px}
-
-    /* ======= MARQUEE ======= */
-    .marquee-section{min-height:15vh;display:flex;align-items:center;overflow:hidden;padding:2rem 48px}
-    .marquee-track{display:flex;gap:32px;white-space:nowrap;animation:marqueeScroll 50s linear infinite}
-    .marquee-track span{
-      font-family:PSTimes,'Times New Roman',Georgia,serif;
-      font-size:clamp(4rem,8vw,8rem);font-style:italic;
-      color:rgba(3,3,3,0.04);letter-spacing:-0.03em
-    }
-    @keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-    /* ======= ABOUT SECTION ======= */
-    .about-section{
-      min-height:80vh;padding:6rem 48px;
-      background:#030303;color:#e8e8e8;
-      display:flex;flex-direction:row;align-items:center;gap:80px
-    }
-    .about-section .section-label{color:rgba(232,232,232,0.3)}
-    .about-section .about-heading{
-      font-family:PSTimes,'Times New Roman',Georgia,serif;
-      font-size:clamp(2rem,4.5vw,4.5rem);font-weight:400;line-height:1.05;color:#e8e8e8
-    }
-    .about-section .about-detail{
-      border-top:1px solid rgba(232,232,232,0.06);padding-top:20px
-    }
-    .about-section .about-detail .about-title{
-      font-size:14px;font-weight:500;color:#e8e8e8;margin-bottom:6px
-    }
-    .about-section .about-detail .about-desc{
-      font-size:14px;font-weight:300;color:rgba(232,232,232,0.4);line-height:1.6
-    }
-
-    /* ======= UNDERLINED BUTTON ======= */
-    .underlinedButton{padding-bottom:16px;position:relative;cursor:pointer;display:inline-block}
-    .underlinedButton__line{
-      position:absolute;bottom:0;left:0;width:100%;height:1px;
-      background-color:#030303;transform:scaleX(1);
-      transform-origin:right center;transition:all 0s
-    }
-    .footer-section .underlinedButton__line{background-color:#e8e8e8}
-
-    /* ======= FOOTER ======= */
-    .footer-section{
-      position:relative;min-height:100dvh;
-      background:#030303;color:#e8e8e8;pointer-events:none
-    }
-    .footer-section>*{pointer-events:auto}
-    .footer__email{
-      font-family:PSTimes,'Times New Roman',Georgia,serif;
-      font-size:58.52px;font-weight:400;line-height:1.2;
-      position:absolute;left:50%;top:46.75%;
-      transform:translate(-50%,-50%);text-align:center;
-      white-space:nowrap
-    }
-    @media(max-width:785px){.footer__email{font-size:24px}}
-    .footer__email a{color:#e8e8e8;text-decoration:none;cursor:pointer;transition:opacity .5s ease}
-    .footer__email a:hover{opacity:0.6}
-    .footer__address{
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
-      font-size:14px;font-weight:400;line-height:1.1;
-      color:#e8e8e8;opacity:0.5;text-align:center;
-      position:absolute;left:50%;bottom:106.4px;
-      transform:translateX(-50%);pointer-events:auto;cursor:pointer
-    }
-    @media(max-width:432px){.footer__address{bottom:24px}}
-    .footer__newsletterOpen{
-      position:absolute;bottom:40px;left:40px
-    }
-    @media(max-width:768px){.footer__newsletterOpen{bottom:24px;left:32px}}
-    .footer__networks{
-      position:absolute;bottom:40px;right:40px;
-      display:flex;gap:53.2px;
-      font-family:HelveticaNeueRegular,Helvetica,Arial,sans-serif;
-      font-size:14px;font-weight:400;line-height:1.1
-    }
-    @media(max-width:432px){.footer__networks{gap:12px;right:32px;bottom:24px}}
-    .footer__networks a{color:#e8e8e8;text-decoration:none;transition:opacity 0.3s}
-    .footer__networks a:hover{opacity:0.6}
-
-    @media(max-width:768px){
-      nav{padding:0 24px}
-      #hero{padding-left:24px;padding-right:24px}
-      #projects{padding-left:24px;padding-right:24px}
-      .marquee-section{padding-left:24px;padding-right:24px}
-      .about-section{padding-left:24px;padding-right:24px;flex-direction:column;gap:40px}
-      .footer__networks{gap:24px;margin-bottom:24px;margin-right:32px}
-      .projectsBttnWrapper{padding:32px}
-      .projectsBttn{padding:32px;margin:-32px}
-      .soundWrapper{padding:32px}
-    }
+    .sound .icon{position:absolute;right:-13px;height:30px;width:30px}
+    .sound .icon circle{stroke:var(--c);stroke-dasharray:81.68;transform-origin:center;transition:stroke .5s ease}
+    .sound .icon .dot{align-items:center;display:flex;height:30px;justify-content:center;position:absolute;width:30px}
+    .sound .icon .dot__child{background:var(--c);border-radius:100%;height:3px;width:3px}
+    .sound--dark-bg{--c:#e8e8e8}
   </style>
 </head>
 <body>
 
-  <!-- NV: exactly matching IG structure - keep minimal for accuracy -->
+  <div id="webgl-app"><canvas id="c"></canvas></div>
 
-  <div id="webgl-app"><canvas id="three-canvas"></canvas></div>
+  <!-- Logo (exact IG SVG) -->
+  <div class="logo">
+    <svg viewBox="0 0 170 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16 0H0V13.5368C0 16.0195 0.947081 17.7763 2.40398 19.0805C3.8405 20.3666 5.76249 21.204 7.71528 21.8914L7.98311 22L8.29863 21.8954C10.2554 21.2075 12.1754 20.369 13.6075 19.0801C15.0569 17.7753 15.996 16.0185 15.996 13.5368V10.1623H8.81888V2.15074H7.20745V10.1623H3.03603L3.03404 10.9496H14.3831V14.0248C14.3831 15.8117 13.8032 17.5039 12.7861 18.5288C11.8335 19.4896 10.484 20.2254 8.81839 20.8823V12.3311H7.20696V20.8823C5.54186 20.2254 4.1918 19.4896 3.23925 18.5288C2.22261 17.5034 1.64273 15.8112 1.64273 14.0248V0.768488H16V0Z" fill="#030303"/>
+      <path d="M32 7.65184L32.9003 7.80157V13.9518L32 14.1016V14.3514H34.8019V14.1016L33.9016 13.9518V7.80157L34.8019 7.65184V7.40198H32V7.65184Z" fill="#030303"/>
+      <path d="M41.9563 12.7016L39.7047 7.40198H37.6037V7.65184L38.504 7.80157V13.9022L37.6037 14.052V14.3018H39.9545V14.052L39.0047 13.9022V8.35184L41.5558 14.3514H41.756L44.6075 8.35184V13.9518L43.6567 14.1016V14.3514H46.4586V14.1016L45.5583 13.9518V7.80157L46.4586 7.65184V7.40198H44.4578L41.9563 12.7016Z" fill="#030303"/>
+      <path d="M53.5128 12.7016L51.2612 7.40198H49.1603V7.65184L50.0606 7.80157V13.9022L49.1603 14.052V14.3018H51.5111V14.052L50.5612 13.9022V8.35184L53.1123 14.3514H53.3126L56.1144 8.35184V13.9518L55.1636 14.1016V14.3514H57.9655V14.1016L57.0643 13.9518V7.80157L57.9655 7.65184V7.40198H55.9638L53.5128 12.7016Z" fill="#030303"/>
+      <path d="M65.7703 13.8021C65.5205 13.8517 64.9197 13.9022 64.0194 13.9022H62.669V11.0021H64.7699V10.552H62.669V7.85211H64.1195C64.8701 7.85211 65.4203 7.85211 65.8209 7.90171L65.9706 9.05184H66.3206V7.40198H60.7169V7.65184L61.6171 7.80157V13.9518L60.7169 14.1016H60.7664V14.3514H66.3197L66.4198 12.5013H66.0698L65.7694 13.8012L65.7703 13.8021Z" fill="#030303"/>
+      <path d="M75.0753 13.6514L73.4245 11.1518C73.8746 11.0021 74.2246 10.8018 74.4754 10.4518C74.7253 10.1018 74.8759 9.70131 74.8759 9.25211C74.8759 8.60171 74.6757 8.15251 74.2751 7.85211C73.825 7.55171 73.1746 7.40198 72.3239 7.40198H69.3218V7.65184L70.2221 7.80157V13.9518L69.4219 14.1016V14.3514H72.3239V14.1016L71.273 13.9518V11.3016H72.4241L73.9251 13.6514C74.2255 14.1512 74.7758 14.4516 75.3757 14.4516H76.0757V14.2017C75.6751 14.2017 75.3251 14.0014 75.0753 13.6514ZM72.1237 10.8018H71.2234V7.85211H72.1237C72.7741 7.85211 73.2242 8.00184 73.4741 8.20211C73.7239 8.45197 73.8746 8.80198 73.8746 9.35224C73.8746 9.85198 73.7745 10.2525 73.4245 10.4528C73.1746 10.7026 72.7245 10.8018 72.1237 10.8018Z" fill="#030303"/>
+      <path d="M82.8801 11.1013C82.6798 10.9516 82.4795 10.8009 82.2793 10.7017C82.079 10.6016 81.8787 10.552 81.6289 10.4518C81.4286 10.3517 81.1787 10.3021 80.9785 10.202C80.7286 10.1524 80.5283 10.0522 80.3786 9.95211C80.2279 9.85198 80.0782 9.70224 79.9781 9.55251C79.8779 9.40278 79.8283 9.25211 79.8283 9.00224C79.8283 8.65224 79.9781 8.40238 80.2279 8.20211C80.4787 8.00184 80.8783 7.90171 81.3285 7.90171C81.8292 7.90171 82.2793 8.05144 82.6293 8.30131L82.8295 9.15104H83.2797V7.70144C82.5797 7.55171 81.9789 7.50117 81.4286 7.50117C80.6781 7.50117 80.0782 7.65091 79.6777 7.95131C79.2771 8.25171 79.0778 8.70091 79.0778 9.25117C79.0778 9.55157 79.1274 9.85104 79.2275 10.0513C79.3277 10.2516 79.4774 10.4509 79.6281 10.6016C79.8283 10.7513 80.0277 10.8514 80.2279 10.9516C80.4282 11.0517 80.6285 11.1013 80.8783 11.2014C81.0786 11.3016 81.3285 11.3512 81.5288 11.4513C81.7786 11.5514 81.9789 11.6516 82.1296 11.7517C82.2793 11.8518 82.429 12.0016 82.5291 12.1513C82.6293 12.301 82.6798 12.5013 82.6798 12.7512C82.6798 13.1508 82.5797 13.5008 82.2793 13.7516C81.9789 14.0014 81.6289 14.1016 81.1292 14.1016C80.7782 14.1016 80.4787 14.0014 80.1783 13.9013C79.8779 13.7516 79.6777 13.6009 79.528 13.4512L79.3277 12.5013H78.8775V14.3009C79.1779 14.401 79.4774 14.5012 79.8779 14.5508C80.2785 14.6004 80.6781 14.6509 81.029 14.6509C81.8291 14.6509 82.429 14.4506 82.8295 14.1006C83.2301 13.7506 83.4304 13.2004 83.4304 12.5509C83.4304 12.2009 83.3798 11.951 83.2797 11.7012C83.1796 11.4513 83.0794 11.251 82.8801 11.1013Z" fill="#030303"/>
+      <path d="M86.6814 7.65184L87.5826 7.80157V13.9518L86.6814 14.1016V14.3514H89.4833V14.1016L88.583 13.9518V7.80157L89.4833 7.65184V7.40198H86.6814V7.65184Z" fill="#030303"/>
+      <path d="M97.2376 7.65184L98.1388 7.80157L96.0369 12.9018L93.936 7.80157L94.8868 7.65184V7.40198H92.0849V7.65184L92.885 7.80157L95.7365 14.5021H95.9873L98.7882 7.80157L99.5388 7.65184V7.40198H97.2376V7.65184Z" fill="#030303"/>
+      <path d="M107.094 13.8021C106.843 13.8517 106.243 13.9022 105.343 13.9022H103.991V11.0021H106.093V10.552H103.991V7.85211H105.443C106.193 7.85211 106.744 7.85211 107.143 7.90171L107.294 9.05184H107.644V7.40198H102.091V7.65184L102.991 7.80157V13.9518L102.091 14.1016V14.3514H107.644L107.744 12.5013H107.394L107.094 13.8021Z" fill="#030303"/>
+      <path d="M119.901 11.5514L120.802 11.7012V13.701C120.601 13.8012 120.352 13.9013 120.051 13.9509C119.751 14.0005 119.451 14.051 119.151 14.051C118.35 14.051 117.699 13.8012 117.3 13.2509C116.85 12.7512 116.649 11.951 116.649 10.9506C116.649 9.90064 116.85 9.1005 117.249 8.55024C117.65 7.99997 118.3 7.7501 119.201 7.7501C119.551 7.7501 119.901 7.7997 120.251 7.89984C120.601 7.99997 120.851 8.1497 121.102 8.29943L121.252 9.14917H121.602V7.64903C120.802 7.44877 120.002 7.34863 119.151 7.34863C117.95 7.34863 117.049 7.64903 116.449 8.2489C115.848 8.84877 115.549 9.79863 115.549 10.9993C115.549 12.2 115.848 12.9992 116.499 13.599C117.149 14.1989 118 14.4993 119.151 14.4993C119.651 14.4993 120.101 14.4497 120.552 14.3496C121.002 14.2494 121.402 14.1493 121.802 13.9996H121.753V11.6993L122.453 11.5496V11.2492H119.901V11.5514Z" fill="#030303"/>
+      <path d="M129.206 7.35144H128.206L125.854 13.9518L125.054 14.1016V14.3514H127.355V14.1016L126.405 13.9518L127.105 11.952H129.857L130.558 13.9518L129.607 14.1016V14.3514H132.559V14.1016L131.658 13.9518L129.206 7.35144ZM127.255 11.5018L128.456 8.10197L129.657 11.5018H127.255Z" fill="#030303"/>
+      <path d="M150.269 8.25171C149.668 7.70144 148.718 7.40198 147.418 7.40198H144.266V7.65184L145.166 7.80157V14.0014L144.266 14.1512V14.401H147.668C148.819 14.401 149.719 14.1006 150.319 13.5008C150.92 12.9009 151.22 12.0006 151.22 10.8505C151.22 9.70037 150.869 8.80104 150.269 8.25171ZM149.519 13.1517C149.118 13.6514 148.468 13.9022 147.617 13.9022C147.017 13.9022 146.516 13.9022 146.117 13.8517V7.85211H147.067C148.068 7.85211 148.819 8.10198 149.318 8.60171C149.869 9.10144 150.118 9.85197 150.118 10.8018C150.118 11.9014 149.919 12.652 149.519 13.1517Z" fill="#030303"/>
+      <path d="M159.074 13.8021C158.824 13.8517 158.224 13.9022 157.322 13.9022H155.972V11.0021H158.073V10.552H155.972V7.85211H157.423C158.173 7.85211 158.723 7.85211 159.124 7.90171L159.274 9.05184H159.625V7.40198H154.071V7.65184L154.972 7.80157V13.9518L154.071 14.1016V14.3514H159.625L159.725 12.5013H159.374L159.074 13.8021Z" fill="#030303"/>
+      <path d="M167.428 7.40198V7.65184L168.379 7.80157V12.5518L164.777 7.40198H162.676V7.65184L163.577 7.80157V13.9518L162.676 14.1016V14.3514H165.027V14.1016L164.077 13.9518V8.10197L168.379 14.3514H168.88V7.80157L169.78 7.65184V7.40198H167.428Z" fill="#030303"/>
+    </svg>
+  </div>
 
-  <!-- NAV -->
-  <nav>
-    <a class="navButton" href="#" style="letter-spacing:0.15em;text-transform:uppercase;font-size:11px">Immersive Garden</a>
-    <a class="navButton" href="#about">About</a>
-  </nav>
+  <!-- Sound toggle -->
+  <div class="soundWrapper">
+    <div class="sound--muted sound" id="st">
+      <div class="text"><div class="wrapper"><div class="text__off"> Off </div><div class="text__on"> On </div></div></div>
+      <svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none"><circle class="circles__animated" cx="15" cy="15" r="13" stroke="#030303" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="81.68" stroke-dashoffset="0" transform="rotate(-90 15 15)" id="ring"/><g class="dot"><circle class="dot__child" cx="15" cy="15" r="1.5"/></g></svg>
+    </div>
+  </div>
 
-  <!-- INTRO LOADER -->
-  <div id="intro-loader" class="">
+  <!-- Intro loader -->
+  <div id="intro-loader">
     <div class="intro-text">
       <div>Innovative</div>
       <div>digital</div>
@@ -275,343 +168,114 @@
     </div>
   </div>
 
-  <!-- SOUND TOGGLE (mimics IG exactly) -->
-  <div class="soundWrapper">
-    <div class="sound--muted sound" id="sound-toggle">
-      <div class="text">
-        <div class="wrapper">
-          <div class="text__off"> Off </div>
-          <div class="text__on"> On </div>
-        </div>
-      </div>
-      <svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle class="circles__animated" cx="15" cy="15" r="13" stroke="#030303" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="81.68" stroke-dashoffset="0" transform="rotate(-90 15 15)" id="sound-ring"/>
-        <g class="dot">
-          <circle class="dot__child" cx="15" cy="15" r="1.5"/>
-        </g>
-      </svg>
-    </div>
-  </div>
+  <!-- Scroll wrapper -->
+  <div id="sc">
 
-  <!-- SCROLL CONTAINER -->
-  <div id="scroll-container">
-
-    <!-- HERO -->
+    <!-- Hero -->
     <section id="hero">
       <h1 data-webgl-title>Transcend anything seen<br>or felt before by crafting<br>unparalleled experiences<br>for ambitious brands.</h1>
       <div class="scroll-indication">Scroll down</div>
     </section>
 
-    <!-- SELECTED WORK -->
+    <!-- Showreel video -->
+    <section id="showreel">
+      <video autoplay muted loop playsinline poster="">
+        <source src="https://ig-medias-prod.ams3.digitaloceanspaces.com/Showreel_Short_3_f3699e2f02.mp4" type="video/mp4">
+      </video>
+      <div class="play-label">Showreel — 2024</div>
+    </section>
+
+    <!-- Projects -->
     <section id="projects">
-      <div class="section-label">Selected work</div>
-      <div class="project-item"><span class="project-name">Louis Vuitton VIA Nicolas Ghesquière</span><span class="project-cat">Film, Design, Tech, NFT</span></div>
-      <div class="project-item"><span class="project-name">Girard-Perregaux Casquette 2.0</span><span class="project-cat">Design, Tech, Experience</span></div>
-      <div class="project-item"><span class="project-name">Cartier Love Is All</span><span class="project-cat">Design, E-shop, Experience</span></div>
-      <div class="project-item"><span class="project-name">Dioriviera</span><span class="project-cat">Design, Tech</span></div>
-      <div class="project-item"><span class="project-name">Longines Spirit Zulu Time</span><span class="project-cat">Design, Tech</span></div>
-      <div class="project-item"><span class="project-name">Masar Cityscape Global Exhibition</span><span class="project-cat">Installation</span></div>
-    </section>
-
-    <!-- MARQUEE -->
-    <section class="marquee-section">
-      <div class="marquee-track">
-        <span>Digital — 3D — Interactive — Design — Experience —</span>
-        <span>Digital — 3D — Interactive — Design — Experience —</span>
+      <div class="project-card">
+        <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23e0e0e0'/><text x='40' y='46' text-anchor='middle' fill='%23999' font-size='12' font-family='Helvetica'>LV</text></svg>" alt=""></div>
+        <div class="desc">Discover Cartier's End of Year: redefining elegance with an immersive campaign, Above the Clouds.</div>
+        <div class="arr">→</div>
+      </div>
+      <div class="project-card">
+        <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23ddd'/><text x='40' y='46' text-anchor='middle' fill='%23999' font-size='12' font-family='Helvetica'>GP</text></svg>" alt=""></div>
+        <div class="desc">Girard-Perregaux Casquette 2.0 — A digital experience bridging heritage and innovation.</div>
+        <div class="arr">→</div>
+      </div>
+      <div class="project-card">
+        <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23e0e0e0'/><text x='40' y='46' text-anchor='middle' fill='%23999' font-size='12' font-family='Helvetica'>D</text></svg>" alt=""></div>
+        <div class="desc">Dioriviera — An immersive journey through the iconic resort collection.</div>
+        <div class="arr">→</div>
+      </div>
+      <div class="project-card">
+        <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23ddd'/><text x='40' y='46' text-anchor='middle' fill='%23999' font-size='12' font-family='Helvetica'>L</text></svg>" alt=""></div>
+        <div class="desc">Embark on the pioneering flights of Amy Johnson, Clyde Pangborn, and Hugh Herndon Jr. Discover Longines Spirit Zulu Time: honoring aviation pioneers with precision and innovation.</div>
+        <div class="arr">→</div>
+      </div>
+      <div class="project-card">
+        <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23e0e0e0'/><text x='40' y='46' text-anchor='middle' fill='%23999' font-size='12' font-family='Helvetica'>M</text></svg>" alt=""></div>
+        <div class="desc">Explore Masar's Vision: A captivating digital experience redefining the urban heart of Saudi Arabia.</div>
+        <div class="arr">→</div>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="about-section">
-      <div style="flex:1">
-        <div class="section-label">The studio</div>
-        <div class="about-heading">Crafted with<br>intention.</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;gap:24px;">
-        <div class="about-detail"><div class="about-title">3D Web Development</div><div class="about-desc">Custom WebGL experiences optimized for performance across all devices.</div></div>
-        <div class="about-detail"><div class="about-title">Interactive Design</div><div class="about-desc">Scroll-driven narratives and spatial interfaces that feel natural.</div></div>
-        <div class="about-detail"><div class="about-title">Creative Technology</div><div class="about-desc">From concept to implementation — merging art direction with technical innovation.</div></div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <section class="footer-section" id="contact">
-      <div class="footer__email"><a href="mailto:inquiries@immersive-g.com">inquiries@immersive-g.com</a></div>
-      <div class="footer__address">123 Creative Lane, Design District, NY 10001</div>
-      <div class="footer__newsletterOpen">
-        <div class="underlinedButton"><span style="font-family:HelveticaNeueRegular,sans-serif;font-size:14px;font-weight:400;color:#e8e8e8;">Newsletter</span><div class="underlinedButton__line"></div></div>
-      </div>
-      <div class="footer__networks">
-        <a href="#" target="_blank">X</a>
-        <a href="#" target="_blank">Instagram</a>
-        <a href="#" target="_blank">Linkedin</a>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- PROJECTS BUTTON -->
-  <div class="projectsBttnWrapper">
-    <div class="projectsBttn">
-      <div class="wrapper">
-        <span class="wrapper__text">See all projects</span>
-        <span class="wrapper__count">(51)</span>
-        <span class="wrapper__icon">
-          <svg class="icon--black" width="45" height="45" viewBox="0 0 45 45" fill="none"><path d="M15 12L27 22.5L15 33" stroke="#030303" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <svg class="icon--white" width="45" height="45" viewBox="0 0 45 45" fill="none"><path d="M15 12L27 22.5L15 33" stroke="#e8e8e8" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </span>
-      </div>
+    <!-- See all projects -->
+    <div id="see-all">
+      <a href="#">See all projects <span class="count">(51)</span> <span class="arr">→</span></a>
     </div>
+
   </div>
 
-  <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
-  </script>
-
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
   <script type="module">
-    import * as THREE from 'three';
+    import*as THREE from 'three';
 
-    // ========== AUDIO ENGINE ==========
-    class AmbientAudio {
-      constructor(){
-        this.ctx=null;this.isPlaying=false;this.isMuted=true;
-        this.nodes=[];this.analyser=null;this.freqData=null;this.masterGain=null;
-        this._arpId=null;
-      }
-      async init(){
-        if(this.ctx) return;
-        this.ctx=new(window.AudioContext||window.webkitAudioContext)();
-        this.analyser=this.ctx.createAnalyser();
-        this.analyser.fftSize=64;this.analyser.smoothingTimeConstant=0.85;
-        this.freqData=new Uint8Array(this.analyser.frequencyBinCount);
-        this.masterGain=this.ctx.createGain();
-        this.masterGain.gain.value=0;
-        this.masterGain.connect(this.analyser);
-        this.analyser.connect(this.ctx.destination);
-
-        // Pads
-        [55,65.41,82.41,110].forEach((f,i)=>{
-          const o=this.ctx.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=(Math.random()-0.5)*15;
-          const g=this.ctx.createGain();g.gain.value=0.045;
-          const l=this.ctx.createOscillator();l.type='sine';l.frequency.value=0.04+Math.random()*0.06;
-          const lg=this.ctx.createGain();lg.gain.value=0.04;
-          l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(this.masterGain);
-          o.start();l.start();this.nodes.push(o,l);
-        });
-
-        // Bass
-        const b=this.ctx.createOscillator();b.type='sine';b.frequency.value=36.71;
-        const bg=this.ctx.createGain();bg.gain.value=0.06;
-        const bl=this.ctx.createOscillator();bl.type='sine';bl.frequency.value=0.15;
-        const blg=this.ctx.createGain();blg.gain.value=0.05;
-        bl.connect(blg);blg.connect(bg.gain);b.connect(bg);bg.connect(this.masterGain);
-        b.start();bl.start();this.nodes.push(b,bl);
-
-        // Arp
-        const an=[261.63,311.13,392.00,466.16,523.25,392.00,349.23,293.66];
-        let si=0;
-        const ao=this.ctx.createOscillator();ao.type='sine';
-        const ag=this.ctx.createGain();ag.gain.value=0;
-        const af=this.ctx.createBiquadFilter();af.type='lowpass';af.frequency.value=2000;af.Q.value=2;
-        ao.connect(ag);ag.connect(af);af.connect(this.masterGain);ao.start();
-        this.nodes.push(ao);
-        let nt=this.ctx.currentTime;
-        const sa=()=>{if(!this.isPlaying)return;
-          const nw=this.ctx.currentTime;
-          while(nt<nw+0.1){
-            const note=an[si%an.length],ng=0.015+Math.random()*0.01,dur=0.2+Math.random()*0.3;
-            ag.gain.setValueAtTime(ng,nt);ag.gain.exponentialRampToValueAtTime(0.001,nt+dur);
-            ao.frequency.setValueAtTime(note,nt);af.frequency.setValueAtTime(600+Math.random()*2000,nt);
-            si++;nt+=0.25+Math.random()*0.15;
-          }
-          this._arpId=requestAnimationFrame(sa);
-        };
-        this._arp=sa;sa();
-
-        // Brown noise
-        const buf=this.ctx.createBuffer(1,4*this.ctx.sampleRate,this.ctx.sampleRate);
-        const d=buf.getChannelData(0);let last=0;
-        for(let i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*0.008;d[i]+=last*0.99;last=d[i];}
-        const ns=this.ctx.createBufferSource();ns.buffer=buf;ns.loop=true;
-        const ng=this.ctx.createGain();ng.gain.value=0.008;
-        const nf=this.ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=120;
-        ns.connect(nf);nf.connect(ng);ng.connect(this.masterGain);ns.start();
-        this.nodes.push(ns);
-      }
-      start(){if(this.isPlaying)return;if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();this.isPlaying=true;}
-      toggle(){
-        this.isMuted=!this.isMuted;
-        if(this.masterGain)this.masterGain.gain.value=this.isMuted?0:0.2;
-        return !this.isMuted;
-      }
-      getLevel(){
-        if(!this.analyser)return 0;
-        this.analyser.getByteFrequencyData(this.freqData);
-        let s=0;for(let i=0;i<this.freqData.length;i++)s+=this.freqData[i];
-        return s/this.freqData.length/255*2;
-      }
+    // Audio
+    class A{constructor(){this.ctx=null;this.p=false;this.m=true;this.n=[];this.l=null;this.f=null;this.g=null;}
+      async init(){if(this.ctx)return;this.ctx=new AudioContext;this.l=this.ctx.createAnalyser();this.l.fftSize=64;this.l.smoothingTimeConstant=0.85;this.f=new Uint8Array(this.l.frequencyBinCount);this.g=this.ctx.createGain();this.g.gain.value=0;this.g.connect(this.l);this.l.connect(this.ctx.destination);
+        [55,65.41,82.41,110].forEach(f=>{const o=this.ctx.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=(Math.random()-0.5)*15;const g=this.ctx.createGain();g.gain.value=0.045;const l=this.ctx.createOscillator();l.type='sine';l.frequency.value=0.04+Math.random()*0.06;const lg=this.ctx.createGain();lg.gain.value=0.04;l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(this.g);o.start();l.start();});
+        const b=this.ctx.createOscillator();b.type='sine';b.frequency.value=36.71;const bg=this.ctx.createGain();bg.gain.value=0.06;const bl=this.ctx.createOscillator();bl.type='sine';bl.frequency.value=0.15;const blg=this.ctx.createGain();blg.gain.value=0.05;bl.connect(blg);blg.connect(bg.gain);b.connect(bg);bg.connect(this.g);b.start();bl.start();
+        const an=[261.63,311.13,392,466.16,523.25,392,349.23,293.66];let si=0;const ao=this.ctx.createOscillator();ao.type='sine';const ag=this.ctx.createGain();ag.gain.value=0;const af=this.ctx.createBiquadFilter();af.type='lowpass';af.frequency.value=2000;af.Q.value=2;ao.connect(ag);ag.connect(af);af.connect(this.g);ao.start();let nt=this.ctx.currentTime;const sa=()=>{if(!this.p)return;const nw=this.ctx.currentTime;while(nt<nw+0.1){const note=an[si%an.length],ng=0.015+Math.random()*0.01,dur=0.2+Math.random()*0.3;ag.gain.setValueAtTime(ng,nt);ag.gain.exponentialRampToValueAtTime(0.001,nt+dur);ao.frequency.setValueAtTime(note,nt);af.frequency.setValueAtTime(600+Math.random()*2000,nt);si++;nt+=0.25+Math.random()*0.15;}};sa();
+        const buf=this.ctx.createBuffer(1,4*this.ctx.sampleRate,this.ctx.sampleRate);const d=buf.getChannelData(0);let last=0;for(let i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*0.008;d[i]+=last*0.99;last=d[i];}const ns=this.ctx.createBufferSource();ns.buffer=buf;ns.loop=true;const ng=this.ctx.createGain();ng.gain.value=0.008;const nf=this.ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=120;ns.connect(nf);nf.connect(ng);ng.connect(this.g);ns.start();}
+      start(){if(this.p)return;if(this.ctx?.state==='suspended')this.ctx.resume();this.p=true;}
+      toggle(){this.m=!this.m;if(this.g)this.g.gain.value=this.m?0:0.2;return!this.m;}
+      lvl(){if(!this.l)return 0;this.l.getByteFrequencyData(this.f);let s=0;for(let i=0;i<this.f.length;i++)s+=this.f[i];return s/this.f.length/255*2;}
     }
 
-    // ========== THREE.JS BACKGROUND ==========
-    const canvas=document.getElementById('three-canvas');
-    const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    renderer.setClearColor(0x000000,0);
+    // Three.js
+    const c=document.getElementById('c'),R=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true});
+    R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(innerWidth,innerHeight);R.setClearColor(0,0);
+    const S=new THREE.Scene(),C=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    const u={u_time:{value:0},u_res:{value:new THREE.Vector2(innerWidth,innerHeight)},u_mouse:{value:new THREE.Vector2(.5,.5)},u_scroll:{value:0},u_audio:{value:0}};
+    const F='precision highp float;uniform vec2 u_res;uniform float u_time;uniform vec2 u_mouse;uniform float u_scroll;uniform float u_audio;mat2 r(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}float f(vec2 p){float v=0.,a=.5;vec2 sh=vec2(100.);for(int i=0;i<5;i++){p=r(.5+u_time*.02)*p;v+=a*sin(p.x*1.5+p.y*1.2+u_time*.06);p=p*2.+sh;a*=.5;}return v;}float o(vec2 p){float t=u_time*.03;return(sin(p.x*2.+p.y*1.7+t)*.5+sin(p.x*3.5-p.y*2.3+t*.7)*.25+sin(p.x*5.2+p.y*4.1+t*.5)*.125+sin(p.x*8.-p.y*7.+t*.3)*.0625)*.5+.5;}void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;vec2 p=(gl_FragCoord.xy-.5*u_res.xy)/u_res.y;p+=(u_mouse-.5)*.15;float s=u_scroll*.1,a=u_audio*.1,v1=o(p*1.5+vec2(s,s*.05)),v2=f(p*2.+vec2(s*.1,-s*.05)),v3=o(p*3.+vec2(u_time*.015,u_time*.01)),mv=mix(v1,v2,.4+a)*.8+v3*.2,vig=1.-length(uv-.5)*.6;vig=smoothstep(.3,.8,vig);float base=.92-mv*.12-a*.03;vec3 col=vec3(base+.01,base+.005,base+.02)*vig;float g=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-.5)*.008;gl_FragColor=vec4(col+g,1.);}';
+    const M=new THREE.ShaderMaterial({uniforms:u,vertexShader:'void main(){gl_Position=vec4(position,1.);}',fragmentShader:F,depthWrite:false,depthTest:false});
+    S.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),M));
+    const s3=new THREE.Scene(),c3=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,50);c3.position.set(0,0,8);
+    const k=new THREE.Mesh(new THREE.TorusKnotGeometry(.6,.15,64,8),new THREE.MeshPhysicalMaterial({color:0x9999bb,transparent:true,opacity:.04,wireframe:true,depthWrite:false}));s3.add(k);
+    const dc=120,dp=new Float32Array(dc*3);for(let i=0;i<dc;i++){const t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),r=1.5+Math.random()*3.5;dp[i*3]=r*Math.sin(ph)*Math.cos(t);dp[i*3+1]=r*Math.cos(ph);dp[i*3+2]=r*Math.sin(ph)*Math.sin(t);}const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));const dt=new THREE.Points(dg,new THREE.PointsMaterial({color:0x8888bb,size:.015,transparent:true,opacity:.08,blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false}));s3.add(dt);
 
-    const scene=new THREE.Scene();
-    const camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    // Audio init
+    const ax=new A(),st=document.getElementById('st');let ar=false;
+    async function ia(){if(ar)return;await ax.init();ax.start();ar=true;ax.toggle();st.classList.remove('sound--muted');}
+    st.onclick=async()=>{if(!ar)await ia();else{if(ax.toggle())st.classList.remove('sound--muted');else st.classList.add('sound--muted');}};
+    document.addEventListener('click',()=>{if(!ar)ia();},{once:true});
 
-    const u={
-      u_time:{value:0},
-      u_resolution:{value:new THREE.Vector2(window.innerWidth,window.innerHeight)},
-      u_mouse:{value:new THREE.Vector2(0.5,0.5)},
-      u_scroll:{value:0},
-      u_audio:{value:0},
-    };
+    // Mouse
+    let mx=.5,my=.5,sp=0,tsp=0;
+    onmousemove=e=>{mx=e.clientX/innerWidth;my=1-e.clientY/innerHeight;u.u_mouse.value.set(mx,my);};
+    const sc=document.getElementById('sc');
+    sc.onscroll=()=>{const m=sc.scrollHeight-sc.clientHeight;tsp=m>0?sc.scrollTop/m:0;};
+    onresize=()=>{u.u_res.value.set(innerWidth,innerHeight);c3.aspect=innerWidth/innerHeight;c3.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);};
 
-    const vs=`void main(){gl_Position=vec4(position,1.0);}`;
+    // Intro loader
+    setTimeout(()=>{const il=document.getElementById('intro-loader');if(il)il.classList.add('hidden');setTimeout(()=>{if(il)il.style.display='none';},1500);},3200);
 
-    // IG-style organic fluid shader — FBM noise + mouse parallax + scroll reactive
-    const fs=`
-      precision highp float;
-      uniform vec2 u_resolution; uniform float u_time;
-      uniform vec2 u_mouse; uniform float u_scroll; uniform float u_audio;
+    // Animation
+    const cl=new THREE.Clock();let t=0;
+    function an(){const dt=Math.min(cl.getDelta(),.05);t+=dt;sp+=(tsp-sp)*.05;u.u_scroll.value=sp;u.u_time.value=t;let aL=0;if(ar&&ax.p&&!ax.m)aL=ax.lvl();u.u_audio.value=aL;
+      k.rotation.x=Math.sin(t*.06)*.08+(mx-.5)*.15;k.rotation.y=t*.05+(my-.5)*.15;k.material.opacity=.035+Math.sin(t*.15)*.01+aL*.03;
+      const dpos=dt.geometry.attributes.position.array;for(let i=0;i<dc;i++){const th=i*2.4+t*(.02+i%3*.008)+aL*.08,ph=Math.acos(2*Math.sin(t*.015+i*.01)-1),r=1.5+Math.sin(t*.03+i*.02)*.3+2.+aL*.2;dpos[i*3]=r*Math.sin(ph)*Math.cos(th);dpos[i*3+1]=r*Math.cos(ph);dpos[i*3+2]=r*Math.sin(ph)*Math.sin(th);}dt.geometry.attributes.position.needsUpdate=true;
+      c3.position.z+=((8-sp*1.5)-c3.position.z)*.03;c3.lookAt(0,0,0);
+      R.render(S,C);R.render(s3,c3);requestAnimationFrame(an);
+    }an();
 
-      mat2 r(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-
-      float fbm(vec2 p){
-        float v=0.0,a=0.5;vec2 sh=vec2(100.0);
-        for(int i=0;i<5;i++){p=r(0.5+u_time*0.02)*p;v+=a*sin(p.x*1.5+p.y*1.2+u_time*0.06);p=p*2.0+sh;a*=0.5;}
-        return v;
-      }
-
-      float org(vec2 p){
-        float t=u_time*0.03;
-        return (sin(p.x*2.0+p.y*1.7+t)*0.5+sin(p.x*3.5-p.y*2.3+t*0.7)*0.25+sin(p.x*5.2+p.y*4.1+t*0.5)*0.125+sin(p.x*8.0-p.y*7.0+t*0.3)*0.0625)*0.5+0.5;
-      }
-
-      void main(){
-        vec2 uv=gl_FragCoord.xy/u_resolution.xy;
-        vec2 p=(gl_FragCoord.xy-0.5*u_resolution.xy)/u_resolution.y;
-        p+=(u_mouse-0.5)*0.15;
-        float s=u_scroll*0.1;
-        float a=u_audio*0.1;
-        float v1=org(p*1.5+vec2(s,s*0.05));
-        float v2=fbm(p*2.0+vec2(s*0.1,-s*0.05));
-        float v3=org(p*3.0+vec2(u_time*0.015,u_time*0.01));
-        float mv=mix(v1,v2,0.4+a)*0.8+v3*0.2;
-        float vig=1.0-length(uv-0.5)*0.6;
-        vig=smoothstep(0.3,0.8,vig);
-        float base=0.92-mv*0.12-a*0.03;
-        vec3 c=vec3(base+0.01,base+0.005,base+0.02)*vig;
-        float g=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.008;
-        gl_FragColor=vec4(c+g,1.0);
-      }
-    `;
-
-    const mat=new THREE.ShaderMaterial({uniforms:u,vertexShader:vs,fragmentShader:fs,depthWrite:false,depthTest:false});
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),mat));
-
-    // Subtle 3D overlay
-    const s3d=new THREE.Scene();
-    const c3d=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,50);
-    c3d.position.set(0,0,8);
-
-    const knot=new THREE.Mesh(
-      new THREE.TorusKnotGeometry(0.6,0.15,64,8),
-      new THREE.MeshPhysicalMaterial({color:0x9999bb,transparent:true,opacity:0.04,wireframe:true,depthWrite:false})
-    );
-    s3d.add(knot);
-
-    const dc=120;
-    const dp=new Float32Array(dc*3);
-    for(let i=0;i<dc;i++){const t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),r=1.5+Math.random()*3.5;dp[i*3]=r*Math.sin(ph)*Math.cos(t);dp[i*3+1]=r*Math.cos(ph);dp[i*3+2]=r*Math.sin(ph)*Math.sin(t);}
-    const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));
-    const dots=new THREE.Points(dg,new THREE.PointsMaterial({color:0x8888bb,size:0.015,transparent:true,opacity:0.08,blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false}));
-    s3d.add(dots);
-
-    const clock=new THREE.Clock();
-    let time=0,mx=0.5,my=0.5,sp=0,tsp=0;
-
-    // ========== AUDIO ==========
-    const audio=new AmbientAudio();
-    const st=document.getElementById('sound-toggle');
-    let aReady=false;
-
-    async function initA(){
-      if(aReady)return;await audio.init();audio.start();aReady=true;
-      audio.toggle();st.classList.remove('sound--muted');
-    }
-
-    st.addEventListener('click',async()=>{
-      if(!aReady){await initA();}
-      else{const on=audio.toggle();
-        if(on)st.classList.remove('sound--muted');
-        else st.classList.add('sound--muted');
-      }
-    });
-
-    document.addEventListener('click',()=>{
-      if(!aReady)initA();
-      const ring=document.getElementById('sound-ring');
-      if(ring)ring.style.transition='stroke-dashoffset 0.8s ease';
-    },{once:true});
-
-    // ========== EVENTS ==========
-    document.addEventListener('mousemove',(e)=>{mx=e.clientX/window.innerWidth;my=1-e.clientY/window.innerHeight;u.u_mouse.value.set(mx,my);});
-    const sc=document.getElementById('scroll-container');
-    sc.addEventListener('scroll',()=>{const mx=sc.scrollHeight-sc.clientHeight;tsp=mx>0?sc.scrollTop/mx:0;});
-    window.addEventListener('resize',()=>{const w=window.innerWidth,h=window.innerHeight;u.u_resolution.value.set(w,h);c3d.aspect=w/h;c3d.updateProjectionMatrix();renderer.setSize(w,h);});
-
-    // ========== INTRO LOADER ==========
-    setTimeout(()=>{
-      const il=document.getElementById('intro-loader');
-      if(il)il.classList.add('hidden');
-      setTimeout(()=>{if(il)il.style.display='none';},1500);
-    },3200);
-
-    // ========== ANIMATION ==========
-    function animate(){
-      const dt=Math.min(clock.getDelta(),0.05);time+=dt;
-      sp+=(tsp-sp)*0.05;u.u_scroll.value=sp;u.u_time.value=time;
-      let aR=0;if(aReady&&audio.isPlaying&&!audio.isMuted)aR=audio.getLevel();
-      u.u_audio.value=aR;
-
-      knot.rotation.x=Math.sin(time*0.06)*0.08+(mx-0.5)*0.15;
-      knot.rotation.y=time*0.05+(my-0.5)*0.15;
-      knot.material.opacity=0.035+Math.sin(time*0.15)*0.01+aR*0.03;
-
-      const dpos=dots.geometry.attributes.position.array;
-      for(let i=0;i<dc;i++){
-        const theta=i*2.4+time*(0.02+i%3*0.008)+aR*0.08;
-        const phi=Math.acos(2*Math.sin(time*0.015+i*0.01)-1);
-        const r=1.5+Math.sin(time*0.03+i*0.02)*0.3+2.0+aR*0.2;
-        dpos[i*3]=r*Math.sin(phi)*Math.cos(theta);
-        dpos[i*3+1]=r*Math.cos(phi);
-        dpos[i*3+2]=r*Math.sin(phi)*Math.sin(theta);
-      }
-      dots.geometry.attributes.position.needsUpdate=true;
-
-      c3d.position.z+=((8-sp*1.5)-c3d.position.z)*0.03;
-      c3d.lookAt(0,0,0);
-
-      renderer.render(scene,camera);
-      renderer.render(s3d,c3d);
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // SVG sound ring animation
-    const ring=document.getElementById('sound-ring');
-    if(ring){
-      let rOn=false;
-      setInterval(()=>{
-        if(!aReady||audio.isMuted){ring.style.strokeDashoffset='81.68';return;}
-        rOn=!rOn;
-        ring.style.strokeDashoffset=rOn?'0':'81.68';
-      },1200);
-    }
+    // Sound ring
+    const ring=document.getElementById('ring');if(ring){let on=false;setInterval(()=>{if(!ar||ax.m){ring.style.strokeDashoffset='81.68';return;}on=!on;ring.style.strokeDashoffset=on?'0':'81.68';},1200);}
   </script>
 </body>
 </html>
